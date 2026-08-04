@@ -468,6 +468,107 @@
     }
   }
 
+  function initHeroSlideshow(slides, intervalMs) {
+    const root = document.querySelector("[data-hero-slideshow]");
+    const host = $("#hero-slides");
+    const dotsHost = $("#hero-dots");
+    if (!root || !host) return;
+
+    // Tear down previous timer/listeners when CMS re-inits the slideshow
+    if (root._heroCleanup) {
+      root._heroCleanup();
+      root._heroCleanup = null;
+    }
+
+    const list = (slides || [])
+      .map((s) => {
+        if (typeof s === "string") return { url: s, alt: "" };
+        return { url: s?.url || "", alt: s?.alt || "" };
+      })
+      .filter((s) => s.url);
+
+    if (list.length) {
+      const assetPath = window.CCFCContent?.assetPath
+        ? (u) => window.CCFCContent.assetPath(u)
+        : (u) => u;
+      host.innerHTML = list
+        .map(
+          (s, i) =>
+            `<div class="hero__slide${i === 0 ? " is-active" : ""}" style="background-image: url('${assetPath(s.url).replace(/'/g, "%27")}')" role="img" aria-label="${(s.alt || "Coventry City i aksjon").replace(/"/g, "&quot;")}"></div>`
+        )
+        .join("");
+    }
+
+    const slideEls = $$(".hero__slide", host);
+    if (!slideEls.length) return;
+
+    if (dotsHost) {
+      dotsHost.innerHTML = slideEls
+        .map(
+          (_, i) =>
+            `<button type="button" class="hero__dot${i === 0 ? " is-active" : ""}" role="tab" aria-label="Bilde ${i + 1}" aria-selected="${i === 0 ? "true" : "false"}" data-slide="${i}"></button>`
+        )
+        .join("");
+    }
+
+    let index = 0;
+    let timer = null;
+    const delay = Math.max(3000, Number(intervalMs) || 6500);
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    function goTo(next) {
+      index = ((next % slideEls.length) + slideEls.length) % slideEls.length;
+      slideEls.forEach((el, i) => el.classList.toggle("is-active", i === index));
+      if (dotsHost) {
+        $$(".hero__dot", dotsHost).forEach((dot, i) => {
+          const on = i === index;
+          dot.classList.toggle("is-active", on);
+          dot.setAttribute("aria-selected", on ? "true" : "false");
+        });
+      }
+    }
+
+    function start() {
+      stop();
+      if (reduceMotion || slideEls.length < 2) return;
+      timer = window.setInterval(() => goTo(index + 1), delay);
+    }
+
+    function stop() {
+      if (timer) {
+        clearInterval(timer);
+        timer = null;
+      }
+    }
+
+    function onDotClick(e) {
+      const btn = e.target.closest("[data-slide]");
+      if (!btn) return;
+      goTo(Number(btn.getAttribute("data-slide")));
+      start();
+    }
+
+    function onVisibility() {
+      if (document.hidden) stop();
+      else start();
+    }
+
+    dotsHost?.addEventListener("click", onDotClick);
+    root.addEventListener("mouseenter", stop);
+    root.addEventListener("mouseleave", start);
+    document.addEventListener("visibilitychange", onVisibility);
+
+    root._heroCleanup = () => {
+      stop();
+      dotsHost?.removeEventListener("click", onDotClick);
+      root.removeEventListener("mouseenter", stop);
+      root.removeEventListener("mouseleave", start);
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
+
+    start();
+  }
+
   setCurrentNav();
   initNav();
   renderHomeMatches();
@@ -475,4 +576,15 @@
   renderFixturesPage();
   renderNewsPage();
   renderStatsPage();
+
+  // Wire up markup slides immediately; CMS may replace them when ready
+  initHeroSlideshow(null, 6500);
+
+  document.addEventListener("ccfc:content-ready", (e) => {
+    const content = e.detail;
+    if (!document.querySelector("[data-hero-slideshow]")) return;
+    const slides = content?.home?.heroSlides;
+    if (!Array.isArray(slides) || !slides.length) return;
+    initHeroSlideshow(slides, content?.home?.heroSlideInterval);
+  });
 })();

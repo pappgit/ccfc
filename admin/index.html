@@ -12,7 +12,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../assets/css/styles.css" />
-    <link rel="stylesheet" href="../assets/css/admin.css?v=20260804e" />
+    <link rel="stylesheet" href="../assets/css/admin.css?v=20260804f" />
     <link rel="icon" href="../assets/img/logo.jpg" type="image/jpeg" />
   </head>
   <body>
@@ -90,6 +90,32 @@
                 Favicon-URL
                 <input type="url" name="brand.faviconUrl" id="favicon-url-input" />
               </label>
+            </div>
+
+            <div class="admin-card" id="hero-slides-card" hidden>
+              <h2>Forside-slideshow</h2>
+              <p style="color: var(--muted); margin-bottom: 0.75rem; font-size: 0.9rem">
+                Bilder av spillere i aksjon som roterer i hero på forsiden. Last opp nye, lim inn URL, endre rekkefølge eller slett.
+              </p>
+              <label>
+                Byttetid (millisekunder)
+                <input type="number" id="hero-interval-input" name="home.heroSlideInterval" min="3000" step="500" />
+              </label>
+              <div id="hero-slides-list" class="hero-slides-admin"></div>
+              <div class="row" style="margin-top: 1rem; align-items: flex-end">
+                <label style="flex: 1; min-width: 12rem">
+                  Last opp nytt bilde
+                  <input type="file" id="hero-slide-file" accept="image/png,image/jpeg,image/webp,image/gif" />
+                </label>
+                <button class="btn btn--solid" type="button" id="hero-slide-upload-btn">Last opp bilde</button>
+              </div>
+              <div class="row" style="margin-top: 0.75rem; align-items: flex-end">
+                <label style="flex: 1; min-width: 12rem">
+                  Eller lim inn bilde-URL
+                  <input type="url" id="hero-slide-url-input" placeholder="https://…" />
+                </label>
+                <button class="btn btn--solid" type="button" id="hero-slide-add-url-btn">Legg til URL</button>
+              </div>
             </div>
 
             <div class="row" style="margin-top: 1rem">
