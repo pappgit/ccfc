@@ -1,30 +1,22 @@
 # Kampdata og statistikk
 
-## Fixtures (Premier League 2026/27 + cup)
+## Viktig: API-Football gratisplan
 
-Script: `scripts/update-fixtures.mjs`  
-Workflow: `.github/workflows/update-fixtures.yml` (hver mandag + manuell kjøring)
+Gratisplanen hos API-Football gir **ikke** tilgang til sesong **2026** (kun ca. 2022–2024).
+Derfor ligger PL 2026/27-programmet i `fixtures.json` fra offisiell fixture-release.
 
-### Kvote (gratisplan = 100/dag)
+## Auto-oppdatering (anbefalt, gratis)
 
-Per kjøring typisk:
+1. Registrer gratis på https://www.football-data.org/client/register  
+2. Kopier API-token  
+3. GitHub → repo **Settings** → **Secrets** → **Actions** → ny secret:  
+   `FOOTBALL_DATA_API_KEY` = tokenet  
+4. Kjør Actions → **Update fixtures**
 
-1. `GET /fixtures?team=1346&season=2026` — **1 kall** (alle liga/cup)
-2. `GET /fixtures?ids=…` — inntil **2 kall** (maks 20 kamper/kall) kun for FT uten detaljer
+Scriptet bruker da **1–2 kall** (PL + FA Cup) — godt innenfor gratisplan.
 
-**Maks ~3 kall/mandag** når sesongen er i gang. Første uke uten ferdige kamper: **1 kall**.
+`API_FOOTBALL_KEY` beholdes for senere (Pro) eller historikk.
 
-Team-id er hardkodet (`1346` = Coventry City) for å unngå search-kall.
+## Championship-historikk
 
-### Secret
-
-`API_FOOTBALL_KEY` i repo → Settings → Secrets → Actions.
-
-### Manuell kjøring
-
-GitHub → Actions → **Update fixtures** → **Run workflow**.
-
-## Championship-kampstats (historikk)
-
-Kilde: football-data.co.uk CSV → `assets/data/championship-stats.json`  
-Spillerstats: kan fylles senere via API-Football `/players` (spar kall — engangsimport).
+`assets/data/championship-stats.json` fra football-data.co.uk CSV (24/25 + 25/26).

@@ -1,11 +1,10 @@
 # Oppdater kampdata hver mandag
-# Bruker secrets.API_FOOTBALL_KEY. Hardcap på API-kall i scriptet (gratisplan 100/dag).
+# 2026/27: football-data.org (gratis) — API-Football gratisplan stopper ~2024.
 
 name: Update fixtures
 
 on:
   schedule:
-    # Mandag 06:00 UTC
     - cron: "0 6 * * 1"
   workflow_dispatch:
 
@@ -22,8 +21,9 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Fetch fixtures (API-Football)
+      - name: Fetch fixtures
         env:
+          FOOTBALL_DATA_API_KEY: ${{ secrets.FOOTBALL_DATA_API_KEY }}
           API_FOOTBALL_KEY: ${{ secrets.API_FOOTBALL_KEY }}
           SEASON: "2026"
           TEAM_ID: "1346"
@@ -38,6 +38,6 @@ jobs:
           if git diff --staged --quiet; then
             echo "Ingen endringer i fixtures.json"
           else
-            git commit -m "chore: update Coventry fixtures from API-Football"
+            git commit -m "chore: update Coventry fixtures"
             git push
           fi
