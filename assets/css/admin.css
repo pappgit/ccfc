@@ -1,4 +1,12 @@
 /* Admin styles — extends site tokens */
+
+/* Class display rules override the UA [hidden] { display:none } — force hide. */
+#login-view[hidden],
+#app-view[hidden],
+.admin-panel:not(.is-active) {
+  display: none !important;
+}
+
 .admin-shell {
   min-height: 100vh;
   display: grid;
