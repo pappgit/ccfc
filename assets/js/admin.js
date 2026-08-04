@@ -18,6 +18,8 @@
       autoRefreshToken: true,
       detectSessionInUrl: true,
       storage: window.localStorage,
+      // Avoid hung browser navigator.locks blocking sign-in forever.
+      lock: async (_name, _acquireTimeout, fn) => fn(),
     },
   });
 
@@ -99,13 +101,19 @@
       const ok = await isAdminUser(session.user.id);
       if (!ok) {
         enteredAppForUser = null;
-        await client.auth.signOut();
-        await showLogin();
+        loginView.hidden = false;
+        appView.hidden = true;
         showMsg(
           loginMsg,
-          "Brukeren er ikke admin. Legg til e-posten i Supabase (auth + tabellen admins).",
+          "Brukeren er ikke admin. Legg til e-posten i Supabase (Auth-bruker + rad i tabellen admins).",
           true
         );
+        setLoginBusy(false);
+        try {
+          await withTimeout(client.auth.signOut(), 5000, "Logg ut");
+        } catch (err) {
+          console.warn(err);
+        }
         return;
       }
 
@@ -428,12 +436,8 @@
         showMsg(loginMsg, "Innlogging lyktes ikke (ingen sesjon).", true);
         return;
       }
-      // UI transition is handled by onAuthStateChange (deferred) to avoid
-      // racing the auth lock. Fallback if the event was already consumed.
-      afterAuthLock(async () => {
-        if (appView.hidden) await showApp(data.session);
-        else setLoginBusy(false);
-      });
+      // Enter app directly (listener is deferred backup only).
+      await showApp(data.session);
     } catch (err) {
       console.error(err);
       setLoginBusy(false);
@@ -444,7 +448,9 @@
   $("#logout-btn").addEventListener("click", async () => {
     setLoginBusy(true);
     try {
-      await client.auth.signOut();
+      await withTimeout(client.auth.signOut(), 8000, "Logg ut");
+    } catch (err) {
+      console.warn(err);
     } finally {
       await showLogin();
       showMsg(loginMsg, "");
@@ -629,13 +635,13 @@
     // Never await Supabase calls directly in this callback (auth lock deadlock).
     afterAuthLock(async () => {
       if (event === "SIGNED_OUT") {
+        if (!loginView.hidden && appView.hidden) return;
         await showLogin();
         return;
       }
-      if (
-        (event === "SIGNED_IN" || event === "INITIAL_SESSION" || event === "TOKEN_REFRESHED") &&
-        session
-      ) {
+      // TOKEN_REFRESHED: stay put if already in app.
+      if (event === "TOKEN_REFRESHED") return;
+      if ((event === "SIGNED_IN" || event === "INITIAL_SESSION") && session) {
         await showApp(session);
         return;
       }
