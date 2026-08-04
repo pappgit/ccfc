@@ -356,10 +356,11 @@ p {
   background:
     linear-gradient(
       180deg,
-      rgba(4, 18, 26, 0.25) 0%,
-      rgba(4, 18, 26, 0.45) 38%,
-      rgba(4, 18, 26, 0.78) 68%,
-      rgba(4, 18, 26, 0.94) 100%
+      rgba(0, 0, 0, 0.35) 0%,
+      rgba(0, 0, 0, 0.5) 30%,
+      rgba(0, 0, 0, 0.78) 58%,
+      rgba(0, 0, 0, 0.92) 78%,
+      rgba(0, 0, 0, 0.96) 100%
     );
 }
 
@@ -372,32 +373,55 @@ p {
   background-image: url("../img/pitch-grain.svg");
   background-size: cover;
   background-position: center bottom;
-  opacity: 0.18;
+  opacity: 0.12;
   mix-blend-mode: soft-light;
 }
 
 .hero__content {
   position: relative;
-  z-index: 1;
+  z-index: 3;
   padding: clamp(3rem, 10vw, 6rem) 0 clamp(3.5rem, 8vw, 5rem);
   width: min(100% - 2rem, var(--max));
   margin-inline: auto;
 }
 
+.hero__content::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 50%;
+  translate: -50% 0;
+  width: min(100vw, calc(var(--max) + 6rem));
+  bottom: 0;
+  top: 8%;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      120% 85% at 20% 100%,
+      rgba(0, 0, 0, 0.72) 0%,
+      rgba(0, 0, 0, 0.35) 45%,
+      transparent 72%
+    );
+}
+
 .hero__brand {
   font-family: var(--font-display);
   font-size: clamp(2.6rem, 9vw, 5.5rem);
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: -0.02em;
   line-height: 1.02;
   text-transform: uppercase;
   max-width: 14ch;
   margin-bottom: 1rem;
   color: #ffffff;
+  -webkit-text-stroke: 1px rgba(0, 0, 0, 0.55);
+  paint-order: stroke fill;
   text-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.85),
-    0 0.15em 0.7em rgba(0, 0, 0, 0.65),
-    0 0.35em 1.2em rgba(0, 0, 0, 0.45);
+    0 0 2px rgba(0, 0, 0, 1),
+    0 1px 0 rgba(0, 0, 0, 0.95),
+    0 2px 4px rgba(0, 0, 0, 0.95),
+    0 6px 18px rgba(0, 0, 0, 0.85),
+    0 14px 40px rgba(0, 0, 0, 0.7);
   opacity: 0;
   animation: rise 0.9s var(--ease) 0.15s forwards;
 }
@@ -412,13 +436,17 @@ p {
 }
 
 .hero__lead {
-  font-size: clamp(1.05rem, 2.2vw, 1.25rem);
-  font-weight: 500;
+  font-size: clamp(1.1rem, 2.3vw, 1.35rem);
+  font-weight: 600;
   max-width: 32rem;
   color: #ffffff;
+  -webkit-text-stroke: 0.4px rgba(0, 0, 0, 0.45);
+  paint-order: stroke fill;
   text-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.8),
-    0 0.12em 0.55em rgba(0, 0, 0, 0.55);
+    0 0 2px rgba(0, 0, 0, 1),
+    0 1px 0 rgba(0, 0, 0, 0.9),
+    0 2px 6px rgba(0, 0, 0, 0.9),
+    0 8px 24px rgba(0, 0, 0, 0.75);
   opacity: 0;
   animation: rise 0.9s var(--ease) 0.35s forwards;
 }
