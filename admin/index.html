@@ -283,35 +283,27 @@
           <div class="admin-card">
             <h2 id="news-form-title">Ny artikkel</h2>
             <form id="news-form" class="admin-form">
-              <input type="hidden" name="id" />
+              <input type="hidden" name="post_id" id="news-post-id" value="" />
+              <input type="hidden" name="slug" id="news-slug" value="" />
               <label>
                 Tittel
-                <input type="text" name="title" required />
-              </label>
-              <label>
-                Slug (url-vennlig id)
-                <input type="text" name="slug" required pattern="[a-z0-9\-]+" />
-                <span class="field-hint">
-                  Kort adresse for artikkelen, f.eks. <code>velkommen</code> →
-                  <code>nyheter.html#velkommen</code>. Bruk små bokstaver, tall og bindestrek.
-                  Fylles inn automatisk fra tittelen, men kan endres.
-                </span>
+                <input type="text" name="title" id="news-title" required />
               </label>
               <label>
                 Ingress
-                <textarea name="excerpt" rows="2" required></textarea>
+                <textarea name="excerpt" id="news-excerpt" rows="2" required></textarea>
               </label>
               <label>
                 Brødtekst
-                <textarea name="body" rows="8" required></textarea>
+                <textarea name="body" id="news-body" rows="8" required></textarea>
               </label>
               <div class="row">
                 <label class="check">
-                  <input type="checkbox" name="published" />
+                  <input type="checkbox" name="published" id="news-published" />
                   Publisert
                 </label>
                 <label class="check">
-                  <input type="checkbox" name="show_on_home" checked />
+                  <input type="checkbox" name="show_on_home" id="news-show-on-home" checked />
                   Vis på forsiden
                 </label>
               </div>
@@ -396,6 +388,6 @@
     <script src="../assets/js/vendor/supabase.js?v=2.112.0"></script>
     <script src="../assets/js/supabase-config.js"></script>
     <script src="../assets/js/content.js"></script>
-    <script src="../assets/js/admin.js?v=20260804h"></script>
+    <script src="../assets/js/admin.js?v=20260804i"></script>
   </body>
 </html>

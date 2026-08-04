@@ -842,51 +842,68 @@
   function fillNewsForm(post) {
     const form = $("#news-form");
     $("#news-form-title").textContent = "Rediger artikkel";
-    form.id.value = post.id;
-    form.title.value = post.title;
-    form.slug.value = post.slug;
-    form.excerpt.value = post.excerpt || "";
-    form.body.value = post.body || "";
-    form.published.checked = !!post.published;
-    form.show_on_home.checked = !!post.show_on_home;
+    $("#news-post-id").value = post.id || "";
+    $("#news-title").value = post.title || "";
+    $("#news-slug").value = post.slug || slugify(post.title || "");
+    $("#news-excerpt").value = post.excerpt || "";
+    $("#news-body").value = post.body || "";
+    $("#news-published").checked = !!post.published;
+    $("#news-show-on-home").checked = !!post.show_on_home;
     const delBtn = $("#news-delete");
     if (delBtn) delBtn.hidden = false;
-    form.title.focus();
+    $("#news-title").focus();
   }
 
   function resetNewsForm() {
     const form = $("#news-form");
     $("#news-form-title").textContent = "Ny artikkel";
     form.reset();
-    form.id.value = "";
-    form.show_on_home.checked = true;
+    $("#news-post-id").value = "";
+    $("#news-slug").value = "";
+    $("#news-show-on-home").checked = true;
     const delBtn = $("#news-delete");
     if (delBtn) delBtn.hidden = true;
+  }
+
+  function syncNewsSlugFromTitle() {
+    const title = $("#news-title")?.value || "";
+    const slugEl = $("#news-slug");
+    if (!slugEl) return;
+    // Keep existing slug when editing so gamle lenker fortsatt virker;
+    // for nye artikler genereres slug alltid fra tittel.
+    if ($("#news-post-id")?.value) return;
+    slugEl.value = slugify(title) || `artikkel-${Date.now()}`;
   }
 
   $("#news-reset").addEventListener("click", resetNewsForm);
 
   $("#news-delete")?.addEventListener("click", async () => {
-    const id = $("#news-form")?.id?.value;
+    const id = $("#news-post-id")?.value;
     await deleteNewsById(id);
   });
 
-  $("#news-form").title.addEventListener("input", (e) => {
-    const form = $("#news-form");
-    if (!form.id.value) form.slug.value = slugify(e.target.value);
-  });
+  $("#news-title")?.addEventListener("input", syncNewsSlugFromTitle);
 
   $("#news-form").addEventListener("submit", async (e) => {
     e.preventDefault();
     const fd = new FormData(e.target);
     const { data: sessionData } = await client.auth.getSession();
-    const id = String(fd.get("id") || "");
+    const id = String(fd.get("post_id") || "").trim();
+    const title = String(fd.get("title") || "").trim();
+    let slug = String(fd.get("slug") || "").trim();
+
+    // Always ensure a valid slug automatically — never rely on manual input
+    if (!id || !slug) {
+      slug = slugify(title) || `artikkel-${Date.now()}`;
+      $("#news-slug").value = slug;
+    }
+
     const published = !!fd.get("published");
     const payload = {
-      title: String(fd.get("title")),
-      slug: String(fd.get("slug")),
-      excerpt: String(fd.get("excerpt")),
-      body: String(fd.get("body")),
+      title,
+      slug,
+      excerpt: String(fd.get("excerpt") || ""),
+      body: String(fd.get("body") || ""),
       published,
       show_on_home: !!fd.get("show_on_home"),
       published_at: published ? new Date().toISOString() : null,
@@ -897,7 +914,18 @@
     if (id) {
       ({ error } = await client.from("news_posts").update(payload).eq("id", id));
     } else {
-      ({ error } = await client.from("news_posts").insert(payload));
+      let attempt = slug;
+      for (let n = 2; n < 50; n++) {
+        ({ error } = await client
+          .from("news_posts")
+          .insert({ ...payload, slug: attempt }));
+        if (!error) {
+          payload.slug = attempt;
+          break;
+        }
+        if (!/duplicate|unique|already exists/i.test(error.message || "")) break;
+        attempt = `${slug}-${n}`;
+      }
     }
 
     if (error) showMsg(newsMsg, error.message, true);
