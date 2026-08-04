@@ -12,7 +12,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../assets/css/styles.css" />
-    <link rel="stylesheet" href="../assets/css/admin.css?v=20260804f" />
+    <link rel="stylesheet" href="../assets/css/admin.css?v=20260804g" />
     <link rel="icon" href="../assets/img/logo.jpg" type="image/jpeg" />
   </head>
   <body>
@@ -49,6 +49,8 @@
         <nav class="admin-nav" aria-label="Admin">
           <button type="button" data-panel="content" class="is-active">Innhold</button>
           <button type="button" data-panel="news">Nyheter</button>
+          <button type="button" data-panel="feedback">Ønsker</button>
+          <button type="button" data-panel="changelog">Endringslogg</button>
           <button type="button" data-panel="api">API</button>
         </nav>
         <div class="admin-side__foot">
@@ -319,12 +321,76 @@
             </form>
           </div>
         </section>
+
+        <section class="admin-panel" id="panel-feedback">
+          <h1>Ønsker / kommentarer</h1>
+          <p class="lead">
+            Legg inn forslag til hva som bør endres. Huk av når det er gjennomført.
+          </p>
+
+          <div class="admin-card">
+            <h2>Nytt ønske</h2>
+            <form id="feedback-form" class="admin-form">
+              <label>
+                Fra (navn)
+                <input type="text" name="author" placeholder="F.eks. Sverre" maxlength="80" />
+              </label>
+              <label>
+                Hva bør endres?
+                <textarea name="body" rows="4" required placeholder="Beskriv ønsket endring…"></textarea>
+              </label>
+              <div class="row">
+                <button class="btn btn--sky" type="submit">Legg inn</button>
+              </div>
+              <p class="admin-msg" id="feedback-msg" hidden></p>
+            </form>
+          </div>
+
+          <div class="filters season-tabs" style="margin-bottom: 1rem" id="feedback-filters">
+            <button type="button" class="filter-btn is-active" data-feedback-filter="open">Åpne</button>
+            <button type="button" class="filter-btn" data-feedback-filter="done">Gjennomført</button>
+            <button type="button" class="filter-btn" data-feedback-filter="all">Alle</button>
+          </div>
+
+          <div id="feedback-list" class="feedback-list"></div>
+        </section>
+
+        <section class="admin-panel" id="panel-changelog">
+          <h1>Endringslogg</h1>
+          <p class="lead">
+            Oversikt over endringer som er gjort på nettsiden.
+          </p>
+
+          <div class="admin-card">
+            <h2>Legg til i endringsloggen</h2>
+            <form id="changelog-form" class="admin-form">
+              <label>
+                Dato
+                <input type="date" name="date" required />
+              </label>
+              <label>
+                Tittel
+                <input type="text" name="title" required maxlength="120" />
+              </label>
+              <label>
+                Punkter (ett per linje)
+                <textarea name="items" rows="4" required placeholder="Første endring&#10;Andre endring"></textarea>
+              </label>
+              <div class="row">
+                <button class="btn btn--sky" type="submit">Legg til</button>
+              </div>
+              <p class="admin-msg" id="changelog-msg" hidden></p>
+            </form>
+          </div>
+
+          <div id="changelog-list" class="changelog-list"></div>
+        </section>
       </main>
     </div>
 
     <script src="../assets/js/vendor/supabase.js?v=2.112.0"></script>
     <script src="../assets/js/supabase-config.js"></script>
     <script src="../assets/js/content.js"></script>
-    <script src="../assets/js/admin.js?v=20260804e"></script>
+    <script src="../assets/js/admin.js?v=20260804g"></script>
   </body>
 </html>

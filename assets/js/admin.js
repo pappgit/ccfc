@@ -222,7 +222,13 @@
       showMsg(loginMsg, "");
       $("#admin-email").textContent = session.user.email || session.user.id;
 
-      await Promise.allSettled([loadContentEditor(), loadApiSettings(), loadNews()]);
+      await Promise.allSettled([
+        loadContentEditor(),
+        loadApiSettings(),
+        loadNews(),
+        loadChangelog(),
+        loadFeedback(),
+      ]);
     } catch (err) {
       console.error(err);
       enteredAppForUser = null;
@@ -280,6 +286,8 @@
       btn.classList.add("is-active");
       const panel = document.getElementById(`panel-${btn.dataset.panel}`);
       if (panel) panel.classList.add("is-active");
+      if (btn.dataset.panel === "changelog") loadChangelog();
+      if (btn.dataset.panel === "feedback") loadFeedback();
     });
   });
 
@@ -907,6 +915,302 @@
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;");
   }
+
+  function newId() {
+    if (crypto?.randomUUID) return crypto.randomUUID();
+    return `id-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+  }
+
+  function formatNbDate(isoOrDate) {
+    if (!isoOrDate) return "";
+    const d = new Date(isoOrDate.includes("T") ? isoOrDate : isoOrDate + "T12:00:00");
+    if (Number.isNaN(d.getTime())) return String(isoOrDate);
+    return d.toLocaleDateString("nb-NO", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    });
+  }
+
+  async function loadSetting(key) {
+    const { data, error } = await client
+      .from("site_settings")
+      .select("value")
+      .eq("key", key)
+      .maybeSingle();
+    if (error) throw error;
+    return data?.value || null;
+  }
+
+  async function saveSetting(key, value) {
+    const { data: sessionData } = await client.auth.getSession();
+    const { error } = await client.from("site_settings").upsert({
+      key,
+      value,
+      updated_by: sessionData.session?.user?.id || null,
+    });
+    if (error) throw error;
+  }
+
+  /* —— Changelog —— */
+  const changelogMsg = $("#changelog-msg");
+  let changelogCustom = [];
+  let changelogBuiltin = [];
+
+  async function loadBuiltinChangelog() {
+    try {
+      const res = await fetch("../assets/data/changelog.json");
+      if (!res.ok) return [];
+      const data = await res.json();
+      return Array.isArray(data?.entries) ? data.entries : [];
+    } catch {
+      return [];
+    }
+  }
+
+  function mergeChangelogEntries() {
+    const custom = (changelogCustom || []).map((e) => ({ ...e, source: "custom" }));
+    const builtin = (changelogBuiltin || []).map((e) => ({ ...e, source: "builtin" }));
+    return [...custom, ...builtin].sort((a, b) => String(b.date || "").localeCompare(String(a.date || "")));
+  }
+
+  function renderChangelog() {
+    const host = $("#changelog-list");
+    if (!host) return;
+    const entries = mergeChangelogEntries();
+    if (!entries.length) {
+      host.innerHTML = `<p class="empty-state">Ingen oppføringer i endringsloggen ennå.</p>`;
+      return;
+    }
+    host.innerHTML = entries
+      .map((e) => {
+        const items = Array.isArray(e.items) ? e.items : String(e.body || "").split(/\n+/).filter(Boolean);
+        const source =
+          e.source === "custom"
+            ? `<span class="badge">Lagt til</span>`
+            : `<span class="badge">System</span>`;
+        const remove =
+          e.source === "custom"
+            ? `<button type="button" class="btn btn--danger" data-changelog-remove="${escapeAttr(e.id || "")}">Fjern</button>`
+            : "";
+        return `<article class="changelog-entry" data-id="${escapeAttr(e.id || "")}">
+          <div class="changelog-entry__meta">
+            <span>${escapeHtml(formatNbDate(e.date))}</span>
+            <span class="changelog-entry__source">${source}</span>
+          </div>
+          <h3>${escapeHtml(e.title || "Uten tittel")}</h3>
+          <ul>${items.map((it) => `<li>${escapeHtml(it)}</li>`).join("")}</ul>
+          ${remove ? `<div class="row" style="margin-top:0.75rem">${remove}</div>` : ""}
+        </article>`;
+      })
+      .join("");
+
+    host.querySelectorAll("[data-changelog-remove]").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const id = btn.getAttribute("data-changelog-remove");
+        if (!id || !confirm("Fjerne denne oppføringen fra endringsloggen?")) return;
+        changelogCustom = changelogCustom.filter((e) => e.id !== id);
+        try {
+          await saveSetting("changelog", { entries: changelogCustom });
+          renderChangelog();
+          showMsg(changelogMsg, "Oppføring fjernet.");
+        } catch (err) {
+          showMsg(changelogMsg, err.message || "Kunne ikke lagre.", true);
+        }
+      });
+    });
+  }
+
+  async function loadChangelog() {
+    const dateInput = $("#changelog-form")?.date;
+    if (dateInput && !dateInput.value) {
+      dateInput.value = new Date().toISOString().slice(0, 10);
+    }
+    try {
+      changelogBuiltin = await loadBuiltinChangelog();
+      const remote = await loadSetting("changelog");
+      changelogCustom = Array.isArray(remote?.entries) ? remote.entries : [];
+      renderChangelog();
+    } catch (err) {
+      const host = $("#changelog-list");
+      if (host) host.innerHTML = `<p class="admin-msg is-error">${escapeHtml(err.message)}</p>`;
+    }
+  }
+
+  $("#changelog-form")?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    const items = String(fd.get("items") || "")
+      .split(/\n+/)
+      .map((s) => s.trim())
+      .filter(Boolean);
+    if (!items.length) {
+      showMsg(changelogMsg, "Legg inn minst ett punkt.", true);
+      return;
+    }
+    const entry = {
+      id: newId(),
+      date: String(fd.get("date")),
+      title: String(fd.get("title")).trim(),
+      items,
+      created_at: new Date().toISOString(),
+    };
+    changelogCustom = [entry, ...changelogCustom];
+    try {
+      await saveSetting("changelog", { entries: changelogCustom });
+      e.target.reset();
+      if (e.target.date) e.target.date.value = new Date().toISOString().slice(0, 10);
+      renderChangelog();
+      showMsg(changelogMsg, "Lagt til i endringsloggen.");
+    } catch (err) {
+      showMsg(changelogMsg, err.message || "Kunne ikke lagre.", true);
+    }
+  });
+
+  /* —— Feedback / wishes —— */
+  const feedbackMsg = $("#feedback-msg");
+  let feedbackItems = [];
+  let feedbackFilter = "open";
+
+  function renderFeedback() {
+    const host = $("#feedback-list");
+    if (!host) return;
+
+    let list = [...feedbackItems];
+    if (feedbackFilter === "open") list = list.filter((i) => !i.done);
+    else if (feedbackFilter === "done") list = list.filter((i) => i.done);
+
+    list.sort((a, b) => String(b.created_at || "").localeCompare(String(a.created_at || "")));
+
+    if (!list.length) {
+      const empty =
+        feedbackFilter === "done"
+          ? "Ingen gjennomførte ønsker ennå."
+          : feedbackFilter === "open"
+            ? "Ingen åpne ønsker. Legg inn et forslag over."
+            : "Ingen ønsker registrert ennå.";
+      host.innerHTML = `<p class="empty-state">${empty}</p>`;
+      return;
+    }
+
+    host.innerHTML = list
+      .map((item) => {
+        const author = item.author ? escapeHtml(item.author) : "Uten navn";
+        const when = formatNbDate(item.created_at || item.date || "");
+        const doneMeta = item.done
+          ? ` · Gjennomført ${escapeHtml(formatNbDate(item.done_at || ""))}`
+          : "";
+        return `<article class="feedback-item${item.done ? " is-done" : ""}" data-id="${escapeAttr(item.id)}">
+          <label class="feedback-item__check" title="Marker som gjennomført">
+            <input type="checkbox" data-feedback-done ${item.done ? "checked" : ""} aria-label="Gjennomført" />
+          </label>
+          <div>
+            <div class="feedback-item__meta">
+              <span>${author}</span>
+              <span>${escapeHtml(when)}${doneMeta}</span>
+              ${item.done ? `<span class="badge">Gjennomført</span>` : `<span class="badge badge--draft">Åpen</span>`}
+            </div>
+            <p class="feedback-item__body">${escapeHtml(item.body || "")}</p>
+          </div>
+          <div class="feedback-item__actions">
+            <button type="button" class="btn btn--danger" data-feedback-delete>Slett</button>
+          </div>
+        </article>`;
+      })
+      .join("");
+
+    host.querySelectorAll("[data-feedback-done]").forEach((box) => {
+      box.addEventListener("change", async () => {
+        const id = box.closest("[data-id]")?.getAttribute("data-id");
+        const item = feedbackItems.find((i) => i.id === id);
+        if (!item) return;
+        item.done = box.checked;
+        item.done_at = box.checked ? new Date().toISOString() : null;
+        try {
+          await saveSetting("change_requests", { items: feedbackItems });
+          renderFeedback();
+          showMsg(
+            feedbackMsg,
+            box.checked ? "Markert som gjennomført." : "Markert som åpen igjen."
+          );
+        } catch (err) {
+          showMsg(feedbackMsg, err.message || "Kunne ikke lagre.", true);
+          await loadFeedback();
+        }
+      });
+    });
+
+    host.querySelectorAll("[data-feedback-delete]").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const id = btn.closest("[data-id]")?.getAttribute("data-id");
+        if (!id || !confirm("Slette dette ønsket?")) return;
+        feedbackItems = feedbackItems.filter((i) => i.id !== id);
+        try {
+          await saveSetting("change_requests", { items: feedbackItems });
+          renderFeedback();
+          showMsg(feedbackMsg, "Slettet.");
+        } catch (err) {
+          showMsg(feedbackMsg, err.message || "Kunne ikke slette.", true);
+        }
+      });
+    });
+  }
+
+  async function loadFeedback() {
+    try {
+      const remote = await loadSetting("change_requests");
+      feedbackItems = Array.isArray(remote?.items) ? remote.items : [];
+      renderFeedback();
+    } catch (err) {
+      const host = $("#feedback-list");
+      if (host) host.innerHTML = `<p class="admin-msg is-error">${escapeHtml(err.message)}</p>`;
+    }
+  }
+
+  $("#feedback-filters")?.querySelectorAll("[data-feedback-filter]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      feedbackFilter = btn.getAttribute("data-feedback-filter") || "open";
+      $("#feedback-filters")
+        ?.querySelectorAll("[data-feedback-filter]")
+        .forEach((b) => b.classList.toggle("is-active", b === btn));
+      renderFeedback();
+    });
+  });
+
+  $("#feedback-form")?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    const body = String(fd.get("body") || "").trim();
+    if (!body) {
+      showMsg(feedbackMsg, "Skriv inn en kommentar.", true);
+      return;
+    }
+    const { data: sessionData } = await client.auth.getSession();
+    const item = {
+      id: newId(),
+      author: String(fd.get("author") || "").trim() || sessionData.session?.user?.email || "",
+      body,
+      done: false,
+      done_at: null,
+      created_at: new Date().toISOString(),
+      created_by: sessionData.session?.user?.id || null,
+    };
+    feedbackItems = [item, ...feedbackItems];
+    try {
+      await saveSetting("change_requests", { items: feedbackItems });
+      e.target.reset();
+      feedbackFilter = "open";
+      $("#feedback-filters")
+        ?.querySelectorAll("[data-feedback-filter]")
+        .forEach((b) =>
+          b.classList.toggle("is-active", b.getAttribute("data-feedback-filter") === "open")
+        );
+      renderFeedback();
+      showMsg(feedbackMsg, "Ønske lagt inn.");
+    } catch (err) {
+      showMsg(feedbackMsg, err.message || "Kunne ikke lagre.", true);
+    }
+  });
 
   /* —— boot —— */
   loginView.hidden = false;

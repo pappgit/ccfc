@@ -1,0 +1,48 @@
+{
+  "entries": [
+    {
+      "date": "2026-08-04",
+      "title": "Endringslogg og ønsker i admin",
+      "items": [
+        "Ny meny Endringslogg med oversikt over endringer",
+        "Ny meny Ønsker for kommentarer/forslag med avhuking når gjennomført"
+      ]
+    },
+    {
+      "date": "2026-08-04",
+      "title": "Tydeligere tekst over forsidebilder",
+      "items": [
+        "Mørkere overlay nederst i hero for bedre lesbarhet",
+        "Hvit tittel og ingress med sterkere skygge",
+        "Hero-knapper gjort mer synlige over kampbilder"
+      ]
+    },
+    {
+      "date": "2026-08-04",
+      "title": "Forside-slideshow med Coventry i aksjon",
+      "items": [
+        "Full-bleed slideshow på forsiden med kampbilder",
+        "Automatisk bytte + prikk-navigasjon",
+        "Admin: last opp, lim inn URL, endre rekkefølge og slett slides under Innhold → Forside"
+      ]
+    },
+    {
+      "date": "2026-08-04",
+      "title": "Admin-forbedringer",
+      "items": [
+        "Slett-knapper for nyheter synlige i admin",
+        "Login-panel fikset (ikke lenger synlig under innlogging)",
+        "Mer robust innlogging mot auth-hang"
+      ]
+    },
+    {
+      "date": "2026-08-03",
+      "title": "Grunnleggelse av nettsiden",
+      "items": [
+        "Forside, kamper, statistikk, nyheter og om oss",
+        "Supabase-admin for innhold, nyheter og API-innstillinger",
+        "Sky blue-visuelt språk inspirert av CCFC"
+      ]
+    }
+  ]
+}
