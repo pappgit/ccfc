@@ -42,72 +42,96 @@
     </header>
 
     <main>
-      <header class="page-hero">
+      <header class="page-hero page-hero--member">
         <div class="wrap">
+          <p class="page-hero__eyebrow" data-cms="members.tag">Medlemskap</p>
           <h1 data-cms="members.title">Bli medlem</h1>
           <p data-cms="members.lead">
-            Bli en del av Coventry City Scandinavia. Fyll inn skjemaet — vi følger opp kontingent når Vipps er på plass.
+            Meld deg inn i Coventry City Scandinavia. Kontingent følger via Vipps når det er klart.
           </p>
         </div>
       </header>
 
-      <section class="section">
+      <section class="section section--member">
         <div class="wrap member-layout">
-          <div class="member-copy article">
-            <p class="tag" data-cms="members.tag">Medlemskap</p>
-            <h2 data-cms="members.heading">Sky Blues i Norden</h2>
+          <div class="member-intro reveal">
+            <h2 data-cms="members.heading">Støtt Sky Blues i Norden</h2>
             <p data-cms="members.p1">
-              Som medlem støtter du supporterklubben og får tilgang til fellesskapet rundt The Sky Blues i Skandinavia.
+              Som medlem støtter du supporterklubben og blir en del av fellesskapet rundt The Sky Blues i Skandinavia.
             </p>
-            <p data-cms="members.p2">
-              Kontingent betales senere via Vipps. Du kan melde deg ut via lenke i e-post.
+            <ul class="member-points" aria-label="Hva medlemskap gir">
+              <li>
+                <span class="member-points__label">Fellesskap</span>
+                <span class="member-points__text">Norske, svenske og danske fans samlet under ett tak.</span>
+              </li>
+              <li>
+                <span class="member-points__label">Oppdateringer</span>
+                <span class="member-points__text">Nyheter og arrangementer direkte til deg.</span>
+              </li>
+              <li>
+                <span class="member-points__label">Lav terskel</span>
+                <span class="member-points__text">Meld deg inn nå — betaling kommer når Vipps er klart.</span>
+              </li>
+            </ul>
+            <p class="member-note" data-cms="members.p2">
+              Kontingent betales senere via Vipps. Utmelding skjer enkelt via lenke i e-post.
             </p>
           </div>
 
-          <div class="member-form-card">
+          <div class="member-form-card reveal" style="animation-delay: 0.12s">
+            <div class="member-form-card__head">
+              <h2 class="member-form-card__title">Innmelding</h2>
+              <p class="member-form-card__lead">Navn, e-post og mobil — det er alt vi trenger nå.</p>
+            </div>
             <form id="member-join-form" class="member-form" novalidate>
-              <label>
-                Fullt navn
-                <input type="text" name="full_name" required autocomplete="name" maxlength="120" />
-              </label>
-              <label>
-                E-post
-                <input type="email" name="email" required autocomplete="email" maxlength="200" />
-              </label>
-              <label>
-                Mobil (Vipps)
-                <input
-                  type="tel"
-                  name="phone"
-                  required
-                  autocomplete="tel"
-                  inputmode="tel"
-                  placeholder="f.eks. 41234567"
-                  maxlength="20"
-                />
-              </label>
-              <label>
-                Land
-                <select name="country">
-                  <option value="NO" selected>Norge</option>
-                  <option value="SE">Sverige</option>
-                  <option value="DK">Danmark</option>
-                  <option value="FI">Finland</option>
-                  <option value="OTHER">Annet</option>
-                </select>
-              </label>
-              <label class="member-check">
-                <input type="checkbox" name="consent_privacy" required />
-                <span data-cms="members.consentPrivacy"
-                  >Jeg godtar at klubben lagrer navn, e-post og mobil for medlemskapet.</span
-                >
-              </label>
-              <label class="member-check">
-                <input type="checkbox" name="consent_marketing" />
-                <span data-cms="members.consentMarketing"
-                  >Jeg ønsker e-post om arrangementer (valgfritt).</span
-                >
-              </label>
+              <div class="member-form__row">
+                <label>
+                  Fullt navn
+                  <input type="text" name="full_name" required autocomplete="name" maxlength="120" />
+                </label>
+                <label>
+                  E-post
+                  <input type="email" name="email" required autocomplete="email" maxlength="200" />
+                </label>
+              </div>
+              <div class="member-form__row">
+                <label>
+                  Mobil (Vipps)
+                  <input
+                    type="tel"
+                    name="phone"
+                    required
+                    autocomplete="tel"
+                    inputmode="tel"
+                    placeholder="f.eks. 41234567"
+                    maxlength="20"
+                  />
+                </label>
+                <label>
+                  Land
+                  <select name="country">
+                    <option value="NO" selected>Norge</option>
+                    <option value="SE">Sverige</option>
+                    <option value="DK">Danmark</option>
+                    <option value="FI">Finland</option>
+                    <option value="OTHER">Annet</option>
+                  </select>
+                </label>
+              </div>
+              <div class="member-form__consents">
+                <label class="member-check">
+                  <input type="checkbox" name="consent_privacy" required />
+                  <span data-cms="members.consentPrivacy"
+                    >Jeg godtar at klubben lagrer navn, e-post og mobil for medlemskapet.</span
+                  >
+                </label>
+                <label class="member-check">
+                  <input type="checkbox" name="consent_marketing" />
+                  <span data-cms="members.consentMarketing"
+                    >Jeg ønsker e-post om arrangementer (valgfritt).</span
+                  >
+                </label>
+              </div>
               <div class="cta-row">
                 <button class="btn btn--sky" type="submit" id="member-join-submit">Send innmelding</button>
               </div>

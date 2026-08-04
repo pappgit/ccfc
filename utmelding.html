@@ -39,26 +39,28 @@
     </header>
 
     <main>
-      <header class="page-hero">
+      <header class="page-hero page-hero--member">
         <div class="wrap">
+          <p class="page-hero__eyebrow">Medlemskap</p>
           <h1>Meld deg ut</h1>
           <p>Bekreft at du vil avslutte medlemskapet i Coventry City Scandinavia.</p>
         </div>
       </header>
 
-      <section class="section">
-        <div class="wrap" style="max-width: 32rem">
-          <div class="member-form-card" id="unsubscribe-panel">
-            <p id="unsubscribe-lead" class="member-lead">
-              Laster utmeldingslenke…
-            </p>
+      <section class="section section--member">
+        <div class="wrap member-unsub">
+          <div class="member-form-card reveal" id="unsubscribe-panel">
+            <div class="member-form-card__head">
+              <h2 class="member-form-card__title">Bekreft utmelding</h2>
+              <p class="member-form-card__lead" id="unsubscribe-lead">Laster utmeldingslenke…</p>
+            </div>
             <form id="unsubscribe-form" class="member-form" hidden>
-              <p>
+              <p class="member-lead">
                 Når du bekrefter, settes medlemskapet til utmeldt. Du kan melde deg inn på nytt senere.
               </p>
               <div class="cta-row">
                 <button class="btn btn--sky" type="submit" id="unsubscribe-submit">Bekreft utmelding</button>
-                <a class="btn btn--ghost" href="index.html">Avbryt</a>
+                <a class="btn btn--ghost member-btn--ink" href="index.html">Avbryt</a>
               </div>
             </form>
             <p class="member-msg" id="unsubscribe-msg" hidden></p>
