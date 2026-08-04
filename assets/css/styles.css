@@ -176,6 +176,12 @@ p {
   gap: 0.15rem;
 }
 
+.nav a[hidden],
+[data-nav][hidden],
+[data-section][hidden] {
+  display: none !important;
+}
+
 .nav a {
   font-size: 0.8rem;
   font-weight: 700;
