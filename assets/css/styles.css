@@ -356,13 +356,13 @@ p {
   background:
     linear-gradient(
       180deg,
-      rgba(9, 39, 57, 0.28) 0%,
-      rgba(9, 39, 57, 0.45) 40%,
-      rgba(4, 18, 26, 0.88) 100%
+      rgba(9, 39, 57, 0.18) 0%,
+      rgba(9, 39, 57, 0.32) 42%,
+      rgba(4, 18, 26, 0.82) 100%
     ),
     linear-gradient(
       115deg,
-      rgba(28, 115, 166, 0.35) 0%,
+      rgba(28, 115, 166, 0.22) 0%,
       transparent 55%
     );
 }
