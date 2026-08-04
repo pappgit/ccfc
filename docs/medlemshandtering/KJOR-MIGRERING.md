@@ -2,6 +2,10 @@
 
 SQL-fil: `supabase/migrations/20260804150000_membership.sql`
 
+Hvis du allerede har kjørt den: kjør også  
+`supabase/migrations/20260804160000_membership_pgcrypto_path.sql`  
+(fikser `gen_random_bytes` / `digest` under Supabase `extensions`-schema).
+
 ## Alternativ A — Supabase Dashboard
 
 1. Åpne [SQL Editor](https://supabase.com/dashboard/project/zzqhgqcwuztbqgkvpxjg/sql)

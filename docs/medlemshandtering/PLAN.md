@@ -2,7 +2,7 @@
 
 Prosjekt for medlemsregister i Coventry City Scandinavia-webappen.
 
-**Status:** Steg 1–2 implementert i kode (migrering må kjøres i Supabase). Vipps bedrift / org.nr. kommer senere.
+**Status:** Steg 1–2 live (migrering kjørt i Supabase). Vipps bedrift / org.nr. kommer senere.
 
 ## Mål
 
