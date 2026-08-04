@@ -319,7 +319,6 @@
         { path: "home.matchesTitle", label: "Kamper · tittel", type: "text" },
         { path: "home.matchesLead", label: "Kamper · tekst", type: "textarea" },
         { path: "home.matchesAll", label: "Knapp alle kamper", type: "text" },
-        { path: "home.matchesStats", label: "Knapp statistikk", type: "text" },
         { path: "home.newsTag", label: "Nyheter · tag", type: "text" },
         { path: "home.newsTitle", label: "Nyheter · tittel", type: "text" },
         { path: "home.newsLead", label: "Nyheter · tekst", type: "textarea" },
