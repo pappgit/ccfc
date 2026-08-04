@@ -1,11 +1,25 @@
 (function () {
   const cfg = window.CCFC_SUPABASE;
-  if (!cfg?.url || !window.supabase) {
-    console.error("Supabase mangler");
+  const sb = window.supabase;
+  if (!cfg?.url || !sb?.createClient) {
+    console.error("Supabase mangler", { cfg, sb });
+    const msg = document.getElementById("login-msg");
+    if (msg) {
+      msg.hidden = false;
+      msg.classList.add("is-error");
+      msg.textContent = "Kunne ikke laste Supabase-klienten. Hard refresh (Cmd+Shift+R) og prøv igjen.";
+    }
     return;
   }
 
-  const client = window.supabase.createClient(cfg.url, cfg.anonKey);
+  const client = sb.createClient(cfg.url, cfg.anonKey, {
+    auth: {
+      persistSession: true,
+      autoRefreshToken: true,
+      detectSessionInUrl: true,
+      storage: window.localStorage,
+    },
+  });
 
   const $ = (sel) => document.querySelector(sel);
   const loginView = $("#login-view");
@@ -50,24 +64,49 @@
   }
 
   async function showApp(session) {
-    const ok = await isAdminUser(session.user.id);
-    if (!ok) {
-      await client.auth.signOut();
-      loginView.hidden = false;
-      appView.hidden = true;
-      showMsg(
-        loginMsg,
-        "Brukeren er ikke admin. Legg til e-posten i Supabase (auth + tabellen admins).",
-        true
-      );
-      return;
+    try {
+      const ok = await isAdminUser(session.user.id);
+      if (!ok) {
+        await client.auth.signOut();
+        loginView.hidden = false;
+        appView.hidden = true;
+        showMsg(
+          loginMsg,
+          "Brukeren er ikke admin. Legg til e-posten i Supabase (auth + tabellen admins).",
+          true
+        );
+        return;
+      }
+      loginView.hidden = true;
+      appView.hidden = false;
+      $("#admin-email").textContent = session.user.email || session.user.id;
+      try {
+        await loadContentEditor();
+      } catch (err) {
+        console.error(err);
+      }
+      try {
+        await loadApiSettings();
+      } catch (err) {
+        console.error(err);
+      }
+      try {
+        await loadNews();
+      } catch (err) {
+        console.error(err);
+      }
+    } catch (err) {
+      console.error(err);
+      showMsg(loginMsg, formatAuthError(err), true);
     }
-    loginView.hidden = true;
-    appView.hidden = false;
-    $("#admin-email").textContent = session.user.email || session.user.id;
-    await loadContentEditor();
-    await loadApiSettings();
-    await loadNews();
+  }
+
+  function formatAuthError(err) {
+    const msg = (err && (err.message || err.error_description || String(err))) || "Ukjent feil";
+    if (/load failed|failed to fetch|networkerror|network request failed/i.test(msg)) {
+      return "Nettverksfeil: nettleseren når ikke Supabase (brannmur/VPN/adblock). Prøv et annet nettverk, eller skru av VPN/adblock for supabase.co.";
+    }
+    return msg;
   }
 
   async function showLogin() {
@@ -324,15 +363,24 @@
     e.preventDefault();
     const fd = new FormData(e.target);
     showMsg(loginMsg, "Logger inn…");
-    const { data, error } = await client.auth.signInWithPassword({
-      email: String(fd.get("email")),
-      password: String(fd.get("password")),
-    });
-    if (error) {
-      showMsg(loginMsg, error.message, true);
-      return;
+    try {
+      const { data, error } = await client.auth.signInWithPassword({
+        email: String(fd.get("email")).trim(),
+        password: String(fd.get("password")),
+      });
+      if (error) {
+        showMsg(loginMsg, formatAuthError(error), true);
+        return;
+      }
+      if (!data.session) {
+        showMsg(loginMsg, "Innlogging lyktes ikke (ingen sesjon).", true);
+        return;
+      }
+      await showApp(data.session);
+    } catch (err) {
+      console.error(err);
+      showMsg(loginMsg, formatAuthError(err), true);
     }
-    await showApp(data.session);
   });
 
   $("#logout-btn").addEventListener("click", async () => {
