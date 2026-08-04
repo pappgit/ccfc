@@ -134,17 +134,51 @@
     }
   }
 
+  async function loadNewsPosts() {
+    // Prefer Supabase; fall back to static JSON
+    try {
+      if (window.supabase && window.CCFC_SUPABASE) {
+        const client = window.supabase.createClient(
+          window.CCFC_SUPABASE.url,
+          window.CCFC_SUPABASE.anonKey
+        );
+        const { data, error } = await client
+          .from("news_posts")
+          .select("slug,title,excerpt,body,published_at,show_on_home")
+          .eq("published", true)
+          .order("published_at", { ascending: false });
+        if (!error && data?.length) {
+          return data.map((p) => ({
+            id: p.slug,
+            date: (p.published_at || "").slice(0, 10),
+            title: p.title,
+            excerpt: p.excerpt,
+            body: p.body,
+            show_on_home: p.show_on_home !== false,
+          }));
+        }
+      }
+    } catch {
+      /* fall through */
+    }
+    const data = await loadJSON("assets/data/news.json");
+    return (data.posts || []).map((p) => ({ ...p, show_on_home: true }));
+  }
+
   async function renderHomeNews() {
     const el = $("#home-news");
     if (!el) return;
     try {
-      const data = await loadJSON("assets/data/news.json");
-      const posts = [...data.posts]
-        .sort((a, b) => b.date.localeCompare(a.date))
+      const posts = (await loadNewsPosts())
+        .filter((p) => p.show_on_home)
         .slice(0, 3);
+      if (!posts.length) {
+        el.innerHTML = `<p class="empty-state">Ingen nyheter publisert ennå.</p>`;
+        return;
+      }
       el.innerHTML = `<div class="news-list">${posts
         .map((p) => {
-          const d = formatDate(p.date);
+          const d = formatDate(p.date || "2026-01-01");
           return `<a class="news-item" href="nyheter.html#${p.id}">
             <div class="news-item__date">${d.day}. ${d.month} ${d.year}</div>
             <div>
@@ -154,6 +188,37 @@
           </a>`;
         })
         .join("")}</div>`;
+    } catch {
+      el.innerHTML = `<p class="empty-state">Kunne ikke laste nyheter.</p>`;
+    }
+  }
+
+  async function renderNewsPage() {
+    const el = $("#news-root");
+    if (!el) return;
+    try {
+      const posts = await loadNewsPosts();
+      const hash = location.hash.replace("#", "");
+
+      el.innerHTML = posts
+        .map((p) => {
+          const d = formatDate(p.date || "2026-01-01");
+          const paras = (p.body || "")
+            .split(/\n\n+/)
+            .map((para) => `<p>${para.replace(/\n/g, "<br>")}</p>`)
+            .join("");
+          return `<article class="article" id="${p.id}" style="margin-bottom:3rem;padding-bottom:2rem;border-bottom:1px solid var(--line)">
+            <div class="article__meta">${d.day}. ${d.month} ${d.year}</div>
+            <h2 style="font-size:clamp(1.5rem,4vw,2.2rem);margin-bottom:1rem">${p.title}</h2>
+            ${paras}
+          </article>`;
+        })
+        .join("");
+
+      if (hash) {
+        const target = document.getElementById(hash);
+        if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
     } catch {
       el.innerHTML = `<p class="empty-state">Kunne ikke laste nyheter.</p>`;
     }
@@ -219,38 +284,6 @@
       apply();
     } catch {
       el.innerHTML = `<p class="empty-state">Kunne ikke laste kamper.</p>`;
-    }
-  }
-
-  async function renderNewsPage() {
-    const el = $("#news-root");
-    if (!el) return;
-    try {
-      const data = await loadJSON("assets/data/news.json");
-      const posts = [...data.posts].sort((a, b) => b.date.localeCompare(a.date));
-      const hash = location.hash.replace("#", "");
-
-      el.innerHTML = posts
-        .map((p) => {
-          const d = formatDate(p.date);
-          const paras = p.body
-            .split(/\n\n+/)
-            .map((para) => `<p>${para.replace(/\n/g, "<br>")}</p>`)
-            .join("");
-          return `<article class="article" id="${p.id}" style="margin-bottom:3rem;padding-bottom:2rem;border-bottom:1px solid var(--line)">
-            <div class="article__meta">${d.day}. ${d.month} ${d.year}</div>
-            <h2 style="font-size:clamp(2rem,5vw,2.8rem);margin-bottom:1rem">${p.title}</h2>
-            ${paras}
-          </article>`;
-        })
-        .join("");
-
-      if (hash) {
-        const target = document.getElementById(hash);
-        if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-    } catch {
-      el.innerHTML = `<p class="empty-state">Kunne ikke laste nyheter.</p>`;
     }
   }
 

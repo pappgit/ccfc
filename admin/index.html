@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="nb">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Admin — Coventry City Scandinavia</title>
+    <meta name="robots" content="noindex" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../assets/css/styles.css" />
+    <link rel="stylesheet" href="../assets/css/admin.css" />
+    <link rel="icon" href="../assets/img/mark.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <div id="login-view" class="login-page" hidden>
+      <div class="login-box">
+        <h1>Admin</h1>
+        <p class="lead">Logg inn for å styre API-innstillinger og nyheter.</p>
+        <form id="login-form" class="admin-form">
+          <label>
+            E-post
+            <input type="email" name="email" required autocomplete="username" />
+          </label>
+          <label>
+            Passord
+            <input type="password" name="password" required autocomplete="current-password" />
+          </label>
+          <div class="row">
+            <button class="btn btn--sky" type="submit">Logg inn</button>
+            <button class="btn btn--solid" type="button" id="signup-btn" hidden>
+              Opprett første admin
+            </button>
+          </div>
+          <p class="admin-msg" id="login-msg" hidden></p>
+        </form>
+        <p style="margin-top: 1rem; font-size: 0.85rem">
+          <a href="../index.html">← Tilbake til forsiden</a>
+        </p>
+      </div>
+    </div>
+
+    <div id="app-view" class="admin-shell" hidden>
+      <aside class="admin-side">
+        <a class="admin-side__brand" href="../index.html">
+          Coventry City
+          <span>Scandinavia · Admin</span>
+        </a>
+        <nav class="admin-nav" aria-label="Admin">
+          <button type="button" data-panel="api" class="is-active">API</button>
+          <button type="button" data-panel="news">Nyheter</button>
+        </nav>
+        <div class="admin-side__foot">
+          <div id="admin-email"></div>
+          <button class="btn btn--ghost" type="button" id="logout-btn">Logg ut</button>
+        </div>
+      </aside>
+
+      <main class="admin-main">
+        <section class="admin-panel is-active" id="panel-api">
+          <h1>API</h1>
+          <p class="lead">
+            Innstillinger for kampdata-synk. Hemmelige nøkler ligger i GitHub Secrets — ikke her.
+          </p>
+
+          <div class="admin-card">
+            <h2>Synk-konfigurasjon</h2>
+            <form id="api-form" class="admin-form">
+              <label>
+                Leverandør
+                <select name="provider">
+                  <option value="football-data">football-data.org (gratis PL)</option>
+                  <option value="api-football">API-Football</option>
+                </select>
+              </label>
+              <label>
+                Sesong (startår)
+                <input type="number" name="season" min="2020" max="2035" required />
+              </label>
+              <label>
+                Lagnavn
+                <input type="text" name="team_name" required />
+              </label>
+              <label>
+                API-Football team-id
+                <input type="number" name="team_id_api_football" />
+              </label>
+              <label>
+                Synk-dag
+                <select name="sync_day">
+                  <option value="monday">Mandag</option>
+                  <option value="manual">Kun manuelt</option>
+                </select>
+              </label>
+              <label>
+                Notater
+                <textarea name="notes" rows="4"></textarea>
+              </label>
+              <div class="row">
+                <button class="btn btn--sky" type="submit">Lagre</button>
+              </div>
+              <p class="admin-msg" id="api-msg" hidden></p>
+            </form>
+          </div>
+
+          <div class="admin-card">
+            <h2>GitHub Secrets</h2>
+            <p style="color: var(--muted); margin-bottom: 0.75rem">
+              Disse settes i repoet, ikke i Supabase:
+            </p>
+            <ul style="margin: 0; padding-left: 1.2rem; color: var(--muted)">
+              <li><code>FOOTBALL_DATA_API_KEY</code> — aktiv for PL 2026/27</li>
+              <li><code>API_FOOTBALL_KEY</code> — valgfri / historikk / Pro</li>
+            </ul>
+            <p style="margin-top: 1rem">
+              <a
+                class="btn btn--solid"
+                href="https://github.com/pappgit/ccfc/actions/workflows/update-fixtures.yml"
+                target="_blank"
+                rel="noopener"
+                >Kjør Update fixtures</a
+              >
+            </p>
+          </div>
+        </section>
+
+        <section class="admin-panel" id="panel-news">
+          <h1>Nyheter</h1>
+          <p class="lead">
+            Artikler som publiseres på forsiden og under Nyheter. Huk av «Vis på forsiden».
+          </p>
+
+          <div class="news-admin-list" id="news-list"></div>
+
+          <div class="admin-card">
+            <h2 id="news-form-title">Ny artikkel</h2>
+            <form id="news-form" class="admin-form">
+              <input type="hidden" name="id" />
+              <label>
+                Tittel
+                <input type="text" name="title" required />
+              </label>
+              <label>
+                Slug (url-vennlig id)
+                <input type="text" name="slug" required pattern="[a-z0-9\-]+" />
+              </label>
+              <label>
+                Ingress
+                <textarea name="excerpt" rows="2" required></textarea>
+              </label>
+              <label>
+                Brødtekst
+                <textarea name="body" rows="8" required></textarea>
+              </label>
+              <div class="row">
+                <label class="check">
+                  <input type="checkbox" name="published" />
+                  Publisert
+                </label>
+                <label class="check">
+                  <input type="checkbox" name="show_on_home" checked />
+                  Vis på forsiden
+                </label>
+              </div>
+              <div class="row">
+                <button class="btn btn--sky" type="submit">Lagre artikkel</button>
+                <button class="btn btn--solid" type="button" id="news-reset">Nullstill</button>
+              </div>
+              <p class="admin-msg" id="news-msg" hidden></p>
+            </form>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../assets/js/supabase-config.js"></script>
+    <script src="../assets/js/admin.js"></script>
+  </body>
+</html>

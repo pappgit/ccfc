@@ -45,6 +45,10 @@ python3 -m http.server 8080
 4. **Merkevare** — sky blue nå; offisiell logo avklares med CCFC
 5. **Neste steg** — forum bak innlogging (utenfor Pages) når retningen er godkjent
 
-## Stack
+## Admin
 
-HTML · CSS · vanilla JS · JSON · GitHub Actions (planlagt)
+Supabase-prosjekt `ccfc-scandinavia` styrer innlogging, nyheter og API-innstillinger.
+
+- Panel: `/admin/` (lenke nederst til høyre i footer)
+- Dashboard: https://supabase.com/dashboard/project/zzqhgqcwuztbqgkvpxjg
+- Se `admin/README.md` for første admin-bruker

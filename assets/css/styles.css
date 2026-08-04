@@ -761,6 +761,21 @@ p {
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 1.5rem;
+  align-items: flex-end;
+}
+
+.footer-login {
+  margin-left: auto;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+  text-decoration: none;
+}
+
+.footer-login:hover {
+  color: var(--sky-mist);
 }
 
 .site-footer strong {
