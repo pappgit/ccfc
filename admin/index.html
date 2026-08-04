@@ -12,10 +12,11 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../assets/css/styles.css" />
-    <link rel="stylesheet" href="../assets/css/admin.css?v=20260804-news-img" />
+    <link rel="stylesheet" href="../assets/css/admin.css?v=20260804-overview" />
     <link rel="icon" href="../assets/img/logo.jpg" type="image/jpeg" />
   </head>
   <body>
+    <!-- Innlogging -->
     <div id="login-view" class="login-page">
       <div class="login-box">
         <h1>Admin</h1>
@@ -34,94 +35,208 @@
           </div>
           <p class="admin-msg" id="login-msg" hidden></p>
         </form>
-        <p style="margin-top: 1rem; font-size: 0.85rem">
+        <p class="login-back">
           <a href="../index.html">← Tilbake til forsiden</a>
         </p>
       </div>
     </div>
 
+    <!-- Hovedskall etter innlogging -->
     <div id="app-view" class="admin-shell" hidden>
       <aside class="admin-side">
         <a class="admin-side__brand" href="../index.html">
           Coventry City
           <span>Scandinavia · Admin</span>
         </a>
+
         <nav class="admin-nav" aria-label="Admin">
-          <button type="button" data-panel="content" class="is-active">Innhold</button>
-          <button type="button" data-panel="news">Nyheter</button>
-          <button type="button" data-panel="members">Medlemmer</button>
-          <button type="button" data-panel="feedback">Ønsker</button>
-          <button type="button" data-panel="changelog">Endringslogg</button>
-          <button type="button" data-panel="api">API</button>
+          <div class="admin-nav__group">
+            <div class="admin-nav__label">Start</div>
+            <button type="button" data-panel="overview" class="is-active">Oversikt</button>
+          </div>
+          <div class="admin-nav__group">
+            <div class="admin-nav__label">Innhold</div>
+            <button type="button" data-panel="content">Tekster &amp; logo</button>
+            <button type="button" data-panel="news">Nyheter</button>
+          </div>
+          <div class="admin-nav__group">
+            <div class="admin-nav__label">Drift</div>
+            <button type="button" data-panel="members">Medlemmer</button>
+            <button type="button" data-panel="api">API</button>
+          </div>
+          <div class="admin-nav__group">
+            <div class="admin-nav__label">Logg</div>
+            <button type="button" data-panel="feedback">Ønsker</button>
+            <button type="button" data-panel="changelog">Endringslogg</button>
+          </div>
         </nav>
+
         <div class="admin-side__foot">
           <div id="admin-email"></div>
-          <button class="btn btn--ghost" type="button" id="logout-btn">Logg ut</button>
+          <button class="btn btn--ghost admin-side__logout" type="button" id="logout-btn">
+            Logg ut
+          </button>
         </div>
       </aside>
 
       <main class="admin-main">
-        <section class="admin-panel is-active" id="panel-content">
-          <h1>Innhold</h1>
-          <p class="lead">
-            Rediger tekster, meny, logo og øvrig innhold som vises på nettsiden.
-          </p>
+        <!-- Oversikt: statuskort + snarveier -->
+        <section class="admin-panel is-active" id="panel-overview">
+          <header class="admin-panel-head">
+            <h1>Oversikt</h1>
+            <p class="lead">
+              Status for medlemskap, ønsker og innhold. Klikk et kort for å gå rett til riktig fane.
+            </p>
+          </header>
 
-          <div class="filters season-tabs" id="content-tabs" style="margin-bottom: 1.25rem"></div>
+          <div class="admin-overview-grid" id="overview-stats" aria-live="polite">
+            <!-- Fylles av admin.js -->
+          </div>
 
-          <form id="content-form" class="admin-form" style="max-width: 44rem">
+          <div class="admin-card">
+            <h2 class="admin-section-title">Hurtighandlinger</h2>
+            <div class="admin-quick-list" id="overview-actions">
+              <button type="button" data-goto="members">
+                Behandle innmeldinger
+                <span>Medlemmer</span>
+              </button>
+              <button type="button" data-goto="news">
+                Skriv nyhetsartikkel
+                <span>Nyheter</span>
+              </button>
+              <button type="button" data-goto="content">
+                Rediger tekster og forside
+                <span>Innhold</span>
+              </button>
+              <button type="button" data-goto="feedback">
+                Se åpne ønsker
+                <span>Ønsker</span>
+              </button>
+              <a class="admin-quick-link" href="../index.html" target="_blank" rel="noopener">
+                Åpne nettsiden
+                <span>Ny fane</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="admin-card">
+            <h2 class="admin-section-title">Siste i endringsloggen</h2>
+            <div id="overview-changelog" class="changelog-list"></div>
+          </div>
+        </section>
+
+        <!-- CMS-tekster, logo, slideshow -->
+        <section class="admin-panel" id="panel-content">
+          <header class="admin-panel-head">
+            <h1>Tekster &amp; logo</h1>
+            <p class="lead">
+              Rediger tekster, meny, logo og øvrig innhold som vises på nettsiden.
+            </p>
+          </header>
+
+          <div class="filters season-tabs content-tabs" id="content-tabs"></div>
+
+          <form id="content-form" class="admin-form content-form">
             <div id="content-fields"></div>
 
             <div class="admin-card" id="logo-card">
               <h2>Logo / favicon</h2>
-              <p style="color: var(--muted); margin-bottom: 0.75rem; font-size: 0.9rem">
+              <p class="admin-muted">
                 Last opp bilde (PNG, JPG, SVG, WebP — maks 5 MB). Lagres i Supabase Storage.
               </p>
               <label>
                 Ny logo
-                <input type="file" id="logo-file" accept="image/png,image/jpeg,image/webp,image/svg+xml,image/gif" />
+                <input
+                  type="file"
+                  id="logo-file"
+                  accept="image/png,image/jpeg,image/webp,image/svg+xml,image/gif"
+                />
               </label>
-              <div class="row" style="margin-top: 0.75rem; align-items: center">
-                <img id="logo-preview" src="" alt="" width="64" height="64" style="background: var(--ink); object-fit: contain" />
-                <button class="btn btn--solid" type="button" id="logo-upload-btn">Last opp logo</button>
+              <div class="row admin-actions" style="align-items: center">
+                <img
+                  id="logo-preview"
+                  class="logo-preview"
+                  src=""
+                  alt=""
+                  width="64"
+                  height="64"
+                />
+                <button class="btn btn--solid" type="button" id="logo-upload-btn">
+                  Last opp logo
+                </button>
               </div>
-              <label style="margin-top: 1rem">
+              <label>
                 Logo-URL (kan også lims inn)
-                <input type="text" name="brand.logoUrl" id="logo-url-input" inputmode="url" autocomplete="off" placeholder="assets/img/logo.jpg eller https://…" />
+                <input
+                  type="text"
+                  name="brand.logoUrl"
+                  id="logo-url-input"
+                  inputmode="url"
+                  autocomplete="off"
+                  placeholder="assets/img/logo.jpg eller https://…"
+                />
               </label>
               <label>
                 Favicon-URL
-                <input type="text" name="brand.faviconUrl" id="favicon-url-input" inputmode="url" autocomplete="off" placeholder="assets/img/logo.jpg eller https://…" />
+                <input
+                  type="text"
+                  name="brand.faviconUrl"
+                  id="favicon-url-input"
+                  inputmode="url"
+                  autocomplete="off"
+                  placeholder="assets/img/logo.jpg eller https://…"
+                />
               </label>
             </div>
 
             <div class="admin-card" id="hero-slides-card" hidden>
               <h2>Forside-slideshow</h2>
-              <p style="color: var(--muted); margin-bottom: 0.75rem; font-size: 0.9rem">
-                Bilder av spillere i aksjon som roterer i hero på forsiden. Last opp nye, lim inn URL, endre rekkefølge eller slett.
+              <p class="admin-muted">
+                Bilder av spillere i aksjon som roterer i hero på forsiden. Last opp nye, lim inn
+                URL, endre rekkefølge eller slett.
               </p>
               <label>
                 Byttetid (millisekunder)
-                <input type="number" id="hero-interval-input" name="home.heroSlideInterval" min="3000" step="500" />
+                <input
+                  type="number"
+                  id="hero-interval-input"
+                  name="home.heroSlideInterval"
+                  min="3000"
+                  step="500"
+                />
               </label>
               <div id="hero-slides-list" class="hero-slides-admin"></div>
-              <div class="row" style="margin-top: 1rem; align-items: flex-end">
+              <div class="row admin-actions" style="align-items: flex-end">
                 <label style="flex: 1; min-width: 12rem">
                   Last opp nytt bilde
-                  <input type="file" id="hero-slide-file" accept="image/png,image/jpeg,image/webp,image/gif" />
+                  <input
+                    type="file"
+                    id="hero-slide-file"
+                    accept="image/png,image/jpeg,image/webp,image/gif"
+                  />
                 </label>
-                <button class="btn btn--solid" type="button" id="hero-slide-upload-btn">Last opp bilde</button>
+                <button class="btn btn--solid" type="button" id="hero-slide-upload-btn">
+                  Last opp bilde
+                </button>
               </div>
               <div class="row" style="margin-top: 0.75rem; align-items: flex-end">
                 <label style="flex: 1; min-width: 12rem">
                   Eller lim inn bilde-URL
-                  <input type="text" id="hero-slide-url-input" inputmode="url" autocomplete="off" placeholder="assets/img/… eller https://…" />
+                  <input
+                    type="text"
+                    id="hero-slide-url-input"
+                    inputmode="url"
+                    autocomplete="off"
+                    placeholder="assets/img/… eller https://…"
+                  />
                 </label>
-                <button class="btn btn--solid" type="button" id="hero-slide-add-url-btn">Legg til URL</button>
+                <button class="btn btn--solid" type="button" id="hero-slide-add-url-btn">
+                  Legg til URL
+                </button>
               </div>
             </div>
 
-            <div class="row" style="margin-top: 1rem">
+            <div class="row admin-actions">
               <button class="btn btn--sky" type="submit">Lagre innhold</button>
               <button class="btn btn--solid" type="button" id="content-reload">Hent på nytt</button>
             </div>
@@ -129,17 +244,20 @@
           </form>
         </section>
 
+        <!-- Kampdata-API -->
         <section class="admin-panel" id="panel-api">
-          <h1>API</h1>
-          <p class="lead">
-            Innstillinger for kampdata-synk. Hemmelige nøkler ligger i GitHub Secrets — ikke her.
-          </p>
+          <header class="admin-panel-head">
+            <h1>API</h1>
+            <p class="lead">
+              Innstillinger for kampdata-synk. Hemmelige nøkler ligger i GitHub Secrets — ikke her.
+            </p>
+          </header>
 
           <div class="admin-card">
             <h2>Hva får vi via API?</h2>
-            <p style="color: var(--muted); margin-bottom: 1rem; font-size: 0.92rem">
-              Aktiv kilde for 2026/27 er <strong>football-data.org</strong> (gratis).
-              API-Football gratisplan dekker ikke inneværende sesong (kun ca. 2022–2024).
+            <p class="admin-muted">
+              Aktiv kilde for 2026/27 er <strong>football-data.org</strong> (gratis). API-Football
+              gratisplan dekker ikke inneværende sesong (kun ca. 2022–2024).
             </p>
             <div class="stat-table-wrap" style="border-top: none; margin-bottom: 0">
               <table class="stat-table api-coverage-table">
@@ -203,12 +321,16 @@
                 </tbody>
               </table>
             </div>
-            <p style="color: var(--muted); margin-top: 1rem; font-size: 0.85rem">
-              Synken bruker typisk <strong>1–2 API-kall</strong> per mandag (godt innenfor gratisplan).
-              Priser er veiledende — sjekk
-              <a href="https://www.football-data.org/pricing" target="_blank" rel="noopener">football-data.org</a>
+            <p class="admin-muted" style="margin-top: 1rem; margin-bottom: 0">
+              Synken bruker typisk <strong>1–2 API-kall</strong> per mandag (godt innenfor
+              gratisplan). Priser er veiledende — sjekk
+              <a href="https://www.football-data.org/pricing" target="_blank" rel="noopener"
+                >football-data.org</a
+              >
               og
-              <a href="https://www.api-football.com/pricing" target="_blank" rel="noopener">api-football.com</a>.
+              <a href="https://www.api-football.com/pricing" target="_blank" rel="noopener"
+                >api-football.com</a
+              >.
             </p>
           </div>
 
@@ -254,14 +376,12 @@
 
           <div class="admin-card">
             <h2>GitHub Secrets</h2>
-            <p style="color: var(--muted); margin-bottom: 0.75rem">
-              Disse settes i repoet, ikke i Supabase:
-            </p>
+            <p class="admin-muted">Disse settes i repoet, ikke i Supabase:</p>
             <ul style="margin: 0; padding-left: 1.2rem; color: var(--muted)">
               <li><code>FOOTBALL_DATA_API_KEY</code> — aktiv for PL 2026/27</li>
               <li><code>API_FOOTBALL_KEY</code> — valgfri / historikk / Pro</li>
             </ul>
-            <p style="margin-top: 1rem">
+            <p style="margin-top: 1rem; margin-bottom: 0">
               <a
                 class="btn btn--solid"
                 href="https://github.com/pappgit/ccfc/actions/workflows/update-fixtures.yml"
@@ -273,14 +393,18 @@
           </div>
         </section>
 
+        <!-- Nyheter -->
         <section class="admin-panel" id="panel-news">
-          <h1>Nyheter</h1>
-          <p class="lead">
-            Legg til, rediger og slett artikler. Huk av «Publisert» for å vise dem på siden, og «Vis på forsiden» for forsiden.
-          </p>
+          <header class="admin-panel-head">
+            <h1>Nyheter</h1>
+            <p class="lead">
+              Legg til, rediger og slett artikler. Huk av «Publisert» for å vise dem på siden, og
+              «Vis på forsiden» for forsiden.
+            </p>
+          </header>
 
           <div class="admin-card">
-            <div class="row" style="justify-content: space-between; align-items: center; margin-bottom: 0.75rem">
+            <div class="admin-toolbar">
               <h2 id="news-form-title" style="margin: 0">Legg til artikkel</h2>
               <button class="btn btn--solid" type="button" id="news-new-btn">Ny artikkel</button>
             </div>
@@ -301,7 +425,8 @@
               </label>
               <div class="news-image-field">
                 <p class="news-image-field__hint">
-                  Bilde er valgfritt. Uten bilde vises ingen bildeplass på siden — layouten tilpasser seg selv.
+                  Bilde er valgfritt. Uten bilde vises ingen bildeplass på siden — layouten tilpasser
+                  seg selv.
                 </p>
                 <label>
                   Last opp bilde
@@ -355,118 +480,136 @@
             </form>
           </div>
 
-          <h2 style="margin: 1.5rem 0 0.75rem; font-size: 1.15rem">Alle artikler</h2>
+          <h2 class="admin-section-title" style="margin-top: 1.5rem">Alle artikler</h2>
           <div class="news-admin-list" id="news-list"></div>
         </section>
 
+        <!-- Medlemmer -->
         <section class="admin-panel" id="panel-members">
-          <h1>Medlemmer</h1>
-          <p class="lead">
-            Innmeldinger fra nettsiden går til <strong>Til godkjenning</strong>.
-            Godkjenn eller legg inn manuelt — da sendes velkomstmail. Meld ut sender avslutningsmail.
-          </p>
+          <header class="admin-panel-head">
+            <h1>Medlemmer</h1>
+            <p class="lead">
+              Innmeldinger fra nettsiden går til <strong>Til godkjenning</strong>. Godkjenn eller
+              legg inn manuelt — da sendes velkomstmail. Meld ut sender avslutningsmail.
+            </p>
+          </header>
 
-          <div class="admin-card">
-            <h2>Legg inn medlem manuelt</h2>
-            <form id="member-admin-form" class="admin-form">
-              <label>
-                Fullt navn
-                <input type="text" name="full_name" required maxlength="120" />
-              </label>
-              <label>
-                E-post
-                <input type="email" name="email" required maxlength="200" />
-              </label>
-              <label>
-                Mobil
-                <input type="tel" name="phone" maxlength="20" placeholder="41234567" />
-              </label>
-              <label>
-                Land
-                <select name="country">
-                  <option value="NO" selected>Norge</option>
-                  <option value="SE">Sverige</option>
-                  <option value="DK">Danmark</option>
-                  <option value="FI">Finland</option>
-                  <option value="OTHER">Annet</option>
-                </select>
-              </label>
-              <label>
-                Notat (valgfritt)
-                <input type="text" name="notes" maxlength="200" />
-              </label>
-              <div class="row">
-                <button class="btn btn--sky" type="submit">Legg inn + send velkomstmail</button>
-              </div>
-              <p class="admin-msg" id="member-admin-msg" hidden></p>
-            </form>
-          </div>
+          <div id="member-count-pills" class="member-count-pills" aria-live="polite"></div>
 
-          <div class="filters season-tabs" style="margin-bottom: 1rem" id="member-filters">
-            <button type="button" class="filter-btn is-active" data-member-filter="pending">Til godkjenning</button>
+          <div class="filters season-tabs" id="member-filters">
+            <button type="button" class="filter-btn is-active" data-member-filter="pending">
+              Til godkjenning
+            </button>
             <button type="button" class="filter-btn" data-member-filter="active">Aktive</button>
             <button type="button" class="filter-btn" data-member-filter="cancelled">Utmeldt</button>
             <button type="button" class="filter-btn" data-member-filter="all">Alle</button>
           </div>
 
-          <label class="admin-form" style="max-width: 24rem; margin-bottom: 1rem">
-            Søk
-            <input type="search" id="member-search" placeholder="Navn, e-post eller mobil…" />
-          </label>
+          <div class="admin-toolbar">
+            <label class="admin-search">
+              Søk
+              <input type="search" id="member-search" placeholder="Navn, e-post eller mobil…" />
+            </label>
+          </div>
 
           <div id="members-list" class="members-admin-list"></div>
+          <p class="admin-msg" id="member-admin-msg" hidden></p>
 
-          <div class="admin-card" style="margin-top: 1.5rem">
-            <h2>E-postmaler (HTML)</h2>
-            <p style="color: var(--muted); font-size: 0.9rem; margin-bottom: 0.75rem">
-              Bruk plassholdere: <code>{{full_name}}</code>, <code>{{email}}</code>,
-              <code>{{phone}}</code>, <code>{{country}}</code>
-            </p>
-            <form id="member-templates-form" class="admin-form" style="max-width: 48rem">
-              <h3 style="font-size: 1rem; margin: 0.5rem 0">Velkomst (godkjent / manuell inn)</h3>
-              <label>
-                Emne
-                <input type="text" name="welcome_subject" id="tpl-welcome-subject" required />
-              </label>
-              <label>
-                HTML-innhold
-                <textarea name="welcome_html" id="tpl-welcome-html" rows="8" required></textarea>
-              </label>
-              <h3 style="font-size: 1rem; margin: 1rem 0 0.5rem">Utmelding (avsluttet)</h3>
-              <label>
-                Emne
-                <input type="text" name="cancelled_subject" id="tpl-cancelled-subject" required />
-              </label>
-              <label>
-                HTML-innhold
-                <textarea name="cancelled_html" id="tpl-cancelled-html" rows="8" required></textarea>
-              </label>
-              <div class="row">
-                <button class="btn btn--sky" type="submit">Lagre maler</button>
-              </div>
-              <p class="admin-msg" id="member-templates-msg" hidden></p>
-            </form>
-          </div>
-
-          <div class="admin-card" style="margin-top: 1.5rem">
-            <div class="row" style="justify-content: space-between; align-items: center; margin-bottom: 0.75rem">
-              <h2 style="margin: 0">E-postkø</h2>
-              <button class="btn btn--solid" type="button" id="mail-outbox-reload">Oppdater</button>
+          <details class="admin-details">
+            <summary>Legg inn medlem manuelt</summary>
+            <div class="admin-details__body">
+              <form id="member-admin-form" class="admin-form">
+                <label>
+                  Fullt navn
+                  <input type="text" name="full_name" required maxlength="120" />
+                </label>
+                <label>
+                  E-post
+                  <input type="email" name="email" required maxlength="200" />
+                </label>
+                <label>
+                  Mobil
+                  <input type="tel" name="phone" maxlength="20" placeholder="41234567" />
+                </label>
+                <label>
+                  Land
+                  <select name="country">
+                    <option value="NO" selected>Norge</option>
+                    <option value="SE">Sverige</option>
+                    <option value="DK">Danmark</option>
+                    <option value="FI">Finland</option>
+                    <option value="OTHER">Annet</option>
+                  </select>
+                </label>
+                <label>
+                  Notat (valgfritt)
+                  <input type="text" name="notes" maxlength="200" />
+                </label>
+                <div class="row">
+                  <button class="btn btn--sky" type="submit">Legg inn + send velkomstmail</button>
+                </div>
+              </form>
             </div>
-            <p style="color: var(--muted); font-size: 0.9rem; margin-bottom: 0.75rem">
-              Åpne mailto (ren tekst) og marker som sendt, eller deploy
-              <code>dispatch-member-mail</code> med Resend for HTML-utsending.
-            </p>
-            <div id="mail-outbox-list"></div>
-            <p class="admin-msg" id="mail-outbox-msg" hidden></p>
-          </div>
+          </details>
+
+          <details class="admin-details">
+            <summary>E-postmaler (HTML)</summary>
+            <div class="admin-details__body">
+              <p class="admin-muted">
+                Bruk plassholdere: <code>{{full_name}}</code>, <code>{{email}}</code>,
+                <code>{{phone}}</code>, <code>{{country}}</code>
+              </p>
+              <form id="member-templates-form" class="admin-form admin-form--wide">
+                <h3 style="font-size: 1rem; margin: 0.5rem 0">Velkomst (godkjent / manuell inn)</h3>
+                <label>
+                  Emne
+                  <input type="text" name="welcome_subject" id="tpl-welcome-subject" required />
+                </label>
+                <label>
+                  HTML-innhold
+                  <textarea name="welcome_html" id="tpl-welcome-html" rows="8" required></textarea>
+                </label>
+                <h3 style="font-size: 1rem; margin: 1rem 0 0.5rem">Utmelding (avsluttet)</h3>
+                <label>
+                  Emne
+                  <input type="text" name="cancelled_subject" id="tpl-cancelled-subject" required />
+                </label>
+                <label>
+                  HTML-innhold
+                  <textarea name="cancelled_html" id="tpl-cancelled-html" rows="8" required></textarea>
+                </label>
+                <div class="row">
+                  <button class="btn btn--sky" type="submit">Lagre maler</button>
+                </div>
+                <p class="admin-msg" id="member-templates-msg" hidden></p>
+              </form>
+            </div>
+          </details>
+
+          <details class="admin-details" open>
+            <summary>E-postkø</summary>
+            <div class="admin-details__body">
+              <div class="admin-toolbar">
+                <p class="admin-muted" style="margin: 0; max-width: 36rem">
+                  Åpne mailto (ren tekst) og marker som sendt, eller deploy
+                  <code>dispatch-member-mail</code> med Resend for HTML-utsending.
+                </p>
+                <button class="btn btn--solid" type="button" id="mail-outbox-reload">Oppdater</button>
+              </div>
+              <div id="mail-outbox-list"></div>
+              <p class="admin-msg" id="mail-outbox-msg" hidden></p>
+            </div>
+          </details>
         </section>
 
+        <!-- Ønsker -->
         <section class="admin-panel" id="panel-feedback">
-          <h1>Ønsker / kommentarer</h1>
-          <p class="lead">
-            Legg inn forslag til hva som bør endres. Huk av når det er gjennomført.
-          </p>
+          <header class="admin-panel-head">
+            <h1>Ønsker / kommentarer</h1>
+            <p class="lead">
+              Legg inn forslag til hva som bør endres. Huk av når det er gjennomført.
+            </p>
+          </header>
 
           <div class="admin-card">
             <h2>Nytt ønske</h2>
@@ -477,7 +620,12 @@
               </label>
               <label>
                 Hva bør endres?
-                <textarea name="body" rows="4" required placeholder="Beskriv ønsket endring…"></textarea>
+                <textarea
+                  name="body"
+                  rows="4"
+                  required
+                  placeholder="Beskriv ønsket endring…"
+                ></textarea>
               </label>
               <div class="row">
                 <button class="btn btn--sky" type="submit">Legg inn</button>
@@ -486,8 +634,10 @@
             </form>
           </div>
 
-          <div class="filters season-tabs" style="margin-bottom: 1rem" id="feedback-filters">
-            <button type="button" class="filter-btn is-active" data-feedback-filter="open">Åpne</button>
+          <div class="filters season-tabs" id="feedback-filters">
+            <button type="button" class="filter-btn is-active" data-feedback-filter="open">
+              Åpne
+            </button>
             <button type="button" class="filter-btn" data-feedback-filter="done">Gjennomført</button>
             <button type="button" class="filter-btn" data-feedback-filter="all">Alle</button>
           </div>
@@ -495,11 +645,16 @@
           <div id="feedback-list" class="feedback-list"></div>
         </section>
 
+        <!-- Endringslogg -->
         <section class="admin-panel" id="panel-changelog">
-          <h1>Endringslogg</h1>
-          <p class="lead">
-            Oversikt over endringer som er gjort på nettsiden. Nye funksjoner og synlige endringer skal alltid inn her (innebygde oppføringer ligger i <code>assets/data/changelog.json</code>).
-          </p>
+          <header class="admin-panel-head">
+            <h1>Endringslogg</h1>
+            <p class="lead">
+              Oversikt over endringer som er gjort på nettsiden. Nye funksjoner og synlige endringer
+              skal alltid inn her (innebygde oppføringer ligger i
+              <code>assets/data/changelog.json</code>).
+            </p>
+          </header>
 
           <div class="admin-card">
             <h2>Legg til i endringsloggen</h2>
@@ -514,7 +669,12 @@
               </label>
               <label>
                 Punkter (ett per linje)
-                <textarea name="items" rows="4" required placeholder="Første endring&#10;Andre endring"></textarea>
+                <textarea
+                  name="items"
+                  rows="4"
+                  required
+                  placeholder="Første endring&#10;Andre endring"
+                ></textarea>
               </label>
               <div class="row">
                 <button class="btn btn--sky" type="submit">Legg til</button>
@@ -531,6 +691,6 @@
     <script src="../assets/js/vendor/supabase.js?v=2.112.0"></script>
     <script src="../assets/js/supabase-config.js"></script>
     <script src="../assets/js/content.js"></script>
-    <script src="../assets/js/admin.js?v=20260804-news-img"></script>
+    <script src="../assets/js/admin.js?v=20260804-overview"></script>
   </body>
 </html>

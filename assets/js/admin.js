@@ -1,3 +1,12 @@
+/**
+ * Admin-panel for Coventry City Scandinavia
+ * ----------------------------------------
+ * Oppsett (seksjonene følger kommentarmarkørene nedenfor):
+ *   Auth / sesjon → panel-navigasjon → CMS-innhold → API → nyheter
+ *   → endringslogg → ønsker → medlemmer / e-post → boot
+ *
+ * Avhengigheter: supabase-config.js, content.js, vendor/supabase.js
+ */
 (function () {
   const cfg = window.CCFC_SUPABASE;
   const sb = window.supabase;
@@ -14,7 +23,18 @@
 
   const PROJECT_REF = "zzqhgqcwuztbqgkvpxjg";
   const AUTH_STORAGE_KEY = `sb-${PROJECT_REF}-auth-token`;
-  const CACHE_BUST = "20260804-changelog2";
+  const CACHE_BUST = "20260804-overview";
+
+  /** Cached rows used by oversikten og listene */
+  let newsItems = [];
+  let membersItems = [];
+  let memberFilter = "pending";
+  let memberSearch = "";
+  let mailOutboxRows = [];
+  let feedbackItems = [];
+  let feedbackFilter = "open";
+  let changelogCustom = [];
+  let changelogBuiltin = [];
 
   // Drop corrupted/half-written sessions that can freeze auth-js.
   try {
@@ -233,6 +253,7 @@
         loadMailOutbox(),
         loadMemberTemplates(),
       ]);
+      renderOverview();
     } catch (err) {
       console.error(err);
       enteredAppForUser = null;
@@ -282,23 +303,116 @@
     }, 0);
   }
 
-  /* —— Nav —— */
-  document.querySelectorAll("[data-panel]").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      document.querySelectorAll("[data-panel]").forEach((b) => b.classList.remove("is-active"));
-      document.querySelectorAll(".admin-panel").forEach((p) => p.classList.remove("is-active"));
-      btn.classList.add("is-active");
-      const panel = document.getElementById(`panel-${btn.dataset.panel}`);
-      if (panel) panel.classList.add("is-active");
-      if (btn.dataset.panel === "changelog") loadChangelog();
-      if (btn.dataset.panel === "feedback") loadFeedback();
-      if (btn.dataset.panel === "members") {
-        loadMembers();
-        loadMailOutbox();
-        loadMemberTemplates();
-      }
+  /* —— Panel-navigasjon —— */
+  function activatePanel(panelId) {
+    if (!panelId) return;
+    document.querySelectorAll("[data-panel]").forEach((b) => {
+      b.classList.toggle("is-active", b.dataset.panel === panelId);
     });
+    document.querySelectorAll(".admin-panel").forEach((p) => {
+      p.classList.toggle("is-active", p.id === `panel-${panelId}`);
+    });
+    if (panelId === "overview") renderOverview();
+    if (panelId === "changelog") loadChangelog();
+    if (panelId === "feedback") loadFeedback();
+    if (panelId === "members") {
+      loadMembers();
+      loadMailOutbox();
+      loadMemberTemplates();
+    }
+    // Scroll main to top when switching panels
+    const main = document.querySelector(".admin-main");
+    if (main) main.scrollTop = 0;
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  document.querySelectorAll("[data-panel]").forEach((btn) => {
+    btn.addEventListener("click", () => activatePanel(btn.dataset.panel));
   });
+
+  document.querySelectorAll("[data-goto]").forEach((btn) => {
+    btn.addEventListener("click", () => activatePanel(btn.getAttribute("data-goto")));
+  });
+
+  /** Statuskort på oversikt-fanen */
+  function renderOverview() {
+    const statsHost = $("#overview-stats");
+    const logHost = $("#overview-changelog");
+    if (!statsHost) return;
+
+    const pending = membersItems.filter((m) => normalizeMemberStatus(m.status) === "pending").length;
+    const active = membersItems.filter((m) => normalizeMemberStatus(m.status) === "active").length;
+    const openWishes = feedbackItems.filter((i) => !i.done).length;
+    const publishedNews = newsItems.filter((p) => p.published).length;
+    const mailPending = mailOutboxRows.filter((r) => r.status === "pending").length;
+
+    const cards = [
+      {
+        panel: "members",
+        label: "Til godkjenning",
+        value: pending,
+        hint: pending === 1 ? "innmelding venter" : "innmeldinger venter",
+        alert: pending > 0,
+      },
+      {
+        panel: "members",
+        label: "Aktive medlemmer",
+        value: active,
+        hint: mailPending ? `${mailPending} i e-postkø` : "godkjente medlemmer",
+      },
+      {
+        panel: "feedback",
+        label: "Åpne ønsker",
+        value: openWishes,
+        hint: openWishes ? "trenger oppfølging" : "ingen ventende",
+        alert: openWishes > 0,
+      },
+      {
+        panel: "news",
+        label: "Publiserte nyheter",
+        value: publishedNews,
+        hint: `${newsItems.length} totalt i arkivet`,
+      },
+    ];
+
+    statsHost.innerHTML = cards
+      .map(
+        (c) => `<button type="button" class="admin-stat${c.alert ? " admin-stat--alert" : ""}" data-goto="${c.panel}">
+          <span class="admin-stat__label">${escapeHtml(c.label)}</span>
+          <span class="admin-stat__value">${c.value}</span>
+          <span class="admin-stat__hint">${escapeHtml(c.hint)}</span>
+        </button>`
+      )
+      .join("");
+
+    statsHost.querySelectorAll("[data-goto]").forEach((btn) => {
+      btn.addEventListener("click", () => activatePanel(btn.getAttribute("data-goto")));
+    });
+
+    if (logHost) {
+      const entries = mergeChangelogEntries().slice(0, 3);
+      if (!entries.length) {
+        logHost.innerHTML = `<p class="empty-state">Ingen oppføringer ennå.</p>`;
+      } else {
+        logHost.innerHTML = entries
+          .map((e) => {
+            const items = Array.isArray(e.items)
+              ? e.items
+              : String(e.body || "")
+                  .split(/\n+/)
+                  .filter(Boolean);
+            return `<article class="changelog-entry">
+              <div class="changelog-entry__meta">
+                <span>${escapeHtml(formatNbDate(e.date))}</span>
+              </div>
+              <h3>${escapeHtml(e.title || "Uten tittel")}</h3>
+              <ul>${items.slice(0, 3).map((it) => `<li>${escapeHtml(it)}</li>`).join("")}</ul>
+            </article>`;
+          })
+          .join("");
+      }
+    }
+  }
 
   /* —— Site content CMS —— */
   const CONTENT_SECTIONS = [
@@ -915,14 +1029,18 @@
       .order("created_at", { ascending: false });
     const list = $("#news-list");
     if (error) {
+      newsItems = [];
       list.innerHTML = `<p class="admin-msg is-error">${error.message}</p>`;
+      renderOverview();
       return;
     }
-    if (!data?.length) {
+    newsItems = data || [];
+    if (!newsItems.length) {
       list.innerHTML = `<p class="empty-state">Ingen artikler ennå.</p>`;
+      renderOverview();
       return;
     }
-    list.innerHTML = data
+    list.innerHTML = newsItems
       .map((p) => {
         const badges = [
           p.published
@@ -955,7 +1073,7 @@
 
     list.querySelectorAll("[data-edit]").forEach((btn) => {
       btn.addEventListener("click", () => {
-        const post = data.find((p) => p.id === btn.dataset.edit);
+        const post = newsItems.find((p) => p.id === btn.dataset.edit);
         if (post) fillNewsForm(post);
       });
     });
@@ -964,6 +1082,7 @@
         await deleteNewsById(btn.dataset.delete);
       });
     });
+    renderOverview();
   }
 
   function fillNewsForm(post) {
@@ -1208,8 +1327,6 @@
 
   /* —— Changelog —— */
   const changelogMsg = $("#changelog-msg");
-  let changelogCustom = [];
-  let changelogBuiltin = [];
 
   async function loadBuiltinChangelog() {
     try {
@@ -1287,6 +1404,7 @@
       const remote = await loadSetting("changelog");
       changelogCustom = Array.isArray(remote?.entries) ? remote.entries : [];
       renderChangelog();
+      renderOverview();
     } catch (err) {
       const host = $("#changelog-list");
       if (host) host.innerHTML = `<p class="admin-msg is-error">${escapeHtml(err.message)}</p>`;
@@ -1325,8 +1443,6 @@
 
   /* —— Feedback / wishes —— */
   const feedbackMsg = $("#feedback-msg");
-  let feedbackItems = [];
-  let feedbackFilter = "open";
 
   function renderFeedback() {
     const host = $("#feedback-list");
@@ -1346,6 +1462,7 @@
             ? "Ingen åpne ønsker. Legg inn et forslag over."
             : "Ingen ønsker registrert ennå.";
       host.innerHTML = `<p class="empty-state">${empty}</p>`;
+      renderOverview();
       return;
     }
 
@@ -1410,6 +1527,7 @@
         }
       });
     });
+    renderOverview();
   }
 
   async function loadFeedback() {
@@ -1472,10 +1590,6 @@
   const memberAdminMsg = $("#member-admin-msg");
   const mailOutboxMsg = $("#mail-outbox-msg");
   const memberTemplatesMsg = $("#member-templates-msg");
-  let membersItems = [];
-  let memberFilter = "pending";
-  let memberSearch = "";
-  let mailOutboxRows = [];
 
   function statusLabel(status) {
     return (
@@ -1506,6 +1620,20 @@
 
   function renderMembers() {
     const host = $("#members-list");
+    const pills = $("#member-count-pills");
+    if (pills) {
+      const pending = membersItems.filter((m) => normalizeMemberStatus(m.status) === "pending").length;
+      const active = membersItems.filter((m) => normalizeMemberStatus(m.status) === "active").length;
+      const cancelled = membersItems.filter(
+        (m) => normalizeMemberStatus(m.status) === "cancelled"
+      ).length;
+      pills.innerHTML = `
+        <span class="member-count-pill"><strong>${pending}</strong> til godkjenning</span>
+        <span class="member-count-pill"><strong>${active}</strong> aktive</span>
+        <span class="member-count-pill"><strong>${cancelled}</strong> utmeldt</span>
+        <span class="member-count-pill"><strong>${membersItems.length}</strong> totalt</span>
+      `;
+    }
     if (!host) return;
     let list = [...membersItems];
     if (memberFilter !== "all") {
@@ -1520,6 +1648,7 @@
     }
     if (!list.length) {
       host.innerHTML = `<p class="empty-state">Ingen medlemmer i denne listen.</p>`;
+      renderOverview();
       return;
     }
     host.innerHTML = list
@@ -1597,6 +1726,7 @@
         }
       });
     });
+    renderOverview();
   }
 
   async function loadMembers() {
@@ -1813,6 +1943,7 @@
     }
     mailOutboxRows = data || [];
     renderMailOutbox(mailOutboxRows);
+    renderOverview();
   }
 
   $("#mail-outbox-reload")?.addEventListener("click", () => loadMailOutbox());

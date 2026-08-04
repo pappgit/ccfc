@@ -1,4 +1,13 @@
+/**
+ * Offentlig side-logikk for Coventry City Scandinavia
+ * ---------------------------------------------------
+ * Oppsett:
+ *   Hjelpere → navigasjon → kamper → nyheter → statistikk → hero-slideshow → boot
+ *
+ * Data: assets/data/*.json (+ Supabase for publiserte nyheter når tilgjengelig)
+ */
 (function () {
+  /* —— Hjelpere —— */
   const MONTHS_NO = [
     "jan", "feb", "mar", "apr", "mai", "jun",
     "jul", "aug", "sep", "okt", "nov", "des",
@@ -22,6 +31,7 @@
     };
   }
 
+  /* —— Navigasjon —— */
   function setCurrentNav() {
     const path = location.pathname.split("/").pop() || "index.html";
     $$(".nav a").forEach((a) => {
@@ -47,6 +57,8 @@
     if (!res.ok) throw new Error("Kunne ikke hente " + path);
     return res.json();
   }
+
+  /* —— Kamper —— */
 
   function isUpcoming(m) {
     return m.status === "NS" || m.status === "TBD";
@@ -134,6 +146,7 @@
     }
   }
 
+  /* —— Nyheter —— */
   async function loadNewsPosts() {
     // Prefer Supabase; fall back to static JSON
     try {
@@ -232,9 +245,9 @@
             .map((para) => `<p>${para.replace(/\n/g, "<br>")}</p>`)
             .join("");
           const img = newsImageHtml(p.image, "article__image", p.title || "");
-          return `<article class="article" id="${p.id}" style="margin-bottom:3rem;padding-bottom:2rem;border-bottom:1px solid var(--line)">
+          return `<article class="article article--listed" id="${p.id}">
             <div class="article__meta">${d.day}. ${d.month} ${d.year}</div>
-            <h2 style="font-size:clamp(1.5rem,4vw,2.2rem);margin-bottom:1rem">${p.title}</h2>
+            <h2 class="article__title">${p.title}</h2>
             ${img}
             ${paras}
           </article>`;
@@ -313,6 +326,7 @@
     }
   }
 
+  /* —— Statistikk —— */
   function parseUkDate(dmy) {
     // DD/MM/YYYY
     const [dd, mm, yyyy] = dmy.split("/").map(Number);
@@ -333,7 +347,7 @@
     const aw = season.away;
 
     const playerBlock = season.players
-      ? `<div class="section__head" style="margin-top:2rem"><p class="tag">Spillere</p><h2>Spillerstatistikk</h2></div>
+      ? `<div class="section__head section__head--spaced"><p class="tag">Spillere</p><h2>Spillerstatistikk</h2></div>
          <div class="stat-table-wrap"><table class="stat-table"><thead><tr>
            <th>Spiller</th><th>Pos</th><th>K</th><th>Min</th><th>Mål</th><th>Assist</th><th>Gult</th><th>Rødt</th>
          </tr></thead><tbody>
@@ -494,6 +508,7 @@
     }
   }
 
+  /* —— Hero-slideshow (forside) —— */
   function initHeroSlideshow(slides, intervalMs) {
     const root = document.querySelector("[data-hero-slideshow]");
     const host = $("#hero-slides");
@@ -605,6 +620,7 @@
     start();
   }
 
+  /* —— Boot —— */
   setCurrentNav();
   initNav();
   renderHomeMatches();

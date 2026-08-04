@@ -1,4 +1,7 @@
-/* Public membership signup / unsubscribe */
+/**
+ * Medlemskap — offentlig innmelding og utmelding
+ * RPC: register_member_public, unsubscribe_with_token
+ */
 (function () {
   function $(sel, root) {
     return (root || document).querySelector(sel);
