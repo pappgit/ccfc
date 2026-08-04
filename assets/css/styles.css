@@ -356,14 +356,10 @@ p {
   background:
     linear-gradient(
       180deg,
-      rgba(9, 39, 57, 0.18) 0%,
-      rgba(9, 39, 57, 0.32) 42%,
-      rgba(4, 18, 26, 0.82) 100%
-    ),
-    linear-gradient(
-      115deg,
-      rgba(28, 115, 166, 0.22) 0%,
-      transparent 55%
+      rgba(4, 18, 26, 0.25) 0%,
+      rgba(4, 18, 26, 0.45) 38%,
+      rgba(4, 18, 26, 0.78) 68%,
+      rgba(4, 18, 26, 0.94) 100%
     );
 }
 
@@ -376,7 +372,7 @@ p {
   background-image: url("../img/pitch-grain.svg");
   background-size: cover;
   background-position: center bottom;
-  opacity: 0.28;
+  opacity: 0.18;
   mix-blend-mode: soft-light;
 }
 
@@ -391,30 +387,38 @@ p {
 .hero__brand {
   font-family: var(--font-display);
   font-size: clamp(2.6rem, 9vw, 5.5rem);
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: -0.02em;
   line-height: 1.02;
   text-transform: uppercase;
   max-width: 14ch;
   margin-bottom: 1rem;
-  color: var(--white);
-  text-shadow: 0 0.12em 0.55em rgba(4, 18, 26, 0.55);
+  color: #ffffff;
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.85),
+    0 0.15em 0.7em rgba(0, 0, 0, 0.65),
+    0 0.35em 1.2em rgba(0, 0, 0, 0.45);
   opacity: 0;
   animation: rise 0.9s var(--ease) 0.15s forwards;
 }
 
 .hero__brand span {
   display: block;
+  color: #ffffff;
 }
 
 .hero__brand span:last-child {
-  color: var(--sky-mist);
+  color: #ffffff;
 }
 
 .hero__lead {
   font-size: clamp(1.05rem, 2.2vw, 1.25rem);
+  font-weight: 500;
   max-width: 32rem;
-  color: rgba(255, 255, 255, 0.88);
+  color: #ffffff;
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.8),
+    0 0.12em 0.55em rgba(0, 0, 0, 0.55);
   opacity: 0;
   animation: rise 0.9s var(--ease) 0.35s forwards;
 }
@@ -422,6 +426,29 @@ p {
 .hero .cta-row {
   opacity: 0;
   animation: rise 0.9s var(--ease) 0.55s forwards;
+}
+
+.hero .btn--solid {
+  background: #ffffff;
+  color: var(--ink);
+  border-color: #ffffff;
+}
+
+.hero .btn--solid:hover {
+  background: var(--sky-mist);
+  color: var(--ink);
+  border-color: var(--sky-mist);
+}
+
+.hero .btn--ghost {
+  background: rgba(0, 0, 0, 0.35);
+  border-color: rgba(255, 255, 255, 0.9);
+  color: #ffffff;
+}
+
+.hero .btn--ghost:hover {
+  background: rgba(0, 0, 0, 0.5);
+  color: #ffffff;
 }
 
 .hero__dots {
