@@ -2,11 +2,47 @@
   "entries": [
     {
       "date": "2026-08-04",
+      "title": "Ryddigere medlemside",
+      "items": [
+        "Klarere oppsett med fordeler og innmeldingsskjema side om side",
+        "Tekst oppdatert til manuell godkjenning av innmelding",
+        "Samme polish på utmeldingssiden"
+      ]
+    },
+    {
+      "date": "2026-08-04",
+      "title": "Medlemskap: godkjenning og HTML-e-post",
+      "items": [
+        "Innmelding går til godkjenning før medlemskap aktiveres",
+        "Admin kan godkjenne, legge inn manuelt eller melde ut",
+        "Redigerbare HTML-maler for velkomst- og avslutningsmail"
+      ]
+    },
+    {
+      "date": "2026-08-04",
+      "title": "Medlemshåndtering på nettsiden",
+      "items": [
+        "Ny side for innmelding med personvernsamtykke",
+        "Utmelding via sikker lenke i e-post",
+        "Admin-fane Medlemmer med liste, filter og e-postkø"
+      ]
+    },
+    {
+      "date": "2026-08-04",
+      "title": "Finere forsidebilder fra ccfc.co.uk",
+      "items": [
+        "Slideshow byttet til profesjonelle kampbilder fra klubbens nettside",
+        "Champions-feiring, scoringsjubler og aksjonsbilder i sky blue"
+      ]
+    },
+    {
+      "date": "2026-08-04",
       "title": "Full kontroll i admin: meny, seksjoner og nyheter",
       "items": [
         "Velg hvilke menypunkter som skal være synlige",
         "Slå av/på forside-seksjoner (kamper, nyheter, om-blokk, infostripe)",
-        "Tydeligere nyhetsflyt for å legge til, redigere og slette artikler"
+        "Tydeligere nyhetsflyt for å legge til, redigere og slette artikler",
+        "URL-slug genereres automatisk fra tittel (skjult felt)"
       ]
     },
     {
@@ -41,7 +77,25 @@
       "items": [
         "Slett-knapper for nyheter synlige i admin",
         "Login-panel fikset (ikke lenger synlig under innlogging)",
-        "Mer robust innlogging mot auth-hang"
+        "Mer robust innlogging mot auth-hang",
+        "Relative bilde-/logo-stier kan lagres uten URL-valideringsfeil"
+      ]
+    },
+    {
+      "date": "2026-08-04",
+      "title": "Fjernet Championship-statistikk fra forsiden",
+      "items": [
+        "Statistikk-knappen er borte fra forsiden",
+        "Statistikksiden er uendret og fortsatt tilgjengelig via menyen"
+      ]
+    },
+    {
+      "date": "2026-08-03",
+      "title": "CMS for tekster og logoer",
+      "items": [
+        "Rediger sidetekster, navigasjon og merkevare i admin",
+        "Last opp logoer via Supabase Storage",
+        "Nytt CCS-supportermerke som standard logo"
       ]
     },
     {

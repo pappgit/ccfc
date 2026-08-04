@@ -40,19 +40,19 @@
     "heroSlides": [
       {
         "url": "assets/img/hero/slide-01.jpg",
-        "alt": "Coventry City i aksjon på Ricoh Arena"
+        "alt": "Coventry City feirer Championship-tittelen med pokalen"
       },
       {
         "url": "assets/img/hero/slide-02.jpg",
-        "alt": "Coventry City i EFL Trophy-finalen"
+        "alt": "Ellis Simms feirer scoring for Coventry City"
       },
       {
         "url": "assets/img/hero/slide-03.jpg",
-        "alt": "Sky Blues-spillere i cupfinale"
+        "alt": "Sky Blues-spillere feirer borteseier mot Derby County"
       },
       {
         "url": "assets/img/hero/slide-04.jpg",
-        "alt": "Coventry-derby på stadion"
+        "alt": "Coventry City i aksjon i sky blue-drakten"
       }
     ],
     "ctaFixtures": "Se kamper",
@@ -100,11 +100,11 @@
   },
   "members": {
     "title": "Bli medlem",
-    "lead": "Meld deg inn i Coventry City Scandinavia. Kontingent følger via Vipps når det er klart.",
+    "lead": "Bli en del av Coventry City Scandinavia. Fyll inn skjemaet — vi godkjenner innmeldingen manuelt.",
     "tag": "Medlemskap",
     "heading": "Støtt Sky Blues i Norden",
     "p1": "Som medlem støtter du supporterklubben og blir en del av fellesskapet rundt The Sky Blues i Skandinavia.",
-    "p2": "Kontingent betales senere via Vipps. Utmelding skjer enkelt via lenke i e-post.",
+    "p2": "Når vi har godkjent innmeldingen, får du en velkomstmail fra oss.",
     "consentPrivacy": "Jeg godtar at klubben lagrer navn, e-post og mobil for medlemskapet.",
     "consentMarketing": "Jeg ønsker e-post om arrangementer (valgfritt)."
   },
