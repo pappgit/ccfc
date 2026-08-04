@@ -138,9 +138,12 @@ p {
 }
 
 .brand__mark {
-  width: 2.35rem;
-  height: 2.35rem;
+  width: 2.75rem;
+  height: 2.75rem;
   flex-shrink: 0;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #fff;
 }
 
 .brand__text {
