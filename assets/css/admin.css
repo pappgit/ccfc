@@ -274,6 +274,26 @@
   border: none;
 }
 
+.api-coverage-table th:nth-child(n + 2),
+.api-coverage-table td:nth-child(n + 2) {
+  text-align: left;
+}
+
+.api-coverage-table td {
+  white-space: normal;
+  vertical-align: top;
+}
+
+.api-yes {
+  color: var(--sky-dark);
+  font-weight: 700;
+}
+
+.api-no {
+  color: #a33;
+  font-weight: 700;
+}
+
 @media (max-width: 800px) {
   .admin-shell {
     grid-template-columns: 1fr;

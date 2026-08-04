@@ -107,6 +107,83 @@
           </p>
 
           <div class="admin-card">
+            <h2>Hva får vi via API?</h2>
+            <p style="color: var(--muted); margin-bottom: 1rem; font-size: 0.92rem">
+              Aktiv kilde for 2026/27 er <strong>football-data.org</strong> (gratis).
+              API-Football gratisplan dekker ikke inneværende sesong (kun ca. 2022–2024).
+            </p>
+            <div class="stat-table-wrap" style="border-top: none; margin-bottom: 0">
+              <table class="stat-table api-coverage-table">
+                <thead>
+                  <tr>
+                    <th>Data</th>
+                    <th>Nå (gratis)</th>
+                    <th>Hvordan få mer</th>
+                    <th>Ca. pris</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Premier League-fixtures</td>
+                    <td class="api-yes">Ja</td>
+                    <td>—</td>
+                    <td>€0</td>
+                  </tr>
+                  <tr>
+                    <td>Resultater (score)</td>
+                    <td class="api-yes">Ja (litt forsinket)</td>
+                    <td>Livescores-tillegg</td>
+                    <td>fra €12/mnd</td>
+                  </tr>
+                  <tr>
+                    <td>Tabell / standings</td>
+                    <td class="api-yes">Ja (kan kobles på)</td>
+                    <td>—</td>
+                    <td>€0</td>
+                  </tr>
+                  <tr>
+                    <td>Målscorere</td>
+                    <td class="api-no">Nei</td>
+                    <td>football-data Deep Data, eller API-Football Pro</td>
+                    <td>~€29 / ~$19 mnd</td>
+                  </tr>
+                  <tr>
+                    <td>Oppstillinger, bytter, kort</td>
+                    <td class="api-no">Nei</td>
+                    <td>Deep Data / API-Football Pro</td>
+                    <td>~€29 / ~$19 mnd</td>
+                  </tr>
+                  <tr>
+                    <td>Kampstats (possession, skudd, corners)</td>
+                    <td class="api-no">Nei</td>
+                    <td>football-data Statistic add-on, eller API-Football Pro</td>
+                    <td>~€15 ekstra / inkl. i Pro</td>
+                  </tr>
+                  <tr>
+                    <td>FA Cup / EFL Cup</td>
+                    <td class="api-no">Nei på gratis</td>
+                    <td>Betalt football-data-plan, eller API-Football Pro</td>
+                    <td>fra ~€49 / ~$19 mnd</td>
+                  </tr>
+                  <tr>
+                    <td>Championship-historikk (24/25, 25/26)</td>
+                    <td class="api-yes">Ja (CSV, allerede på siden)</td>
+                    <td>Spillerstats via API-Football (engangsimport)</td>
+                    <td>€0 / API-kall</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p style="color: var(--muted); margin-top: 1rem; font-size: 0.85rem">
+              Synken bruker typisk <strong>1–2 API-kall</strong> per mandag (godt innenfor gratisplan).
+              Priser er veiledende — sjekk
+              <a href="https://www.football-data.org/pricing" target="_blank" rel="noopener">football-data.org</a>
+              og
+              <a href="https://www.api-football.com/pricing" target="_blank" rel="noopener">api-football.com</a>.
+            </p>
+          </div>
+
+          <div class="admin-card">
             <h2>Synk-konfigurasjon</h2>
             <form id="api-form" class="admin-form">
               <label>
