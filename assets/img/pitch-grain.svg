@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMax slice">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="55%" stop-color="#061525" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#061525" stop-opacity="0.55"/>
+    </linearGradient>
+    <pattern id="grass" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M0 40 L40 0 M-10 10 L10 -10 M30 50 L50 30" stroke="#fff" stroke-width="0.6" opacity="0.08"/>
+    </pattern>
+  </defs>
+  <rect width="1600" height="900" fill="url(#g)"/>
+  <rect y="420" width="1600" height="480" fill="url(#grass)"/>
+  <!-- pitch outline -->
+  <g stroke="#fff" stroke-width="3" fill="none" opacity="0.22">
+    <rect x="180" y="480" width="1240" height="360" rx="4"/>
+    <line x1="800" y1="480" x2="800" y2="840"/>
+    <circle cx="800" cy="660" r="90"/>
+    <rect x="180" y="560" width="160" height="200"/>
+    <rect x="1260" y="560" width="160" height="200"/>
+    <rect x="180" y="600" width="70" height="120"/>
+    <rect x="1350" y="600" width="70" height="120"/>
+  </g>
+  <!-- soft stands silhouette -->
+  <path d="M0 520 L120 460 L280 500 L420 440 L600 490 L780 430 L980 495 L1180 450 L1380 500 L1600 455 L1600 900 L0 900 Z" fill="#061525" opacity="0.28"/>
+</svg>

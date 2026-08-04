@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="nb">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Coventry City Scandinavia — Sky Blues supporterklubb</title>
+    <meta
+      name="description"
+      content="Offisiell nettside for Coventry City Scandinavia. Kamper, resultater og nyheter for skandinaviske Sky Blues-supportere."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Teko:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    <link rel="icon" href="assets/img/mark.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="wrap">
+        <a class="brand" href="index.html">
+          <img class="brand__mark" src="assets/img/mark.svg" alt="" width="40" height="40" />
+          <span class="brand__text">
+            <span class="brand__name">Coventry City</span>
+            <span class="brand__sub">Scandinavia</span>
+          </span>
+        </a>
+        <button
+          class="nav-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="site-nav"
+          aria-label="Meny"
+        >
+          <span></span><span></span><span></span>
+        </button>
+        <nav class="nav" id="site-nav">
+          <a href="index.html">Hjem</a>
+          <a href="kamper.html">Kamper</a>
+          <a href="nyheter.html">Nyheter</a>
+          <a href="om-oss.html">Om oss</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" aria-label="Forside">
+        <div class="hero__visual" aria-hidden="true"></div>
+        <div class="hero__content">
+          <h1 class="hero__brand">
+            Coventry City
+            <span>Scandinavia</span>
+          </h1>
+          <p class="hero__lead">
+            Supporterklubben for Sky Blues i Norden — kamper, resultater og
+            nyheter samlet under ett tak.
+          </p>
+          <div class="cta-row">
+            <a class="btn btn--solid" href="kamper.html">Se kamper</a>
+            <a class="btn btn--ghost" href="nyheter.html">Les nyheter</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="wrap">
+          <div class="section__head reveal">
+            <p class="tag">Neste kamper</p>
+            <h2>Kampprogram</h2>
+            <p>
+              Liga og cup speiles ukentlig. Resultater med målscorere og
+              statistikk vises etter fullført kamp.
+            </p>
+          </div>
+          <div id="home-matches"></div>
+          <div class="cta-row">
+            <a class="btn btn--sky" href="kamper.html">Alle kamper</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" style="padding-top: 0">
+        <div class="wrap">
+          <div class="section__head reveal">
+            <p class="tag">Fra klubben</p>
+            <h2>Nyheter</h2>
+            <p>Oppdateringer for skandinaviske supportere.</p>
+          </div>
+          <div id="home-news"></div>
+        </div>
+      </section>
+
+      <section class="section" style="padding-top: 0">
+        <div class="wrap split">
+          <div class="split__copy">
+            <p class="tag">Sky Blues i nord</p>
+            <h2>En klubb for Norden</h2>
+            <p>
+              Coventry City Scandinavia samler fans i Norge, Sverige, Danmark og
+              resten av regionen. Vi følger laget gjennom sesongen — hjemme,
+              borte og i cup.
+            </p>
+            <p>
+              Dette nettstedet er et pitch-utkast. Visuelt språk er inspirert av
+              CCFC sky blue. Offisiell logo og merkevare avklarer vi med klubben.
+            </p>
+            <a class="btn btn--sky" href="om-oss.html">Om supporterklubben</a>
+          </div>
+          <div class="split__visual" role="img" aria-label="Sky blue pitch-atmosfære"></div>
+        </div>
+      </section>
+    </main>
+
+    <div class="note">
+      <div class="wrap">
+        Uoffisiell supporternettside · Farger inspirert av
+        <a href="https://www.ccfc.co.uk/" rel="noopener">ccfc.co.uk</a>
+        · Merkevare avklares med klubben
+      </div>
+    </div>
+
+    <footer class="site-footer">
+      <div class="wrap">
+        <div>
+          <strong>Coventry City Scandinavia</strong>
+          <p>Sky Blues supporterklubb for Skandinavia. Forum og medlemsinnlogging kommer i en senere fase.</p>
+        </div>
+        <div class="footer-meta">Sky blue forever</div>
+      </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+  </body>
+</html>

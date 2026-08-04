@@ -1,0 +1,26 @@
+{
+  "updated": "2026-08-03",
+  "posts": [
+    {
+      "id": "velkommen",
+      "date": "2026-08-01",
+      "title": "Velkommen til Coventry City Scandinavia",
+      "excerpt": "Vi samler skandinaviske Sky Blues-supportere — kamper, resultater og klubbnyheter på ett sted.",
+      "body": "Coventry City Scandinavia er supporterklubben for Sky Blues-fans i Norge, Sverige, Danmark og resten av Norden.\n\nDenne nettsiden er et første utkast: kamper og resultater synkroniseres ukentlig, og nyheter publiseres herfra. Forum og medlemsinnlogging kommer senere — etter at klubben har sett pitch og gitt innspill.\n\nSky blue forever."
+    },
+    {
+      "id": "premier-league-klar",
+      "date": "2026-04-22",
+      "title": "Premier League-klart: hva betyr det for oss?",
+      "excerpt": "Opprykket endrer sesongen vår — flere kamper på TV, flere turer, og mer å samles om.",
+      "body": "Med Coventry tilbake i Premier League blir det flere muligheter for felles visninger og turer til CBS Arena.\n\nVi oppdaterer kampprogrammet her på siden hver uke, inkludert cupkamper. Følg Nyheter for info om samlinger og reiser når det blir aktuelt."
+    },
+    {
+      "id": "pitch-til-klubben",
+      "date": "2026-08-03",
+      "title": "Nettsiden pitches til klubben",
+      "excerpt": "Visuelt språk henter sky blue fra CCFC. Offisiell logo og merkevare avklarer vi i dialog med klubben.",
+      "body": "Dette skjelettet er laget for å vise retning: farger, typografi, kamper, resultater og nyheter — hostet gratis på GitHub Pages.\n\nVi bruker ikke offisiell klubblogo i dette utkastet. Etter pitch avklarer vi hva som er greit å bruke, og hva som bør erstattes med egen supporter-identitet."
+    }
+  ]
+}

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="nb">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Kamper — Coventry City Scandinavia</title>
+    <meta
+      name="description"
+      content="Kampprogram og resultater for Coventry City, inkludert cup. Oppdateres ukentlig."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Teko:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    <link rel="icon" href="assets/img/mark.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="wrap">
+        <a class="brand" href="index.html">
+          <img class="brand__mark" src="assets/img/mark.svg" alt="" width="40" height="40" />
+          <span class="brand__text">
+            <span class="brand__name">Coventry City</span>
+            <span class="brand__sub">Scandinavia</span>
+          </span>
+        </a>
+        <button
+          class="nav-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="site-nav"
+          aria-label="Meny"
+        >
+          <span></span><span></span><span></span>
+        </button>
+        <nav class="nav" id="site-nav">
+          <a href="index.html">Hjem</a>
+          <a href="kamper.html">Kamper</a>
+          <a href="nyheter.html">Nyheter</a>
+          <a href="om-oss.html">Om oss</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <header class="page-hero">
+        <div class="wrap">
+          <h1>Kamper</h1>
+          <p>
+            Alle Coventry-kamper — liga og cup. Resultater får målscorere og
+            statistikk når kampen er ferdig. Data oppdateres typisk hver mandag.
+          </p>
+        </div>
+      </header>
+
+      <section class="section">
+        <div class="wrap">
+          <div class="filters" role="tablist" aria-label="Visning">
+            <a class="filter-btn" data-view="upcoming" href="kamper.html?view=upcoming">Kommende</a>
+            <a class="filter-btn" data-view="results" href="kamper.html?view=results">Resultater</a>
+            <a class="filter-btn" data-view="all" href="kamper.html?view=all">Alle</a>
+          </div>
+          <div class="filters" aria-label="Konkurranse">
+            <button type="button" class="filter-btn is-active" data-filter="all">Alle turneringer</button>
+            <button type="button" class="filter-btn" data-filter="league">Liga</button>
+            <button type="button" class="filter-btn" data-filter="cup">Cup</button>
+          </div>
+          <p class="tag" id="fixtures-updated" style="margin-bottom: 1rem"></p>
+          <div id="fixtures-root"></div>
+        </div>
+      </section>
+    </main>
+
+    <div class="note">
+      <div class="wrap">
+        Eksempeldata i pitch-utkastet · Live-synk via API kobles på etter godkjenning
+      </div>
+    </div>
+
+    <footer class="site-footer">
+      <div class="wrap">
+        <div>
+          <strong>Coventry City Scandinavia</strong>
+          <p>Sky Blues supporterklubb for Skandinavia.</p>
+        </div>
+        <div class="footer-meta">Sky blue forever</div>
+      </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+  </body>
+</html>
