@@ -461,7 +461,7 @@
           <img class="hero-slide-row__thumb" src="${escapeAttr(src)}" alt="" />
           <div class="hero-slide-row__fields">
             <label>Bilde-URL
-              <input type="url" data-field="url" value="${escapeAttr(s.url || "")}" />
+              <input type="text" data-field="url" inputmode="url" autocomplete="off" value="${escapeAttr(s.url || "")}" />
             </label>
             <label>Alt-tekst
               <input type="text" data-field="alt" value="${escapeAttr(s.alt || "")}" />

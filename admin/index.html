@@ -12,7 +12,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../assets/css/styles.css" />
-    <link rel="stylesheet" href="../assets/css/admin.css?v=20260804g" />
+    <link rel="stylesheet" href="../assets/css/admin.css?v=20260804h" />
     <link rel="icon" href="../assets/img/logo.jpg" type="image/jpeg" />
   </head>
   <body>
@@ -86,11 +86,11 @@
               </div>
               <label style="margin-top: 1rem">
                 Logo-URL (kan også lims inn)
-                <input type="url" name="brand.logoUrl" id="logo-url-input" />
+                <input type="text" name="brand.logoUrl" id="logo-url-input" inputmode="url" autocomplete="off" placeholder="assets/img/logo.jpg eller https://…" />
               </label>
               <label>
                 Favicon-URL
-                <input type="url" name="brand.faviconUrl" id="favicon-url-input" />
+                <input type="text" name="brand.faviconUrl" id="favicon-url-input" inputmode="url" autocomplete="off" placeholder="assets/img/logo.jpg eller https://…" />
               </label>
             </div>
 
@@ -114,7 +114,7 @@
               <div class="row" style="margin-top: 0.75rem; align-items: flex-end">
                 <label style="flex: 1; min-width: 12rem">
                   Eller lim inn bilde-URL
-                  <input type="url" id="hero-slide-url-input" placeholder="https://…" />
+                  <input type="text" id="hero-slide-url-input" inputmode="url" autocomplete="off" placeholder="assets/img/… eller https://…" />
                 </label>
                 <button class="btn btn--solid" type="button" id="hero-slide-add-url-btn">Legg til URL</button>
               </div>
@@ -291,6 +291,11 @@
               <label>
                 Slug (url-vennlig id)
                 <input type="text" name="slug" required pattern="[a-z0-9\-]+" />
+                <span class="field-hint">
+                  Kort adresse for artikkelen, f.eks. <code>velkommen</code> →
+                  <code>nyheter.html#velkommen</code>. Bruk små bokstaver, tall og bindestrek.
+                  Fylles inn automatisk fra tittelen, men kan endres.
+                </span>
               </label>
               <label>
                 Ingress
@@ -391,6 +396,6 @@
     <script src="../assets/js/vendor/supabase.js?v=2.112.0"></script>
     <script src="../assets/js/supabase-config.js"></script>
     <script src="../assets/js/content.js"></script>
-    <script src="../assets/js/admin.js?v=20260804g"></script>
+    <script src="../assets/js/admin.js?v=20260804h"></script>
   </body>
 </html>

@@ -132,6 +132,22 @@
   color: var(--muted);
 }
 
+.field-hint {
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: normal;
+  text-transform: none;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.field-hint code {
+  font-size: 0.8em;
+  background: var(--paper);
+  padding: 0.1em 0.35em;
+  border: 1px solid var(--line);
+}
+
 .admin-form input,
 .admin-form textarea,
 .admin-form select {
