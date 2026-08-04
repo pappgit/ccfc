@@ -586,6 +586,20 @@
   });
 
   /* —— News —— */
+  async function deleteNewsById(id) {
+    if (!id) return false;
+    if (!confirm("Slette denne artikkelen? Dette kan ikke angres.")) return false;
+    const { error: delErr } = await client.from("news_posts").delete().eq("id", id);
+    if (delErr) {
+      showMsg(newsMsg, delErr.message, true);
+      return false;
+    }
+    showMsg(newsMsg, "Artikkel slettet.");
+    resetNewsForm();
+    await loadNews();
+    return true;
+  }
+
   async function loadNews() {
     const { data, error } = await client
       .from("news_posts")
@@ -616,7 +630,7 @@
           </div>
           <div class="row">
             <button type="button" class="btn btn--solid" data-edit="${p.id}">Rediger</button>
-            <button type="button" class="btn btn--ghost" data-delete="${p.id}">Slett</button>
+            <button type="button" class="btn btn--danger" data-delete="${p.id}">Slett</button>
           </div>
         </article>`;
       })
@@ -630,16 +644,7 @@
     });
     list.querySelectorAll("[data-delete]").forEach((btn) => {
       btn.addEventListener("click", async () => {
-        if (!confirm("Slette artikkelen?")) return;
-        const { error: delErr } = await client
-          .from("news_posts")
-          .delete()
-          .eq("id", btn.dataset.delete);
-        if (delErr) showMsg(newsMsg, delErr.message, true);
-        else {
-          showMsg(newsMsg, "Slettet.");
-          await loadNews();
-        }
+        await deleteNewsById(btn.dataset.delete);
       });
     });
   }
@@ -654,6 +659,8 @@
     form.body.value = post.body || "";
     form.published.checked = !!post.published;
     form.show_on_home.checked = !!post.show_on_home;
+    const delBtn = $("#news-delete");
+    if (delBtn) delBtn.hidden = false;
     form.title.focus();
   }
 
@@ -663,9 +670,16 @@
     form.reset();
     form.id.value = "";
     form.show_on_home.checked = true;
+    const delBtn = $("#news-delete");
+    if (delBtn) delBtn.hidden = true;
   }
 
   $("#news-reset").addEventListener("click", resetNewsForm);
+
+  $("#news-delete")?.addEventListener("click", async () => {
+    const id = $("#news-form")?.id?.value;
+    await deleteNewsById(id);
+  });
 
   $("#news-form").title.addEventListener("input", (e) => {
     const form = $("#news-form");

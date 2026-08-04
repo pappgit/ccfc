@@ -302,6 +302,24 @@
   font-weight: 700;
 }
 
+.btn--danger {
+  background: transparent;
+  color: #a33;
+  border-color: #a33;
+}
+
+.btn--danger:hover {
+  background: #a33;
+  color: var(--white);
+}
+
+.news-admin-item .row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
 @media (max-width: 800px) {
   .admin-shell {
     grid-template-columns: 1fr;
