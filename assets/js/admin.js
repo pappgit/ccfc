@@ -12,13 +12,30 @@
     return;
   }
 
+  const PROJECT_REF = "zzqhgqcwuztbqgkvpxjg";
+  const AUTH_STORAGE_KEY = `sb-${PROJECT_REF}-auth-token`;
+
+  // Drop corrupted/half-written sessions that can freeze auth-js.
+  try {
+    const raw = localStorage.getItem(AUTH_STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (!parsed?.access_token || !parsed?.refresh_token) {
+        localStorage.removeItem(AUTH_STORAGE_KEY);
+      }
+    }
+  } catch {
+    localStorage.removeItem(AUTH_STORAGE_KEY);
+  }
+
   const client = sb.createClient(cfg.url, cfg.anonKey, {
     auth: {
       persistSession: true,
       autoRefreshToken: true,
-      detectSessionInUrl: true,
+      detectSessionInUrl: false,
       storage: window.localStorage,
-      // Avoid hung browser navigator.locks blocking sign-in forever.
+      storageKey: AUTH_STORAGE_KEY,
+      // Bypass navigator.locks entirely (known hang on older/stuck tabs).
       lock: async (_name, _acquireTimeout, fn) => fn(),
     },
   });
@@ -53,6 +70,7 @@
   const loginBtn = $("#login-form")?.querySelector('button[type="submit"]');
   let authBusy = false;
   let enteredAppForUser = null;
+  let bootDone = false;
 
   function withTimeout(promise, ms, label) {
     return new Promise((resolve, reject) => {
@@ -78,14 +96,100 @@
     if (loginBtn) loginBtn.disabled = busy;
   }
 
-  async function isAdminUser(userId) {
-    const { data, error } = await withTimeout(
-      client.from("admins").select("user_id").eq("user_id", userId).maybeSingle(),
-      15000,
-      "Admin-sjekk"
-    );
-    if (error) throw error;
-    return !!data;
+  /** Password login via raw Auth API — avoids auth-js hang after 200 OK. */
+  async function signInRaw(email, password) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 15000);
+    let res;
+    try {
+      res = await fetch(`${cfg.url}/auth/v1/token?grant_type=password`, {
+        method: "POST",
+        signal: controller.signal,
+        headers: {
+          "Content-Type": "application/json",
+          apikey: cfg.anonKey,
+          Authorization: `Bearer ${cfg.anonKey}`,
+        },
+        body: JSON.stringify({ email, password }),
+      });
+    } catch (err) {
+      if (err?.name === "AbortError") {
+        throw new Error("Innlogging tok for lang tid (15s). Sjekk nettverk/VPN.");
+      }
+      throw err;
+    } finally {
+      clearTimeout(timer);
+    }
+
+    const body = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      const err = new Error(body.msg || body.error_description || body.error || "Innlogging feilet");
+      err.status = res.status;
+      throw err;
+    }
+    if (!body.access_token || !body.refresh_token) {
+      throw new Error("Innlogging lyktes ikke (mangler tokens).");
+    }
+
+    const session = {
+      access_token: body.access_token,
+      refresh_token: body.refresh_token,
+      expires_in: body.expires_in,
+      expires_at: body.expires_at,
+      token_type: body.token_type || "bearer",
+      user: body.user,
+    };
+
+    // Persist for supabase-js, then try setSession (non-fatal if it hangs).
+    try {
+      localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(session));
+    } catch (err) {
+      console.warn(err);
+    }
+
+    try {
+      await withTimeout(
+        client.auth.setSession({
+          access_token: session.access_token,
+          refresh_token: session.refresh_token,
+        }),
+        4000,
+        "Lagre sesjon"
+      );
+    } catch (err) {
+      console.warn("setSession skipped:", err);
+    }
+
+    return session;
+  }
+
+  async function isAdminUser(userId, accessToken) {
+    const headers = {
+      apikey: cfg.anonKey,
+      Authorization: `Bearer ${accessToken || cfg.anonKey}`,
+      Accept: "application/json",
+    };
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 12000);
+    try {
+      const res = await fetch(
+        `${cfg.url}/rest/v1/admins?select=user_id&user_id=eq.${encodeURIComponent(userId)}`,
+        { headers, signal: controller.signal }
+      );
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.message || `Admin-sjekk feilet (${res.status})`);
+      }
+      const data = await res.json();
+      return Array.isArray(data) && data.length > 0;
+    } catch (err) {
+      if (err?.name === "AbortError") {
+        throw new Error("Admin-sjekk tok for lang tid (12s).");
+      }
+      throw err;
+    } finally {
+      clearTimeout(timer);
+    }
   }
 
   async function showApp(session) {
@@ -93,12 +197,11 @@
       await showLogin();
       return;
     }
-    // Avoid re-entering for the same user (form + auth listener can both fire).
     if (enteredAppForUser === session.user.id && !appView.hidden) return;
 
     try {
       showMsg(loginMsg, "Sjekker admin-tilgang…");
-      const ok = await isAdminUser(session.user.id);
+      const ok = await isAdminUser(session.user.id, session.access_token);
       if (!ok) {
         enteredAppForUser = null;
         loginView.hidden = false;
@@ -109,11 +212,7 @@
           true
         );
         setLoginBusy(false);
-        try {
-          await withTimeout(client.auth.signOut(), 5000, "Logg ut");
-        } catch (err) {
-          console.warn(err);
-        }
+        clearLocalSession();
         return;
       }
 
@@ -123,7 +222,6 @@
       showMsg(loginMsg, "");
       $("#admin-email").textContent = session.user.email || session.user.id;
 
-      // Load panels independently — failure must not kick the user out.
       await Promise.allSettled([loadContentEditor(), loadApiSettings(), loadNews()]);
     } catch (err) {
       console.error(err);
@@ -136,9 +234,21 @@
     }
   }
 
+  function clearLocalSession() {
+    try {
+      localStorage.removeItem(AUTH_STORAGE_KEY);
+    } catch {
+      /* ignore */
+    }
+    client.auth.signOut({ scope: "local" }).catch(() => {});
+  }
+
   function formatAuthError(err) {
     const msg = (err && (err.message || err.error_description || String(err))) || "Ukjent feil";
-    if (/load failed|failed to fetch|networkerror|network request failed/i.test(msg)) {
+    if (/invalid login credentials|invalid_credentials/i.test(msg)) {
+      return "Feil e-post eller passord.";
+    }
+    if (/load failed|failed to fetch|networkerror|network request failed|abort/i.test(msg)) {
       return "Nettverksfeil: nettleseren når ikke Supabase (brannmur/VPN/adblock). Prøv et annet nettverk, eller skru av VPN/adblock for supabase.co.";
     }
     if (/tok for lang tid/i.test(msg)) {
@@ -154,10 +264,6 @@
     setLoginBusy(false);
   }
 
-  /**
-   * Supabase holds an auth lock while onAuthStateChange runs.
-   * Awaiting other client calls inside the callback deadlocks — defer first.
-   */
   function afterAuthLock(fn) {
     setTimeout(() => {
       Promise.resolve()
@@ -418,26 +524,11 @@
     setLoginBusy(true);
     showMsg(loginMsg, "Logger inn…");
     try {
-      const { data, error } = await withTimeout(
-        client.auth.signInWithPassword({
-          email: String(fd.get("email")).trim(),
-          password: String(fd.get("password")),
-        }),
-        20000,
-        "Innlogging"
+      const session = await signInRaw(
+        String(fd.get("email")).trim(),
+        String(fd.get("password"))
       );
-      if (error) {
-        setLoginBusy(false);
-        showMsg(loginMsg, formatAuthError(error), true);
-        return;
-      }
-      if (!data.session) {
-        setLoginBusy(false);
-        showMsg(loginMsg, "Innlogging lyktes ikke (ingen sesjon).", true);
-        return;
-      }
-      // Enter app directly (listener is deferred backup only).
-      await showApp(data.session);
+      await showApp(session);
     } catch (err) {
       console.error(err);
       setLoginBusy(false);
@@ -447,14 +538,9 @@
 
   $("#logout-btn").addEventListener("click", async () => {
     setLoginBusy(true);
-    try {
-      await withTimeout(client.auth.signOut(), 8000, "Logg ut");
-    } catch (err) {
-      console.warn(err);
-    } finally {
-      await showLogin();
-      showMsg(loginMsg, "");
-    }
+    clearLocalSession();
+    await showLogin();
+    showMsg(loginMsg, "");
   });
 
   /* —— API settings —— */
@@ -627,26 +713,34 @@
   }
 
   /* —— boot —— */
-  // Show login immediately so the page is never blank while session resolves.
   loginView.hidden = false;
   appView.hidden = true;
 
+  (async () => {
+    try {
+      const { data } = await withTimeout(client.auth.getSession(), 5000, "Sesjon");
+      bootDone = true;
+      if (data?.session) await showApp(data.session);
+      else await showLogin();
+    } catch (err) {
+      console.warn(err);
+      bootDone = true;
+      clearLocalSession();
+      await showLogin();
+    }
+  })();
+
   client.auth.onAuthStateChange((event, session) => {
-    // Never await Supabase calls directly in this callback (auth lock deadlock).
     afterAuthLock(async () => {
+      if (!bootDone) return;
       if (event === "SIGNED_OUT") {
-        if (!loginView.hidden && appView.hidden) return;
         await showLogin();
         return;
       }
-      // TOKEN_REFRESHED: stay put if already in app.
       if (event === "TOKEN_REFRESHED") return;
-      if ((event === "SIGNED_IN" || event === "INITIAL_SESSION") && session) {
+      // SIGNED_IN from our raw login is handled in the form submit path.
+      if (event === "INITIAL_SESSION" && session) {
         await showApp(session);
-        return;
-      }
-      if (event === "INITIAL_SESSION" && !session) {
-        await showLogin();
       }
     });
   });
