@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="nb">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bli medlem — Coventry City Scandinavia</title>
+    <meta
+      name="description"
+      content="Meld deg inn i Coventry City Scandinavia — supporterklubben for Sky Blues i Norden."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    <link rel="icon" href="assets/img/logo.jpg" type="image/jpeg" />
+  </head>
+  <body data-cms-title="members.title">
+    <header class="site-header">
+      <div class="wrap">
+        <a class="brand" href="index.html">
+          <img class="brand__mark" data-cms-src="brand.logoUrl" src="assets/img/logo.jpg" alt="" width="40" height="40" />
+          <span class="brand__text">
+            <span class="brand__name" data-cms="brand.name">Coventry City</span>
+            <span class="brand__sub" data-cms="brand.sub">Scandinavia</span>
+          </span>
+        </a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Meny">
+          <span></span><span></span><span></span>
+        </button>
+        <nav class="nav" id="site-nav">
+          <a href="index.html" data-nav="home" data-cms="nav.home">Hjem</a>
+          <a href="kamper.html" data-nav="fixtures" data-cms="nav.fixtures">Kamper</a>
+          <a href="statistikk.html" data-nav="stats" data-cms="nav.stats">Statistikk</a>
+          <a href="nyheter.html" data-nav="news" data-cms="nav.news">Nyheter</a>
+          <a href="medlem.html" data-nav="members" data-cms="nav.members" aria-current="page">Medlem</a>
+          <a href="om-oss.html" data-nav="about" data-cms="nav.about">Om oss</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <header class="page-hero">
+        <div class="wrap">
+          <h1 data-cms="members.title">Bli medlem</h1>
+          <p data-cms="members.lead">
+            Bli en del av Coventry City Scandinavia. Fyll inn skjemaet — vi følger opp kontingent når Vipps er på plass.
+          </p>
+        </div>
+      </header>
+
+      <section class="section">
+        <div class="wrap member-layout">
+          <div class="member-copy article">
+            <p class="tag" data-cms="members.tag">Medlemskap</p>
+            <h2 data-cms="members.heading">Sky Blues i Norden</h2>
+            <p data-cms="members.p1">
+              Som medlem støtter du supporterklubben og får tilgang til fellesskapet rundt The Sky Blues i Skandinavia.
+            </p>
+            <p data-cms="members.p2">
+              Kontingent betales senere via Vipps. Du kan melde deg ut via lenke i e-post.
+            </p>
+          </div>
+
+          <div class="member-form-card">
+            <form id="member-join-form" class="member-form" novalidate>
+              <label>
+                Fullt navn
+                <input type="text" name="full_name" required autocomplete="name" maxlength="120" />
+              </label>
+              <label>
+                E-post
+                <input type="email" name="email" required autocomplete="email" maxlength="200" />
+              </label>
+              <label>
+                Mobil (Vipps)
+                <input
+                  type="tel"
+                  name="phone"
+                  required
+                  autocomplete="tel"
+                  inputmode="tel"
+                  placeholder="f.eks. 41234567"
+                  maxlength="20"
+                />
+              </label>
+              <label>
+                Land
+                <select name="country">
+                  <option value="NO" selected>Norge</option>
+                  <option value="SE">Sverige</option>
+                  <option value="DK">Danmark</option>
+                  <option value="FI">Finland</option>
+                  <option value="OTHER">Annet</option>
+                </select>
+              </label>
+              <label class="member-check">
+                <input type="checkbox" name="consent_privacy" required />
+                <span data-cms="members.consentPrivacy"
+                  >Jeg godtar at klubben lagrer navn, e-post og mobil for medlemskapet.</span
+                >
+              </label>
+              <label class="member-check">
+                <input type="checkbox" name="consent_marketing" />
+                <span data-cms="members.consentMarketing"
+                  >Jeg ønsker e-post om arrangementer (valgfritt).</span
+                >
+              </label>
+              <div class="cta-row">
+                <button class="btn btn--sky" type="submit" id="member-join-submit">Send innmelding</button>
+              </div>
+              <p class="member-msg" id="member-join-msg" hidden></p>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap">
+        <div>
+          <strong data-cms="footer.title">Coventry City Scandinavia</strong>
+          <p data-cms="footer.text">Sky Blues supporterklubb for Skandinavia.</p>
+        </div>
+        <div class="footer-meta" data-cms="footer.tagline">Sky blue forever</div>
+        <a class="footer-login" href="admin/" data-section="footerAdmin" data-cms="footer.adminLabel">Admin</a>
+      </div>
+    </footer>
+
+    <script src="assets/js/vendor/supabase.js"></script>
+    <script src="assets/js/supabase-config.js"></script>
+    <script src="assets/js/content.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/members.js"></script>
+  </body>
+</html>

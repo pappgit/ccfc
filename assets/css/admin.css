@@ -502,3 +502,62 @@
     flex-wrap: wrap;
   }
 }
+
+.badge--pending {
+  background: rgba(41, 154, 220, 0.15);
+  color: var(--sky-dark);
+}
+
+.members-admin-list,
+.mail-outbox-list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.member-admin-item,
+.mail-outbox-item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1rem;
+  align-items: start;
+  background: var(--white);
+  border: 1px solid var(--line-strong);
+  padding: 1rem 1.1rem;
+}
+
+.member-admin-item h3,
+.mail-outbox-item h3 {
+  font-size: 1rem;
+  margin-bottom: 0.35rem;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.member-admin-item p,
+.mail-outbox-item p {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.member-admin-meta {
+  margin-top: 0.35rem !important;
+  font-size: 0.8rem !important;
+}
+
+.member-admin-actions {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  max-width: 16rem;
+}
+
+@media (max-width: 720px) {
+  .member-admin-item,
+  .mail-outbox-item {
+    grid-template-columns: 1fr;
+  }
+
+  .member-admin-actions {
+    max-width: none;
+    justify-content: flex-start;
+  }
+}

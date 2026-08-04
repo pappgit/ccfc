@@ -12,7 +12,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../assets/css/styles.css" />
-    <link rel="stylesheet" href="../assets/css/admin.css?v=20260804j" />
+    <link rel="stylesheet" href="../assets/css/admin.css?v=20260804m" />
     <link rel="icon" href="../assets/img/logo.jpg" type="image/jpeg" />
   </head>
   <body>
@@ -49,6 +49,7 @@
         <nav class="admin-nav" aria-label="Admin">
           <button type="button" data-panel="content" class="is-active">Innhold</button>
           <button type="button" data-panel="news">Nyheter</button>
+          <button type="button" data-panel="members">Medlemmer</button>
           <button type="button" data-panel="feedback">Ønsker</button>
           <button type="button" data-panel="changelog">Endringslogg</button>
           <button type="button" data-panel="api">API</button>
@@ -323,6 +324,85 @@
           <div class="news-admin-list" id="news-list"></div>
         </section>
 
+        <section class="admin-panel" id="panel-members">
+          <h1>Medlemmer</h1>
+          <p class="lead">
+            Medlemsregister: meld inn/ut, aktiver pending, og send utmeldingslenke på e-post.
+            Vipps-betaling kommer i senere steg.
+          </p>
+
+          <div class="admin-card">
+            <h2>Meld inn manuelt</h2>
+            <form id="member-admin-form" class="admin-form">
+              <label>
+                Fullt navn
+                <input type="text" name="full_name" required maxlength="120" />
+              </label>
+              <label>
+                E-post
+                <input type="email" name="email" required maxlength="200" />
+              </label>
+              <label>
+                Mobil
+                <input type="tel" name="phone" maxlength="20" placeholder="41234567" />
+              </label>
+              <label>
+                Land
+                <select name="country">
+                  <option value="NO" selected>Norge</option>
+                  <option value="SE">Sverige</option>
+                  <option value="DK">Danmark</option>
+                  <option value="FI">Finland</option>
+                  <option value="OTHER">Annet</option>
+                </select>
+              </label>
+              <label>
+                Status
+                <select name="status">
+                  <option value="active">Aktiv</option>
+                  <option value="pending_payment">Venter betaling</option>
+                </select>
+              </label>
+              <label>
+                Notat (valgfritt)
+                <input type="text" name="notes" maxlength="200" />
+              </label>
+              <div class="row">
+                <button class="btn btn--sky" type="submit">Lagre medlem</button>
+              </div>
+              <p class="admin-msg" id="member-admin-msg" hidden></p>
+            </form>
+          </div>
+
+          <div class="filters season-tabs" style="margin-bottom: 1rem" id="member-filters">
+            <button type="button" class="filter-btn is-active" data-member-filter="open">Åpne</button>
+            <button type="button" class="filter-btn" data-member-filter="pending_payment">Pending</button>
+            <button type="button" class="filter-btn" data-member-filter="active">Aktive</button>
+            <button type="button" class="filter-btn" data-member-filter="cancelled">Utmeldt</button>
+            <button type="button" class="filter-btn" data-member-filter="all">Alle</button>
+          </div>
+
+          <label class="admin-form" style="max-width: 24rem; margin-bottom: 1rem">
+            Søk
+            <input type="search" id="member-search" placeholder="Navn, e-post eller mobil…" />
+          </label>
+
+          <div id="members-list" class="members-admin-list"></div>
+
+          <div class="admin-card" style="margin-top: 1.5rem">
+            <div class="row" style="justify-content: space-between; align-items: center; margin-bottom: 0.75rem">
+              <h2 style="margin: 0">E-postkø</h2>
+              <button class="btn btn--solid" type="button" id="mail-outbox-reload">Oppdater</button>
+            </div>
+            <p style="color: var(--muted); font-size: 0.9rem; margin-bottom: 0.75rem">
+              Uten Resend: åpne mailto og marker som sendt. Med Resend: deploy
+              <code>dispatch-member-mail</code>.
+            </p>
+            <div id="mail-outbox-list"></div>
+            <p class="admin-msg" id="mail-outbox-msg" hidden></p>
+          </div>
+        </section>
+
         <section class="admin-panel" id="panel-feedback">
           <h1>Ønsker / kommentarer</h1>
           <p class="lead">
@@ -392,6 +472,6 @@
     <script src="../assets/js/vendor/supabase.js?v=2.112.0"></script>
     <script src="../assets/js/supabase-config.js"></script>
     <script src="../assets/js/content.js"></script>
-    <script src="../assets/js/admin.js?v=20260804j"></script>
+    <script src="../assets/js/admin.js?v=20260804m"></script>
   </body>
 </html>

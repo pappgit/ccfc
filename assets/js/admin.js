@@ -228,6 +228,8 @@
         loadNews(),
         loadChangelog(),
         loadFeedback(),
+        loadMembers(),
+        loadMailOutbox(),
       ]);
     } catch (err) {
       console.error(err);
@@ -288,6 +290,10 @@
       if (panel) panel.classList.add("is-active");
       if (btn.dataset.panel === "changelog") loadChangelog();
       if (btn.dataset.panel === "feedback") loadFeedback();
+      if (btn.dataset.panel === "members") {
+        loadMembers();
+        loadMailOutbox();
+      }
     });
   });
 
@@ -315,8 +321,24 @@
         { path: "nav.visible.stats", label: "Vis Statistikk i menyen", type: "check" },
         { path: "nav.news", label: "Nyheter · tekst", type: "text" },
         { path: "nav.visible.news", label: "Vis Nyheter i menyen", type: "check" },
+        { path: "nav.members", label: "Medlem · tekst", type: "text" },
+        { path: "nav.visible.members", label: "Vis Medlem i menyen", type: "check" },
         { path: "nav.about", label: "Om oss · tekst", type: "text" },
         { path: "nav.visible.about", label: "Vis Om oss i menyen", type: "check" },
+      ],
+    },
+    {
+      id: "membersPage",
+      label: "Medlem-side",
+      fields: [
+        { path: "members.title", label: "Tittel", type: "text" },
+        { path: "members.lead", label: "Ingress", type: "textarea" },
+        { path: "members.tag", label: "Tag", type: "text" },
+        { path: "members.heading", label: "Overskrift", type: "text" },
+        { path: "members.p1", label: "Tekst 1", type: "textarea" },
+        { path: "members.p2", label: "Tekst 2", type: "textarea" },
+        { path: "members.consentPrivacy", label: "Samtykke personvern", type: "textarea" },
+        { path: "members.consentMarketing", label: "Samtykke markedsføring", type: "textarea" },
       ],
     },
     {
@@ -618,7 +640,34 @@
               fixtures: true,
               stats: true,
               news: true,
+              members: true,
               about: true,
+            }
+          );
+        }
+        if (window.CCFCContent.getByPath(contentState, "nav.members") == null) {
+          window.CCFCContent.setByPath(
+            contentState,
+            "nav.members",
+            defaults?.nav?.members || "Medlem"
+          );
+        }
+        if (window.CCFCContent.getByPath(contentState, "nav.visible.members") == null) {
+          window.CCFCContent.setByPath(contentState, "nav.visible.members", true);
+        }
+        if (!window.CCFCContent.getByPath(contentState, "members")) {
+          window.CCFCContent.setByPath(
+            contentState,
+            "members",
+            defaults?.members || {
+              title: "Bli medlem",
+              lead: "Bli en del av Coventry City Scandinavia.",
+              tag: "Medlemskap",
+              heading: "Sky Blues i Norden",
+              p1: "",
+              p2: "",
+              consentPrivacy: "Jeg godtar at klubben lagrer navn, e-post og mobil for medlemskapet.",
+              consentMarketing: "Jeg ønsker e-post om arrangementer (valgfritt).",
             }
           );
         }
@@ -1309,6 +1358,373 @@
       showMsg(feedbackMsg, err.message || "Kunne ikke lagre.", true);
     }
   });
+
+  /* —— Members —— */
+  const memberAdminMsg = $("#member-admin-msg");
+  const mailOutboxMsg = $("#mail-outbox-msg");
+  let membersItems = [];
+  let memberFilter = "open";
+  let memberSearch = "";
+  let mailOutboxRows = [];
+
+  function sitePublicBase() {
+    try {
+      const u = new URL("..", location.href);
+      return u.href.replace(/\/$/, "");
+    } catch {
+      return location.origin;
+    }
+  }
+
+  function statusLabel(status) {
+    return (
+      {
+        pending_payment: "Venter betaling",
+        active: "Aktiv",
+        cancelled: "Utmeldt",
+        lapsed: "Utløpt",
+      }[status] || status
+    );
+  }
+
+  function formatDate(iso) {
+    if (!iso) return "—";
+    try {
+      return new Date(iso).toLocaleDateString("nb-NO");
+    } catch {
+      return "—";
+    }
+  }
+
+  function renderMembers() {
+    const host = $("#members-list");
+    if (!host) return;
+    let list = [...membersItems];
+    if (memberFilter === "open") {
+      list = list.filter(
+        (m) => m.status === "pending_payment" || m.status === "active" || m.status === "lapsed"
+      );
+    } else if (memberFilter !== "all") {
+      list = list.filter((m) => m.status === memberFilter);
+    }
+    const q = memberSearch.trim().toLowerCase();
+    if (q) {
+      list = list.filter((m) => {
+        const blob = `${m.full_name || ""} ${m.email || ""} ${m.phone || ""}`.toLowerCase();
+        return blob.includes(q);
+      });
+    }
+    if (!list.length) {
+      host.innerHTML = `<p class="empty-state">Ingen medlemmer i dette filteret.</p>`;
+      return;
+    }
+    host.innerHTML = list
+      .map((m) => {
+        const badgeClass =
+          m.status === "active"
+            ? ""
+            : m.status === "pending_payment"
+              ? " badge--pending"
+              : " badge--draft";
+        return `<article class="member-admin-item" data-id="${escapeAttr(m.id)}">
+          <div>
+            <h3>${escapeHtml(m.full_name || "")}</h3>
+            <p>
+              <span class="badge${badgeClass}">${escapeHtml(statusLabel(m.status))}</span>
+              ${escapeHtml(m.email || "")}
+              ${m.phone ? ` · ${escapeHtml(m.phone)}` : ""}
+              ${m.country ? ` · ${escapeHtml(m.country)}` : ""}
+            </p>
+            <p class="member-admin-meta">
+              Opprettet ${escapeHtml(formatDate(m.created_at))}
+              ${m.paid_until ? ` · Betalt til ${escapeHtml(formatDate(m.paid_until))}` : ""}
+              ${m.source ? ` · ${escapeHtml(m.source)}` : ""}
+            </p>
+          </div>
+          <div class="row member-admin-actions">
+            ${
+              m.status === "pending_payment" || m.status === "lapsed" || m.status === "cancelled"
+                ? `<button type="button" class="btn btn--sky" data-member-activate>Aktiver</button>`
+                : ""
+            }
+            ${
+              m.status !== "cancelled"
+                ? `<button type="button" class="btn btn--solid" data-member-unsub-link>Utmeldingslenke</button>
+                   <button type="button" class="btn btn--danger" data-member-cancel>Meld ut</button>`
+                : ""
+            }
+          </div>
+        </article>`;
+      })
+      .join("");
+
+    host.querySelectorAll("[data-member-activate]").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const id = btn.closest("[data-id]")?.getAttribute("data-id");
+        if (!id) return;
+        if (!confirm("Aktivere dette medlemmet og køe velkomst-e-post?")) return;
+        try {
+          const { error } = await client.rpc("activate_member", {
+            p_member_id: id,
+            p_base_url: sitePublicBase(),
+            p_amount_ore: 20000,
+            p_note: "Manuell aktivering fra admin",
+          });
+          if (error) throw error;
+          showMsg(memberAdminMsg, "Aktivert. Velkomst-e-post ligger i køen.");
+          await loadMembers();
+          await loadMailOutbox();
+        } catch (err) {
+          showMsg(memberAdminMsg, err.message || "Kunne ikke aktivere.", true);
+        }
+      });
+    });
+
+    host.querySelectorAll("[data-member-cancel]").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const id = btn.closest("[data-id]")?.getAttribute("data-id");
+        if (!id) return;
+        if (!confirm("Melde ut dette medlemmet?")) return;
+        try {
+          const { data: sessionData } = await client.auth.getSession();
+          const { error } = await client
+            .from("members")
+            .update({ status: "cancelled", cancelled_at: new Date().toISOString() })
+            .eq("id", id);
+          if (error) throw error;
+          await client.from("member_audit_log").insert({
+            member_id: id,
+            action: "cancel_admin",
+            detail: {},
+            actor_id: sessionData.session?.user?.id || null,
+          });
+          showMsg(memberAdminMsg, "Medlem meldt ut.");
+          await loadMembers();
+        } catch (err) {
+          showMsg(memberAdminMsg, err.message || "Kunne ikke melde ut.", true);
+        }
+      });
+    });
+
+    host.querySelectorAll("[data-member-unsub-link]").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const id = btn.closest("[data-id]")?.getAttribute("data-id");
+        if (!id) return;
+        try {
+          const { data, error } = await client.rpc("issue_member_unsubscribe_link", {
+            p_member_id: id,
+            p_base_url: sitePublicBase(),
+            p_ttl_days: 30,
+            p_queue_mail: true,
+          });
+          if (error) throw error;
+          const url = data?.url || "";
+          if (url && navigator.clipboard?.writeText) {
+            try {
+              await navigator.clipboard.writeText(url);
+            } catch {
+              /* ignore */
+            }
+          }
+          showMsg(
+            memberAdminMsg,
+            url
+              ? "Utmeldingslenke kopiert (hvis tillatt) og lagt i e-postkøen."
+              : "Lenke opprettet."
+          );
+          await loadMailOutbox();
+          if (url) window.prompt("Utmeldingslenke:", url);
+        } catch (err) {
+          showMsg(memberAdminMsg, err.message || "Kunne ikke lage lenke.", true);
+        }
+      });
+    });
+  }
+
+  async function loadMembers() {
+    const host = $("#members-list");
+    if (!host) return;
+    const { data, error } = await client
+      .from("members")
+      .select("*")
+      .order("created_at", { ascending: false });
+    if (error) {
+      host.innerHTML = `<p class="admin-msg is-error">${escapeHtml(error.message)}</p>`;
+      return;
+    }
+    membersItems = data || [];
+    renderMembers();
+  }
+
+  $("#member-filters")?.querySelectorAll("[data-member-filter]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      memberFilter = btn.getAttribute("data-member-filter") || "open";
+      $("#member-filters")
+        ?.querySelectorAll("[data-member-filter]")
+        .forEach((b) => b.classList.toggle("is-active", b === btn));
+      renderMembers();
+    });
+  });
+
+  $("#member-search")?.addEventListener("input", (e) => {
+    memberSearch = e.target.value || "";
+    renderMembers();
+  });
+
+  $("#member-admin-form")?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    const fullName = String(fd.get("full_name") || "").trim();
+    const email = String(fd.get("email") || "").trim().toLowerCase();
+    const phone = String(fd.get("phone") || "").replace(/\s+/g, "");
+    const country = String(fd.get("country") || "NO");
+    const status = String(fd.get("status") || "active");
+    const notes = String(fd.get("notes") || "").trim();
+    if (!fullName || !email) {
+      showMsg(memberAdminMsg, "Navn og e-post er påkrevd.", true);
+      return;
+    }
+    try {
+      const { data: sessionData } = await client.auth.getSession();
+      const row = {
+        full_name: fullName,
+        email,
+        phone,
+        country,
+        status: status === "active" ? "pending_payment" : status,
+        notes,
+        source: "admin",
+        consent_privacy_at: new Date().toISOString(),
+        created_by: sessionData.session?.user?.id || null,
+      };
+      const { data, error } = await client.from("members").insert(row).select("id").single();
+      if (error) throw error;
+      await client.from("member_audit_log").insert({
+        member_id: data.id,
+        action: "register_admin",
+        detail: { requested_status: status },
+        actor_id: sessionData.session?.user?.id || null,
+      });
+      if (status === "active") {
+        const { error: actErr } = await client.rpc("activate_member", {
+          p_member_id: data.id,
+          p_base_url: sitePublicBase(),
+          p_amount_ore: 20000,
+          p_note: "Manuell innmelding fra admin",
+        });
+        if (actErr) throw actErr;
+      }
+      e.target.reset();
+      showMsg(memberAdminMsg, "Medlem lagret.");
+      await loadMembers();
+      await loadMailOutbox();
+    } catch (err) {
+      showMsg(memberAdminMsg, err.message || "Kunne ikke lagre medlem.", true);
+    }
+  });
+
+  function renderMailOutbox(rows) {
+    const host = $("#mail-outbox-list");
+    if (!host) return;
+    if (!rows?.length) {
+      host.innerHTML = `<p class="empty-state">Ingen e-poster i køen.</p>`;
+      return;
+    }
+    host.innerHTML = rows
+      .map((r) => {
+        const mailto = `mailto:${encodeURIComponent(r.to_email)}?subject=${encodeURIComponent(
+          r.subject || ""
+        )}&body=${encodeURIComponent(r.body_text || "")}`;
+        return `<article class="mail-outbox-item" data-id="${escapeAttr(r.id)}">
+          <div>
+            <h3>${escapeHtml(r.subject || "")}</h3>
+            <p>
+              <span class="badge${
+                r.status === "pending" ? " badge--pending" : r.status === "sent" ? "" : " badge--draft"
+              }">${escapeHtml(r.status)}</span>
+              ${escapeHtml(r.to_email)} · ${escapeHtml(r.kind || "")}
+            </p>
+            <p class="member-admin-meta">${escapeHtml(formatDate(r.created_at))}</p>
+          </div>
+          <div class="row member-admin-actions">
+            ${
+              r.status === "pending"
+                ? `<a class="btn btn--sky" href="${escapeAttr(mailto)}">Åpne mailto</a>
+                   <button type="button" class="btn btn--solid" data-mail-sent>Marker sendt</button>
+                   <button type="button" class="btn btn--danger" data-mail-cancel>Avbryt</button>`
+                : ""
+            }
+            ${
+              r.unsubscribe_url
+                ? `<button type="button" class="btn btn--solid" data-mail-copy-link>Kopier lenke</button>`
+                : ""
+            }
+          </div>
+        </article>`;
+      })
+      .join("");
+
+    host.querySelectorAll("[data-mail-sent]").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const id = btn.closest("[data-id]")?.getAttribute("data-id");
+        if (!id) return;
+        const { error } = await client
+          .from("member_mail_outbox")
+          .update({ status: "sent", sent_at: new Date().toISOString() })
+          .eq("id", id);
+        if (error) showMsg(mailOutboxMsg, error.message, true);
+        else {
+          showMsg(mailOutboxMsg, "Markert som sendt.");
+          await loadMailOutbox();
+        }
+      });
+    });
+
+    host.querySelectorAll("[data-mail-cancel]").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const id = btn.closest("[data-id]")?.getAttribute("data-id");
+        if (!id) return;
+        const { error } = await client
+          .from("member_mail_outbox")
+          .update({ status: "cancelled" })
+          .eq("id", id);
+        if (error) showMsg(mailOutboxMsg, error.message, true);
+        else await loadMailOutbox();
+      });
+    });
+
+    host.querySelectorAll("[data-mail-copy-link]").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const id = btn.closest("[data-id]")?.getAttribute("data-id");
+        const row = mailOutboxRows.find((r) => r.id === id);
+        if (!row?.unsubscribe_url) return;
+        try {
+          await navigator.clipboard.writeText(row.unsubscribe_url);
+          showMsg(mailOutboxMsg, "Utmeldingslenke kopiert.");
+        } catch {
+          window.prompt("Utmeldingslenke:", row.unsubscribe_url);
+        }
+      });
+    });
+  }
+
+  async function loadMailOutbox() {
+    const host = $("#mail-outbox-list");
+    if (!host) return;
+    const { data, error } = await client
+      .from("member_mail_outbox")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .limit(40);
+    if (error) {
+      host.innerHTML = `<p class="admin-msg is-error">${escapeHtml(error.message)}</p>`;
+      return;
+    }
+    mailOutboxRows = data || [];
+    renderMailOutbox(mailOutboxRows);
+  }
+
+  $("#mail-outbox-reload")?.addEventListener("click", () => loadMailOutbox());
 
   /* —— boot —— */
   loginView.hidden = false;
