@@ -2,35 +2,28 @@
 
 Prosjekt for medlemsregister i Coventry City Scandinavia-webappen.
 
-**Status:** Steg 1–2 live (migrering kjørt i Supabase). Vipps bedrift / org.nr. kommer senere.
+**Status:** Enkel flyt (pending → godkjenn/manuell / meld ut) med HTML-e-postmaler. Vipps kommer senere.
 
 ## Mål
 
-- Melde seg inn via nettsiden
-- Melde seg ut via e-post (signert lenke)
-- Admin-panel for medlemshåndtering (inn/utmelding)
-- Senere: kontingent via Vipps
-- Personopplysninger håndtert sikkert (GDPR / RLS)
+- Melde seg inn via nettsiden → **Til godkjenning**
+- Admin godkjenner eller legger inn manuelt → velkomstmail (HTML-mal)
+- Admin melder ut → avslutningsmail (HTML-mal) → **Utmeldt**
+- Se alle medlemmer i liste
+- Senere: Vipps-kontingent
+- Personopplysninger sikret med RLS
 
-## Arkitektur
-
-| Lag | Rolle |
-|-----|--------|
-| Nettside (`medlem.html`, `utmelding.html`) | Innmelding og utmelding |
-| Supabase DB | `members`, `membership_payments`, `unsubscribe_tokens`, `member_mail_outbox` |
-| Supabase Edge Functions | E-postutsending (Resend når konfigurert); senere Vipps |
-| Admin (`/admin/` → **Medlemmer**) | Manuell inn/utmelding, aktivering, e-postkø |
+## Flyt
 
 ```mermaid
 flowchart LR
-  A[Nettside: meld inn] --> B[RPC register_member_public]
-  B --> C[(members pending)]
-  B --> D[mail_outbox]
-  E[Admin aktiverer] --> C
-  E --> D
-  D --> F[E-post med utmeldingslenke]
-  G[utmelding.html?token=] --> H[RPC unsubscribe_with_token]
-  H --> C
+  A[medlem.html] --> B[pending]
+  B -->|Godkjenn| C[active]
+  D[Admin manuell inn] --> C
+  C -->|Meld ut| E[cancelled]
+  C --> F[Velkomstmail fra mal]
+  D --> F
+  E --> G[Avslutningsmail fra mal]
 ```
 
 ## Steg

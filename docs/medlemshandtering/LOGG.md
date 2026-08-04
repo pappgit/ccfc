@@ -14,14 +14,15 @@ Kronologisk logg for prosjektet medlemshåndtering.
 | 2026-08-04 | Migrering kjørt i Supabase. Verifisert: `members` RLS, `register_member_public`, `unsubscribe_with_token`, `site_settings.membership`. |
 | 2026-08-04 | Bug funnet ved e2e-test: `gen_random_bytes` mangler i `search_path`. Fix-migrering `20260804160000_membership_pgcrypto_path.sql` — **må kjøres**. |
 | 2026-08-04 | Fix-migrering kjørt. E2e OK: innmelding → `pending_payment`, duplikat-e-post avvist, anon uten PII-lesing. |
+| 2026-08-04 | Forenklet flyt: `pending` (til godkjenning) → godkjenn/manuell inn (+ velkomstmail) / meld ut (+ avslutningsmail). HTML-maler i admin. |
 
 ## Åpent
 
-- Sette `RESEND_API_KEY` (+ `MAIL_FROM`) når automatisk e-post ønskes
-- Vipps bedrift / org.nr. / ePayment (steg 3)
+- Kjøre `20260804170000_membership_simple_flow.sql` i Supabase
+- Sette `RESEND_API_KEY` (+ `MAIL_FROM`) når automatisk HTML-e-post ønskes
+- Vipps bedrift / org.nr. / ePayment (senere)
 - Personvernerklæring på nettsiden før produksjonsbruk
-- Manuell smoke-test i nettleser: `/medlem.html` → admin aktiver → mailto → `/utmelding.html`
-- Merge PR #8 (pgcrypto-fix) så fiksen også ligger i repo/main
+- Smoke-test: innmelding → godkjenn → mailto → meld ut
 
 ## Notater
 

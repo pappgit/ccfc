@@ -89,7 +89,7 @@
         form.reset();
         showMsg(
           msg,
-          "Takk! Vi har mottatt innmeldingen. Du får e-post med bekreftelse (og utmeldingslenke) når den er sendt fra oss.",
+          "Takk! Innmeldingen er mottatt og venter på godkjenning. Du får e-post når medlemskapet er godkjent.",
           false
         );
       } catch (err) {

@@ -327,12 +327,12 @@
         <section class="admin-panel" id="panel-members">
           <h1>Medlemmer</h1>
           <p class="lead">
-            Medlemsregister: meld inn/ut, aktiver pending, og send utmeldingslenke på e-post.
-            Vipps-betaling kommer i senere steg.
+            Innmeldinger fra nettsiden går til <strong>Til godkjenning</strong>.
+            Godkjenn eller legg inn manuelt — da sendes velkomstmail. Meld ut sender avslutningsmail.
           </p>
 
           <div class="admin-card">
-            <h2>Meld inn manuelt</h2>
+            <h2>Legg inn medlem manuelt</h2>
             <form id="member-admin-form" class="admin-form">
               <label>
                 Fullt navn
@@ -357,26 +357,18 @@
                 </select>
               </label>
               <label>
-                Status
-                <select name="status">
-                  <option value="active">Aktiv</option>
-                  <option value="pending_payment">Venter betaling</option>
-                </select>
-              </label>
-              <label>
                 Notat (valgfritt)
                 <input type="text" name="notes" maxlength="200" />
               </label>
               <div class="row">
-                <button class="btn btn--sky" type="submit">Lagre medlem</button>
+                <button class="btn btn--sky" type="submit">Legg inn + send velkomstmail</button>
               </div>
               <p class="admin-msg" id="member-admin-msg" hidden></p>
             </form>
           </div>
 
           <div class="filters season-tabs" style="margin-bottom: 1rem" id="member-filters">
-            <button type="button" class="filter-btn is-active" data-member-filter="open">Åpne</button>
-            <button type="button" class="filter-btn" data-member-filter="pending_payment">Pending</button>
+            <button type="button" class="filter-btn is-active" data-member-filter="pending">Til godkjenning</button>
             <button type="button" class="filter-btn" data-member-filter="active">Aktive</button>
             <button type="button" class="filter-btn" data-member-filter="cancelled">Utmeldt</button>
             <button type="button" class="filter-btn" data-member-filter="all">Alle</button>
@@ -390,13 +382,45 @@
           <div id="members-list" class="members-admin-list"></div>
 
           <div class="admin-card" style="margin-top: 1.5rem">
+            <h2>E-postmaler (HTML)</h2>
+            <p style="color: var(--muted); font-size: 0.9rem; margin-bottom: 0.75rem">
+              Bruk plassholdere: <code>{{full_name}}</code>, <code>{{email}}</code>,
+              <code>{{phone}}</code>, <code>{{country}}</code>
+            </p>
+            <form id="member-templates-form" class="admin-form" style="max-width: 48rem">
+              <h3 style="font-size: 1rem; margin: 0.5rem 0">Velkomst (godkjent / manuell inn)</h3>
+              <label>
+                Emne
+                <input type="text" name="welcome_subject" id="tpl-welcome-subject" required />
+              </label>
+              <label>
+                HTML-innhold
+                <textarea name="welcome_html" id="tpl-welcome-html" rows="8" required></textarea>
+              </label>
+              <h3 style="font-size: 1rem; margin: 1rem 0 0.5rem">Utmelding (avsluttet)</h3>
+              <label>
+                Emne
+                <input type="text" name="cancelled_subject" id="tpl-cancelled-subject" required />
+              </label>
+              <label>
+                HTML-innhold
+                <textarea name="cancelled_html" id="tpl-cancelled-html" rows="8" required></textarea>
+              </label>
+              <div class="row">
+                <button class="btn btn--sky" type="submit">Lagre maler</button>
+              </div>
+              <p class="admin-msg" id="member-templates-msg" hidden></p>
+            </form>
+          </div>
+
+          <div class="admin-card" style="margin-top: 1.5rem">
             <div class="row" style="justify-content: space-between; align-items: center; margin-bottom: 0.75rem">
               <h2 style="margin: 0">E-postkø</h2>
               <button class="btn btn--solid" type="button" id="mail-outbox-reload">Oppdater</button>
             </div>
             <p style="color: var(--muted); font-size: 0.9rem; margin-bottom: 0.75rem">
-              Uten Resend: åpne mailto og marker som sendt. Med Resend: deploy
-              <code>dispatch-member-mail</code>.
+              Åpne mailto (ren tekst) og marker som sendt, eller deploy
+              <code>dispatch-member-mail</code> med Resend for HTML-utsending.
             </p>
             <div id="mail-outbox-list"></div>
             <p class="admin-msg" id="mail-outbox-msg" hidden></p>
@@ -472,6 +496,6 @@
     <script src="../assets/js/vendor/supabase.js?v=2.112.0"></script>
     <script src="../assets/js/supabase-config.js"></script>
     <script src="../assets/js/content.js"></script>
-    <script src="../assets/js/admin.js?v=20260804m"></script>
+    <script src="../assets/js/admin.js?v=20260804n"></script>
   </body>
 </html>

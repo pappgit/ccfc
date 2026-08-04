@@ -230,6 +230,7 @@
         loadFeedback(),
         loadMembers(),
         loadMailOutbox(),
+        loadMemberTemplates(),
       ]);
     } catch (err) {
       console.error(err);
@@ -293,6 +294,7 @@
       if (btn.dataset.panel === "members") {
         loadMembers();
         loadMailOutbox();
+        loadMemberTemplates();
       }
     });
   });
@@ -1362,29 +1364,28 @@
   /* —— Members —— */
   const memberAdminMsg = $("#member-admin-msg");
   const mailOutboxMsg = $("#mail-outbox-msg");
+  const memberTemplatesMsg = $("#member-templates-msg");
   let membersItems = [];
-  let memberFilter = "open";
+  let memberFilter = "pending";
   let memberSearch = "";
   let mailOutboxRows = [];
-
-  function sitePublicBase() {
-    try {
-      const u = new URL("..", location.href);
-      return u.href.replace(/\/$/, "");
-    } catch {
-      return location.origin;
-    }
-  }
 
   function statusLabel(status) {
     return (
       {
-        pending_payment: "Venter betaling",
+        pending: "Til godkjenning",
+        pending_payment: "Til godkjenning",
         active: "Aktiv",
         cancelled: "Utmeldt",
-        lapsed: "Utløpt",
+        lapsed: "Utmeldt",
       }[status] || status
     );
+  }
+
+  function normalizeMemberStatus(status) {
+    if (status === "pending_payment") return "pending";
+    if (status === "lapsed") return "cancelled";
+    return status;
   }
 
   function formatDate(iso) {
@@ -1400,12 +1401,8 @@
     const host = $("#members-list");
     if (!host) return;
     let list = [...membersItems];
-    if (memberFilter === "open") {
-      list = list.filter(
-        (m) => m.status === "pending_payment" || m.status === "active" || m.status === "lapsed"
-      );
-    } else if (memberFilter !== "all") {
-      list = list.filter((m) => m.status === memberFilter);
+    if (memberFilter !== "all") {
+      list = list.filter((m) => normalizeMemberStatus(m.status) === memberFilter);
     }
     const q = memberSearch.trim().toLowerCase();
     if (q) {
@@ -1415,17 +1412,21 @@
       });
     }
     if (!list.length) {
-      host.innerHTML = `<p class="empty-state">Ingen medlemmer i dette filteret.</p>`;
+      host.innerHTML = `<p class="empty-state">Ingen medlemmer i denne listen.</p>`;
       return;
     }
     host.innerHTML = list
       .map((m) => {
+        const st = normalizeMemberStatus(m.status);
         const badgeClass =
-          m.status === "active"
-            ? ""
-            : m.status === "pending_payment"
-              ? " badge--pending"
-              : " badge--draft";
+          st === "active" ? "" : st === "pending" ? " badge--pending" : " badge--draft";
+        const actions = [];
+        if (st === "pending") {
+          actions.push(`<button type="button" class="btn btn--sky" data-member-approve>Godkjenn</button>`);
+          actions.push(`<button type="button" class="btn btn--danger" data-member-cancel>Avvis / meld ut</button>`);
+        } else if (st === "active") {
+          actions.push(`<button type="button" class="btn btn--danger" data-member-cancel>Meld ut</button>`);
+        }
         return `<article class="member-admin-item" data-id="${escapeAttr(m.id)}">
           <div>
             <h3>${escapeHtml(m.full_name || "")}</h3>
@@ -1437,45 +1438,29 @@
             </p>
             <p class="member-admin-meta">
               Opprettet ${escapeHtml(formatDate(m.created_at))}
-              ${m.paid_until ? ` · Betalt til ${escapeHtml(formatDate(m.paid_until))}` : ""}
+              ${m.joined_at ? ` · Godkjent ${escapeHtml(formatDate(m.joined_at))}` : ""}
+              ${m.cancelled_at ? ` · Utmeldt ${escapeHtml(formatDate(m.cancelled_at))}` : ""}
               ${m.source ? ` · ${escapeHtml(m.source)}` : ""}
             </p>
           </div>
-          <div class="row member-admin-actions">
-            ${
-              m.status === "pending_payment" || m.status === "lapsed" || m.status === "cancelled"
-                ? `<button type="button" class="btn btn--sky" data-member-activate>Aktiver</button>`
-                : ""
-            }
-            ${
-              m.status !== "cancelled"
-                ? `<button type="button" class="btn btn--solid" data-member-unsub-link>Utmeldingslenke</button>
-                   <button type="button" class="btn btn--danger" data-member-cancel>Meld ut</button>`
-                : ""
-            }
-          </div>
+          <div class="row member-admin-actions">${actions.join("\n")}</div>
         </article>`;
       })
       .join("");
 
-    host.querySelectorAll("[data-member-activate]").forEach((btn) => {
+    host.querySelectorAll("[data-member-approve]").forEach((btn) => {
       btn.addEventListener("click", async () => {
         const id = btn.closest("[data-id]")?.getAttribute("data-id");
         if (!id) return;
-        if (!confirm("Aktivere dette medlemmet og køe velkomst-e-post?")) return;
+        if (!confirm("Godkjenne medlemmet og legge velkomstmail i kø?")) return;
         try {
-          const { error } = await client.rpc("activate_member", {
-            p_member_id: id,
-            p_base_url: sitePublicBase(),
-            p_amount_ore: 20000,
-            p_note: "Manuell aktivering fra admin",
-          });
+          const { error } = await client.rpc("approve_member", { p_member_id: id });
           if (error) throw error;
-          showMsg(memberAdminMsg, "Aktivert. Velkomst-e-post ligger i køen.");
+          showMsg(memberAdminMsg, "Godkjent. Velkomstmail ligger i e-postkøen.");
           await loadMembers();
           await loadMailOutbox();
         } catch (err) {
-          showMsg(memberAdminMsg, err.message || "Kunne ikke aktivere.", true);
+          showMsg(memberAdminMsg, err.message || "Kunne ikke godkjenne.", true);
         }
       });
     });
@@ -1484,58 +1469,24 @@
       btn.addEventListener("click", async () => {
         const id = btn.closest("[data-id]")?.getAttribute("data-id");
         if (!id) return;
-        if (!confirm("Melde ut dette medlemmet?")) return;
+        const member = membersItems.find((m) => m.id === id);
+        const st = normalizeMemberStatus(member?.status);
+        const ok =
+          st === "pending"
+            ? confirm("Avvise denne innmeldingen? (ingen mail sendes)")
+            : confirm("Melde ut medlemmet? Det får avslutningsmail i køen.");
+        if (!ok) return;
         try {
-          const { data: sessionData } = await client.auth.getSession();
-          const { error } = await client
-            .from("members")
-            .update({ status: "cancelled", cancelled_at: new Date().toISOString() })
-            .eq("id", id);
+          const { error } = await client.rpc("cancel_member_admin", { p_member_id: id });
           if (error) throw error;
-          await client.from("member_audit_log").insert({
-            member_id: id,
-            action: "cancel_admin",
-            detail: {},
-            actor_id: sessionData.session?.user?.id || null,
-          });
-          showMsg(memberAdminMsg, "Medlem meldt ut.");
-          await loadMembers();
-        } catch (err) {
-          showMsg(memberAdminMsg, err.message || "Kunne ikke melde ut.", true);
-        }
-      });
-    });
-
-    host.querySelectorAll("[data-member-unsub-link]").forEach((btn) => {
-      btn.addEventListener("click", async () => {
-        const id = btn.closest("[data-id]")?.getAttribute("data-id");
-        if (!id) return;
-        try {
-          const { data, error } = await client.rpc("issue_member_unsubscribe_link", {
-            p_member_id: id,
-            p_base_url: sitePublicBase(),
-            p_ttl_days: 30,
-            p_queue_mail: true,
-          });
-          if (error) throw error;
-          const url = data?.url || "";
-          if (url && navigator.clipboard?.writeText) {
-            try {
-              await navigator.clipboard.writeText(url);
-            } catch {
-              /* ignore */
-            }
-          }
           showMsg(
             memberAdminMsg,
-            url
-              ? "Utmeldingslenke kopiert (hvis tillatt) og lagt i e-postkøen."
-              : "Lenke opprettet."
+            st === "pending" ? "Innmelding avvist." : "Utmeldt. Avslutningsmail ligger i e-postkøen."
           );
+          await loadMembers();
           await loadMailOutbox();
-          if (url) window.prompt("Utmeldingslenke:", url);
         } catch (err) {
-          showMsg(memberAdminMsg, err.message || "Kunne ikke lage lenke.", true);
+          showMsg(memberAdminMsg, err.message || "Kunne ikke melde ut.", true);
         }
       });
     });
@@ -1558,7 +1509,7 @@
 
   $("#member-filters")?.querySelectorAll("[data-member-filter]").forEach((btn) => {
     btn.addEventListener("click", () => {
-      memberFilter = btn.getAttribute("data-member-filter") || "open";
+      memberFilter = btn.getAttribute("data-member-filter") || "pending";
       $("#member-filters")
         ?.querySelectorAll("[data-member-filter]")
         .forEach((b) => b.classList.toggle("is-active", b === btn));
@@ -1578,49 +1529,82 @@
     const email = String(fd.get("email") || "").trim().toLowerCase();
     const phone = String(fd.get("phone") || "").replace(/\s+/g, "");
     const country = String(fd.get("country") || "NO");
-    const status = String(fd.get("status") || "active");
     const notes = String(fd.get("notes") || "").trim();
     if (!fullName || !email) {
       showMsg(memberAdminMsg, "Navn og e-post er påkrevd.", true);
       return;
     }
     try {
-      const { data: sessionData } = await client.auth.getSession();
-      const row = {
-        full_name: fullName,
-        email,
-        phone,
-        country,
-        status: status === "active" ? "pending_payment" : status,
-        notes,
-        source: "admin",
-        consent_privacy_at: new Date().toISOString(),
-        created_by: sessionData.session?.user?.id || null,
-      };
-      const { data, error } = await client.from("members").insert(row).select("id").single();
-      if (error) throw error;
-      await client.from("member_audit_log").insert({
-        member_id: data.id,
-        action: "register_admin",
-        detail: { requested_status: status },
-        actor_id: sessionData.session?.user?.id || null,
+      const { error } = await client.rpc("admin_create_member", {
+        p_full_name: fullName,
+        p_email: email,
+        p_phone: phone,
+        p_country: country,
+        p_notes: notes,
       });
-      if (status === "active") {
-        const { error: actErr } = await client.rpc("activate_member", {
-          p_member_id: data.id,
-          p_base_url: sitePublicBase(),
-          p_amount_ore: 20000,
-          p_note: "Manuell innmelding fra admin",
-        });
-        if (actErr) throw actErr;
-      }
+      if (error) throw error;
       e.target.reset();
-      showMsg(memberAdminMsg, "Medlem lagret.");
+      showMsg(memberAdminMsg, "Medlem lagt inn. Velkomstmail ligger i e-postkøen.");
+      memberFilter = "active";
+      $("#member-filters")
+        ?.querySelectorAll("[data-member-filter]")
+        .forEach((b) =>
+          b.classList.toggle("is-active", b.getAttribute("data-member-filter") === "active")
+        );
       await loadMembers();
       await loadMailOutbox();
     } catch (err) {
       showMsg(memberAdminMsg, err.message || "Kunne ikke lagre medlem.", true);
     }
+  });
+
+  async function loadMemberTemplates() {
+    const { data, error } = await client
+      .from("site_settings")
+      .select("value")
+      .eq("key", "member_mail_templates")
+      .maybeSingle();
+    if (error) {
+      showMsg(memberTemplatesMsg, error.message, true);
+      return;
+    }
+    const v = data?.value || {};
+    const welcome = v.welcome || {};
+    const cancelled = v.cancelled || {};
+    const ws = $("#tpl-welcome-subject");
+    const wh = $("#tpl-welcome-html");
+    const cs = $("#tpl-cancelled-subject");
+    const ch = $("#tpl-cancelled-html");
+    if (ws) ws.value = welcome.subject || "";
+    if (wh) wh.value = welcome.html || "";
+    if (cs) cs.value = cancelled.subject || "";
+    if (ch) ch.value = cancelled.html || "";
+  }
+
+  $("#member-templates-form")?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const value = {
+      welcome: {
+        subject: String($("#tpl-welcome-subject")?.value || "").trim(),
+        html: String($("#tpl-welcome-html")?.value || "").trim(),
+      },
+      cancelled: {
+        subject: String($("#tpl-cancelled-subject")?.value || "").trim(),
+        html: String($("#tpl-cancelled-html")?.value || "").trim(),
+      },
+    };
+    if (!value.welcome.subject || !value.welcome.html || !value.cancelled.subject || !value.cancelled.html) {
+      showMsg(memberTemplatesMsg, "Fyll inn alle mal-feltene.", true);
+      return;
+    }
+    const { data: sessionData } = await client.auth.getSession();
+    const { error } = await client.from("site_settings").upsert({
+      key: "member_mail_templates",
+      value,
+      updated_by: sessionData.session?.user?.id || null,
+    });
+    if (error) showMsg(memberTemplatesMsg, error.message, true);
+    else showMsg(memberTemplatesMsg, "Maler lagret.");
   });
 
   function renderMailOutbox(rows) {
@@ -1655,8 +1639,8 @@
                 : ""
             }
             ${
-              r.unsubscribe_url
-                ? `<button type="button" class="btn btn--solid" data-mail-copy-link>Kopier lenke</button>`
+              r.body_html
+                ? `<button type="button" class="btn btn--solid" data-mail-copy-html>Kopier HTML</button>`
                 : ""
             }
           </div>
@@ -1693,16 +1677,16 @@
       });
     });
 
-    host.querySelectorAll("[data-mail-copy-link]").forEach((btn) => {
+    host.querySelectorAll("[data-mail-copy-html]").forEach((btn) => {
       btn.addEventListener("click", async () => {
         const id = btn.closest("[data-id]")?.getAttribute("data-id");
         const row = mailOutboxRows.find((r) => r.id === id);
-        if (!row?.unsubscribe_url) return;
+        if (!row?.body_html) return;
         try {
-          await navigator.clipboard.writeText(row.unsubscribe_url);
-          showMsg(mailOutboxMsg, "Utmeldingslenke kopiert.");
+          await navigator.clipboard.writeText(row.body_html);
+          showMsg(mailOutboxMsg, "HTML kopiert.");
         } catch {
-          window.prompt("Utmeldingslenke:", row.unsubscribe_url);
+          window.prompt("HTML:", row.body_html);
         }
       });
     });
