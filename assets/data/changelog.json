@@ -2,6 +2,14 @@
   "entries": [
     {
       "date": "2026-08-04",
+      "title": "Slideshow synlig på Mac Safari",
+      "items": [
+        "Forsidebildene har eget høydeområde over tekstboksen, så de ikke skjules på desktop",
+        "Bildene lastes som vanlige bilder i stedet for CSS-bakgrunn for bedre Safari-støtte"
+      ]
+    },
+    {
+      "date": "2026-08-04",
       "title": "Medlemskap: godkjenning og HTML-e-post",
       "items": [
         "Innmelding går til godkjenning før medlemskap aktiveres",
