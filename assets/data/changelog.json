@@ -2,6 +2,14 @@
   "entries": [
     {
       "date": "2026-08-04",
+      "title": "Slideshow synlig på Mac Safari",
+      "items": [
+        "Forsidebildene har eget høydeområde over tekstboksen, så de ikke skjules på desktop",
+        "Bildene lastes som vanlige bilder i stedet for CSS-bakgrunn for bedre Safari-støtte"
+      ]
+    },
+    {
+      "date": "2026-08-04",
       "title": "Valgfritt bilde i nyhetsartikler",
       "items": [
         "Admin: last opp eller lim inn bilde-URL per artikkel",

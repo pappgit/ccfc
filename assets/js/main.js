@@ -518,10 +518,20 @@
         ? (u) => window.CCFCContent.assetPath(u)
         : (u) => u;
       host.innerHTML = list
-        .map(
-          (s, i) =>
-            `<div class="hero__slide${i === 0 ? " is-active" : ""}" style="background-image: url('${assetPath(s.url).replace(/'/g, "%27")}')" role="img" aria-label="${(s.alt || "Coventry City i aksjon").replace(/"/g, "&quot;")}"></div>`
-        )
+        .map((s, i) => {
+          const src = assetPath(s.url)
+            .replace(/&/g, "&amp;")
+            .replace(/"/g, "&quot;")
+            .replace(/</g, "&lt;");
+          const alt = (s.alt || "Coventry City i aksjon")
+            .replace(/&/g, "&amp;")
+            .replace(/"/g, "&quot;")
+            .replace(/</g, "&lt;");
+          const eager = i === 0
+            ? 'fetchpriority="high"'
+            : 'loading="lazy"';
+          return `<div class="hero__slide${i === 0 ? " is-active" : ""}"><img src="${src}" alt="${alt}" width="1920" height="1080" decoding="async" ${eager} /></div>`;
+        })
         .join("");
     }
 
