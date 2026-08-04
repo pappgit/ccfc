@@ -1,11 +1,5 @@
-# Oppdater kampdata hver mandag (skeleton)
-# Aktiver når API-nøkkel ligger i repo Secrets som API_FOOTBALL_KEY.
-#
-# Flyt:
-# 1. Hent Coventry-fixtures (liga + cup) for sesongen
-# 2. For FT-kamper: events (målscorere) + statistics
-# 3. Skriv assets/data/fixtures.json
-# 4. Commit + push → GitHub Pages rebuildes
+# Oppdater kampdata hver mandag
+# Bruker secrets.API_FOOTBALL_KEY. Hardcap på API-kall i scriptet (gratisplan 100/dag).
 
 name: Update fixtures
 
@@ -24,29 +18,26 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Placeholder — koble på API senere
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Fetch fixtures (API-Football)
         env:
           API_FOOTBALL_KEY: ${{ secrets.API_FOOTBALL_KEY }}
-        run: |
-          echo "Mandagsjobb er klar som skjelett."
-          echo "Når API_FOOTBALL_KEY er satt, erstatt dette steget med et script"
-          echo "som skriver assets/data/fixtures.json (se scripts/README.md)."
-          if [ -z "$API_FOOTBALL_KEY" ]; then
-            echo "Ingen API-nøkkel ennå — hopper over synk (forventet i pitch-fasen)."
-          else
-            echo "API-nøkkel finnes. Implementer scripts/update-fixtures.mjs neste."
-          fi
+          SEASON: "2026"
+          TEAM_ID: "1346"
+          MAX_DETAIL_BATCHES: "2"
+        run: node scripts/update-fixtures.mjs
 
-      # Når scriptet er klart, avkommenter:
-      # - name: Fetch fixtures
-      #   env:
-      #     API_FOOTBALL_KEY: ${{ secrets.API_FOOTBALL_KEY }}
-      #   run: node scripts/update-fixtures.mjs
-      #
-      # - name: Commit data
-      #   run: |
-      #     git config user.name "github-actions[bot]"
-      #     git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-      #     git add assets/data/fixtures.json
-      #     git diff --staged --quiet || git commit -m "chore: update fixtures"
-      #     git push
+      - name: Commit updated fixtures
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/data/fixtures.json
+          if git diff --staged --quiet; then
+            echo "Ingen endringer i fixtures.json"
+          else
+            git commit -m "chore: update Coventry fixtures from API-Football"
+            git push
+          fi
