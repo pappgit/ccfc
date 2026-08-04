@@ -14,6 +14,7 @@
 
   const PROJECT_REF = "zzqhgqcwuztbqgkvpxjg";
   const AUTH_STORAGE_KEY = `sb-${PROJECT_REF}-auth-token`;
+  const CACHE_BUST = "20260804-changelog2";
 
   // Drop corrupted/half-written sessions that can freeze auth-js.
   try {
@@ -1108,7 +1109,9 @@
 
   async function loadBuiltinChangelog() {
     try {
-      const res = await fetch("../assets/data/changelog.json");
+      const res = await fetch(`../assets/data/changelog.json?v=${encodeURIComponent(CACHE_BUST)}`, {
+        cache: "no-store",
+      });
       if (!res.ok) return [];
       const data = await res.json();
       return Array.isArray(data?.entries) ? data.entries : [];
