@@ -35,7 +35,7 @@ Deno.serve(async (req) => {
 
   const { data: rows, error } = await sb
     .from("member_mail_outbox")
-    .select("id, to_email, subject, body_text")
+    .select("id, to_email, subject, body_text, body_html")
     .eq("status", "pending")
     .order("created_at", { ascending: true })
     .limit(25);
@@ -59,6 +59,7 @@ Deno.serve(async (req) => {
           to: [row.to_email],
           subject: row.subject,
           text: row.body_text,
+          html: row.body_html || undefined,
         }),
       });
       if (!res.ok) {

@@ -14,7 +14,7 @@ Admin-UI: https://pappgit.github.io/ccfc/admin/
 
 ## Nyhetsbilder
 
-1. Kjør migrering `supabase/migrations/20260804160000_news_image.sql` i Supabase SQL Editor (eller `supabase db push`).
+1. Kjør migrering `supabase/migrations/20260804180000_news_image.sql` i Supabase SQL Editor (eller `supabase db push`) hvis `image_url` ikke allerede finnes på `news_posts`.
 2. I admin → **Nyheter**: last opp bilde eller lim inn URL. Tomt felt = ingen bildeplass på forsiden/nyhetssiden.
 3. Bilder lagres i Storage-bucket `media` under `news/`.
 
@@ -22,10 +22,17 @@ Admin-UI: https://pappgit.github.io/ccfc/admin/
 
 Plan og logg: [`docs/medlemshandtering/`](../docs/medlemshandtering/).
 
-1. Kjør migrering `supabase/migrations/20260804150000_membership.sql` i Supabase SQL Editor (eller `supabase db push`).
-2. Offentlig innmelding: `/medlem.html`
-3. Utmelding via e-postlenke: `/utmelding.html?token=…`
-4. E-post: bruk **Åpne mailto** i admin inntil Resend er satt opp (`dispatch-member-mail`).
+**Flyt**
+1. Nettside `/medlem.html` → status **Til godkjenning** (`pending`)
+2. Admin **Godkjenn** eller **Legg inn manuelt** → **Aktiv** + velkomstmail i kø
+3. Admin **Meld ut** → **Utmeldt** + avslutningsmail i kø
+4. HTML-maler redigeres under Medlemmer → E-postmaler
+
+**Migreringer (kjør i rekkefølge hvis ikke allerede kjørt)**
+- `20260804150000_membership.sql`
+- `20260804160000_membership_pgcrypto_path.sql`
+- `20260804170000_membership_simple_flow.sql` ← enkel flyt + maler
+- `20260804180000_news_image.sql` ← valgfritt bilde på artikler
 
 ## Brukere
 
