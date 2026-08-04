@@ -1,9 +1,12 @@
 /**
  * Loads editable site content from Supabase (key: site) with local default fallback.
  * Applies to [data-cms], [data-cms-html], [data-cms-src], [data-cms-href].
+ *
+ * Empty strings in the database fall back to defaults so admin fields match
+ * what visitors see (HTML fallbacks were previously "stuck" when CMS had "").
  */
 window.CCFCContent = (function () {
-  const CACHE_KEY = "ccfc_site_content_v1";
+  const CACHE_KEY = "ccfc_site_content_v2";
   let content = null;
 
   function getByPath(obj, path) {
@@ -18,6 +21,31 @@ window.CCFCContent = (function () {
       cur = cur[parts[i]];
     }
     cur[parts[parts.length - 1]] = value;
+  }
+
+  /** Merge remote CMS over defaults; blank strings fall back to default text. */
+  function mergeDefaults(defaults, remote) {
+    if (remote == null) return defaults;
+    if (Array.isArray(defaults)) {
+      return Array.isArray(remote) ? remote : defaults;
+    }
+    if (defaults && typeof defaults === "object") {
+      if (!remote || typeof remote !== "object" || Array.isArray(remote)) {
+        return { ...defaults };
+      }
+      const out = { ...defaults };
+      for (const key of Object.keys(defaults)) {
+        out[key] = mergeDefaults(defaults[key], remote[key]);
+      }
+      for (const key of Object.keys(remote)) {
+        if (!(key in out)) out[key] = remote[key];
+      }
+      return out;
+    }
+    if (typeof remote === "string" && remote.trim() === "" && typeof defaults === "string") {
+      return defaults;
+    }
+    return remote;
   }
 
   function assetPath(url) {
@@ -65,18 +93,21 @@ window.CCFCContent = (function () {
       }
     }
 
+    const defaults = await loadDefault();
+
     try {
       const remote = await loadRemote();
       if (remote) {
-        content = remote;
-        sessionStorage.setItem(CACHE_KEY, JSON.stringify(remote));
+        content = mergeDefaults(defaults, remote);
+        sessionStorage.setItem(CACHE_KEY, JSON.stringify(content));
         return content;
       }
     } catch {
       /* ignore */
     }
 
-    if (!content || bypassCache) content = await loadDefault();
+    if (!content || bypassCache) content = defaults;
+    else content = mergeDefaults(defaults, content);
     return content;
   }
 
@@ -86,7 +117,7 @@ window.CCFCContent = (function () {
     root.querySelectorAll("[data-cms]").forEach((el) => {
       const path = el.getAttribute("data-cms");
       const val = getByPath(content, path);
-      if (val == null || val === "") return;
+      if (val == null) return;
       el.textContent = String(val);
     });
 
@@ -152,6 +183,7 @@ window.CCFCContent = (function () {
 
   function clearCache() {
     sessionStorage.removeItem(CACHE_KEY);
+    sessionStorage.removeItem("ccfc_site_content_v1");
     content = null;
   }
 
@@ -161,6 +193,7 @@ window.CCFCContent = (function () {
     apply,
     getByPath,
     setByPath,
+    mergeDefaults,
     clearCache,
     assetPath,
     get: () => content,

@@ -6,11 +6,17 @@ Admin-UI: https://pappgit.github.io/ccfc/admin/
 ## Menyer
 
 1. **Innhold** — tekster, meny (synlighet), seksjoner, logo/favicon, forside-slideshow
-2. **Nyheter** — legg til, rediger og slett artikler
+2. **Nyheter** — legg til, rediger og slett artikler (valgfritt bilde per artikkel)
 3. **Medlemmer** — medlemsregister, manuell inn/utmelding, e-postkø med utmeldingslenke
 4. **Ønsker** — kommentarer/forslag; huk av når gjennomført
 5. **Endringslogg** — oversikt over endringer (system + manuelt lagt til)
 6. **API** — synk-innstillinger (nøkler i GitHub Secrets)
+
+## Nyhetsbilder
+
+1. Kjør migrering `supabase/migrations/20260804180000_news_image.sql` i Supabase SQL Editor (eller `supabase db push`) hvis `image_url` ikke allerede finnes på `news_posts`.
+2. I admin → **Nyheter**: last opp bilde eller lim inn URL. Tomt felt = ingen bildeplass på forsiden/nyhetssiden.
+3. Bilder lagres i Storage-bucket `media` under `news/`.
 
 ## Medlemshåndtering
 
@@ -26,6 +32,7 @@ Plan og logg: [`docs/medlemshandtering/`](../docs/medlemshandtering/).
 - `20260804150000_membership.sql`
 - `20260804160000_membership_pgcrypto_path.sql`
 - `20260804170000_membership_simple_flow.sql` ← enkel flyt + maler
+- `20260804180000_news_image.sql` ← valgfritt bilde på artikler
 
 ## Brukere
 

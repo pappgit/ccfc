@@ -759,6 +759,16 @@ p {
   color: var(--muted);
 }
 
+.news-item__image {
+  display: block;
+  width: 100%;
+  max-width: 28rem;
+  height: auto;
+  margin-top: 0.85rem;
+  object-fit: cover;
+  aspect-ratio: 16 / 9;
+}
+
 .article {
   max-width: 40rem;
 }
@@ -772,6 +782,16 @@ p {
   margin-bottom: 1rem;
 }
 
+.article__image {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: min(32rem, 70vh);
+  object-fit: contain;
+  margin: 0 0 1.5rem;
+  background: transparent;
+}
+
 .article h1 {
   font-size: clamp(2.6rem, 7vw, 4rem);
   margin-bottom: 1.25rem;
@@ -779,6 +799,21 @@ p {
 
 .article p + p {
   margin-top: 1rem;
+}
+
+@media (max-width: 640px) {
+  .news-item {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .news-item__date {
+    padding-top: 0;
+  }
+
+  .news-item__image {
+    max-width: none;
+  }
 }
 
 /* —— About / split —— */

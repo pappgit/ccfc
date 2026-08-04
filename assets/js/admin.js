@@ -14,6 +14,7 @@
 
   const PROJECT_REF = "zzqhgqcwuztbqgkvpxjg";
   const AUTH_STORAGE_KEY = `sb-${PROJECT_REF}-auth-token`;
+  const CACHE_BUST = "20260804-changelog2";
 
   // Drop corrupted/half-written sessions that can freeze auth-js.
   try {
@@ -426,8 +427,12 @@
       label: "Footer",
       fields: [
         { path: "footer.title", label: "Tittel", type: "text" },
-        { path: "footer.text", label: "Tekst", type: "textarea" },
-        { path: "footer.tagline", label: "Tagline", type: "text" },
+        {
+          path: "footer.text",
+          label: "Tekst under tittel",
+          type: "textarea",
+        },
+        { path: "footer.tagline", label: "Tagline (f.eks. Play Up Sky Blues)", type: "text" },
         { path: "footer.adminLabel", label: "Admin-lenke", type: "text" },
       ],
     },
@@ -574,7 +579,9 @@
         ? `<p style="color:var(--muted);margin-bottom:0.85rem;font-size:0.9rem">Endre menynavn og huk av hvilke sider som skal vises i menyen.</p>`
         : section.id === "sections"
           ? `<p style="color:var(--muted);margin-bottom:0.85rem;font-size:0.9rem">Slå av/på større blokker på nettsiden uten å slette innholdet.</p>`
-          : ""
+          : section.id === "footer"
+            ? `<p style="color:var(--muted);margin-bottom:0.85rem;font-size:0.9rem">Tittel og tekst vises nederst på alle sider. Tomme felt fylles automatisk med standardtekst.</p>`
+            : ""
     }${section.fields
       .map((f) => {
         const raw = window.CCFCContent.getByPath(contentState, f.path);
@@ -923,10 +930,20 @@
             : `<span class="badge badge--draft">Utkast</span>`,
           p.show_on_home ? `<span class="badge">Forside</span>` : "",
         ].join("");
+        const thumb = p.image_url
+          ? `<img class="news-admin-item__thumb" src="${escapeAttr(
+              window.CCFCContent?.assetPath
+                ? window.CCFCContent.assetPath(p.image_url)
+                : p.image_url
+            )}" alt="" />`
+          : "";
         return `<article class="news-admin-item" data-id="${p.id}">
-          <div>
-            <h3>${escapeHtml(p.title)}</h3>
-            <p>${badges}${escapeHtml(p.excerpt || "")}</p>
+          <div class="news-admin-item__main">
+            ${thumb}
+            <div>
+              <h3>${escapeHtml(p.title)}</h3>
+              <p>${badges}${escapeHtml(p.excerpt || "")}</p>
+            </div>
           </div>
           <div class="row">
             <button type="button" class="btn btn--solid" data-edit="${p.id}">Rediger</button>
@@ -958,12 +975,33 @@
     $("#news-body").value = post.body || "";
     $("#news-published").checked = !!post.published;
     $("#news-show-on-home").checked = !!post.show_on_home;
+    setNewsImageUrl(post.image_url || "");
     const delBtn = $("#news-delete");
     if (delBtn) delBtn.hidden = false;
     const saveBtn = $("#news-save-btn");
     if (saveBtn) saveBtn.textContent = "Oppdater artikkel";
     $("#news-title").focus();
     $("#news-form")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function setNewsImageUrl(url) {
+    const input = $("#news-image-url");
+    const preview = $("#news-image-preview");
+    const wrap = $("#news-image-preview-wrap");
+    const removeBtn = $("#news-image-remove");
+    const fileInput = $("#news-image-file");
+    const value = (url || "").trim();
+    if (input) input.value = value;
+    if (fileInput) fileInput.value = "";
+    if (preview) {
+      preview.src = value
+        ? window.CCFCContent?.assetPath
+          ? window.CCFCContent.assetPath(value)
+          : value
+        : "";
+    }
+    if (wrap) wrap.hidden = !value;
+    if (removeBtn) removeBtn.hidden = !value;
   }
 
   function resetNewsForm() {
@@ -974,11 +1012,63 @@
     $("#news-slug").value = "";
     $("#news-published").checked = true;
     $("#news-show-on-home").checked = true;
+    setNewsImageUrl("");
     const delBtn = $("#news-delete");
     if (delBtn) delBtn.hidden = true;
     const saveBtn = $("#news-save-btn");
     if (saveBtn) saveBtn.textContent = "Lagre artikkel";
   }
+
+  async function uploadNewsImage(file) {
+    const ext = file.name.split(".").pop() || "jpg";
+    const path = `news/article-${Date.now()}.${ext}`;
+    const { error: upErr } = await client.storage.from("media").upload(path, file, {
+      upsert: true,
+      contentType: file.type,
+    });
+    if (upErr) throw upErr;
+    const { data: pub } = client.storage.from("media").getPublicUrl(path);
+    if (!pub?.publicUrl) throw new Error("Fikk ikke public URL.");
+    return pub.publicUrl;
+  }
+
+  $("#news-image-upload-btn")?.addEventListener("click", async () => {
+    const fileInput = $("#news-image-file");
+    const file = fileInput?.files?.[0];
+    if (!file) {
+      showMsg(newsMsg, "Velg et bilde først.", true);
+      return;
+    }
+    showMsg(newsMsg, "Laster opp bilde…");
+    try {
+      const url = await uploadNewsImage(file);
+      setNewsImageUrl(url);
+      showMsg(newsMsg, "Bilde lastet opp — husk å lagre artikkelen.");
+    } catch (err) {
+      showMsg(newsMsg, err.message || "Opplasting feilet.", true);
+    }
+  });
+
+  $("#news-image-remove")?.addEventListener("click", () => {
+    setNewsImageUrl("");
+    showMsg(newsMsg, "Bilde fjernet — husk å lagre artikkelen.");
+  });
+
+  $("#news-image-url")?.addEventListener("input", () => {
+    const url = $("#news-image-url")?.value?.trim() || "";
+    const preview = $("#news-image-preview");
+    const wrap = $("#news-image-preview-wrap");
+    const removeBtn = $("#news-image-remove");
+    if (preview) {
+      preview.src = url
+        ? window.CCFCContent?.assetPath
+          ? window.CCFCContent.assetPath(url)
+          : url
+        : "";
+    }
+    if (wrap) wrap.hidden = !url;
+    if (removeBtn) removeBtn.hidden = !url;
+  });
 
   function syncNewsSlugFromTitle() {
     const title = $("#news-title")?.value || "";
@@ -1019,12 +1109,27 @@
       $("#news-slug").value = slug;
     }
 
+    // Upload pending file on save if user selected one without pressing upload
+    const pendingFile = $("#news-image-file")?.files?.[0];
+    if (pendingFile) {
+      showMsg(newsMsg, "Laster opp bilde…");
+      try {
+        const url = await uploadNewsImage(pendingFile);
+        setNewsImageUrl(url);
+      } catch (err) {
+        showMsg(newsMsg, err.message || "Opplasting feilet.", true);
+        return;
+      }
+    }
+
     const published = !!fd.get("published");
+    const imageUrl = String($("#news-image-url")?.value || fd.get("image_url") || "").trim();
     const payload = {
       title,
       slug,
       excerpt: String(fd.get("excerpt") || ""),
       body: String(fd.get("body") || ""),
+      image_url: imageUrl || null,
       published,
       show_on_home: !!fd.get("show_on_home"),
       published_at: published ? new Date().toISOString() : null,
@@ -1108,7 +1213,9 @@
 
   async function loadBuiltinChangelog() {
     try {
-      const res = await fetch("../assets/data/changelog.json");
+      const res = await fetch(`../assets/data/changelog.json?v=${encodeURIComponent(CACHE_BUST)}`, {
+        cache: "no-store",
+      });
       if (!res.ok) return [];
       const data = await res.json();
       return Array.isArray(data?.entries) ? data.entries : [];

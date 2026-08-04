@@ -144,7 +144,7 @@
         );
         const { data, error } = await client
           .from("news_posts")
-          .select("slug,title,excerpt,body,published_at,show_on_home")
+          .select("slug,title,excerpt,body,image_url,published_at,show_on_home")
           .eq("published", true)
           .order("published_at", { ascending: false });
         if (!error && data?.length) {
@@ -154,6 +154,7 @@
             title: p.title,
             excerpt: p.excerpt,
             body: p.body,
+            image: p.image_url || "",
             show_on_home: p.show_on_home !== false,
           }));
         }
@@ -162,7 +163,28 @@
       /* fall through */
     }
     const data = await loadJSON("assets/data/news.json");
-    return (data.posts || []).map((p) => ({ ...p, show_on_home: true }));
+    return (data.posts || []).map((p) => ({
+      ...p,
+      image: p.image || "",
+      show_on_home: true,
+    }));
+  }
+
+  function newsImageHtml(url, className, alt) {
+    const src = String(url || "").trim();
+    if (!src) return "";
+    const resolved = window.CCFCContent?.assetPath
+      ? window.CCFCContent.assetPath(src)
+      : src;
+    const safeSrc = String(resolved)
+      .replace(/&/g, "&amp;")
+      .replace(/"/g, "&quot;")
+      .replace(/</g, "&lt;");
+    const safeAlt = String(alt || "")
+      .replace(/&/g, "&amp;")
+      .replace(/"/g, "&quot;")
+      .replace(/</g, "&lt;");
+    return `<img class="${className}" src="${safeSrc}" alt="${safeAlt}" loading="lazy" decoding="async" />`;
   }
 
   async function renderHomeNews() {
@@ -179,11 +201,13 @@
       el.innerHTML = `<div class="news-list">${posts
         .map((p) => {
           const d = formatDate(p.date || "2026-01-01");
+          const img = newsImageHtml(p.image, "news-item__image", p.title || "");
           return `<a class="news-item" href="nyheter.html#${p.id}">
             <div class="news-item__date">${d.day}. ${d.month} ${d.year}</div>
             <div>
               <h3>${p.title}</h3>
               <p>${p.excerpt}</p>
+              ${img}
             </div>
           </a>`;
         })
@@ -207,9 +231,11 @@
             .split(/\n\n+/)
             .map((para) => `<p>${para.replace(/\n/g, "<br>")}</p>`)
             .join("");
+          const img = newsImageHtml(p.image, "article__image", p.title || "");
           return `<article class="article" id="${p.id}" style="margin-bottom:3rem;padding-bottom:2rem;border-bottom:1px solid var(--line)">
             <div class="article__meta">${d.day}. ${d.month} ${d.year}</div>
             <h2 style="font-size:clamp(1.5rem,4vw,2.2rem);margin-bottom:1rem">${p.title}</h2>
+            ${img}
             ${paras}
           </article>`;
         })
