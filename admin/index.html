@@ -12,7 +12,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../assets/css/styles.css" />
-    <link rel="stylesheet" href="../assets/css/admin.css?v=20260804h" />
+    <link rel="stylesheet" href="../assets/css/admin.css?v=20260804j" />
     <link rel="icon" href="../assets/img/logo.jpg" type="image/jpeg" />
   </head>
   <body>
@@ -275,13 +275,14 @@
         <section class="admin-panel" id="panel-news">
           <h1>Nyheter</h1>
           <p class="lead">
-            Artikler som publiseres på forsiden og under Nyheter. Huk av «Vis på forsiden».
+            Legg til, rediger og slett artikler. Huk av «Publisert» for å vise dem på siden, og «Vis på forsiden» for forsiden.
           </p>
 
-          <div class="news-admin-list" id="news-list"></div>
-
           <div class="admin-card">
-            <h2 id="news-form-title">Ny artikkel</h2>
+            <div class="row" style="justify-content: space-between; align-items: center; margin-bottom: 0.75rem">
+              <h2 id="news-form-title" style="margin: 0">Legg til artikkel</h2>
+              <button class="btn btn--solid" type="button" id="news-new-btn">Ny artikkel</button>
+            </div>
             <form id="news-form" class="admin-form">
               <input type="hidden" name="post_id" id="news-post-id" value="" />
               <input type="hidden" name="slug" id="news-slug" value="" />
@@ -299,7 +300,7 @@
               </label>
               <div class="row">
                 <label class="check">
-                  <input type="checkbox" name="published" id="news-published" />
+                  <input type="checkbox" name="published" id="news-published" checked />
                   Publisert
                 </label>
                 <label class="check">
@@ -308,8 +309,8 @@
                 </label>
               </div>
               <div class="row">
-                <button class="btn btn--sky" type="submit">Lagre artikkel</button>
-                <button class="btn btn--solid" type="button" id="news-reset">Nullstill</button>
+                <button class="btn btn--sky" type="submit" id="news-save-btn">Lagre artikkel</button>
+                <button class="btn btn--solid" type="button" id="news-reset">Avbryt / nullstill</button>
                 <button class="btn btn--danger" type="button" id="news-delete" hidden>
                   Slett artikkel
                 </button>
@@ -317,6 +318,9 @@
               <p class="admin-msg" id="news-msg" hidden></p>
             </form>
           </div>
+
+          <h2 style="margin: 1.5rem 0 0.75rem; font-size: 1.15rem">Alle artikler</h2>
+          <div class="news-admin-list" id="news-list"></div>
         </section>
 
         <section class="admin-panel" id="panel-feedback">
@@ -388,6 +392,6 @@
     <script src="../assets/js/vendor/supabase.js?v=2.112.0"></script>
     <script src="../assets/js/supabase-config.js"></script>
     <script src="../assets/js/content.js"></script>
-    <script src="../assets/js/admin.js?v=20260804i"></script>
+    <script src="../assets/js/admin.js?v=20260804j"></script>
   </body>
 </html>

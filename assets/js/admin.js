@@ -307,11 +307,27 @@
       id: "nav",
       label: "Meny",
       fields: [
-        { path: "nav.home", label: "Hjem", type: "text" },
-        { path: "nav.fixtures", label: "Kamper", type: "text" },
-        { path: "nav.stats", label: "Statistikk", type: "text" },
-        { path: "nav.news", label: "Nyheter", type: "text" },
-        { path: "nav.about", label: "Om oss", type: "text" },
+        { path: "nav.home", label: "Hjem · tekst", type: "text" },
+        { path: "nav.visible.home", label: "Vis Hjem i menyen", type: "check" },
+        { path: "nav.fixtures", label: "Kamper · tekst", type: "text" },
+        { path: "nav.visible.fixtures", label: "Vis Kamper i menyen", type: "check" },
+        { path: "nav.stats", label: "Statistikk · tekst", type: "text" },
+        { path: "nav.visible.stats", label: "Vis Statistikk i menyen", type: "check" },
+        { path: "nav.news", label: "Nyheter · tekst", type: "text" },
+        { path: "nav.visible.news", label: "Vis Nyheter i menyen", type: "check" },
+        { path: "nav.about", label: "Om oss · tekst", type: "text" },
+        { path: "nav.visible.about", label: "Vis Om oss i menyen", type: "check" },
+      ],
+    },
+    {
+      id: "sections",
+      label: "Seksjoner",
+      fields: [
+        { path: "sections.homeMatches", label: "Forside: vis kampprogram", type: "check" },
+        { path: "sections.homeNews", label: "Forside: vis nyheter", type: "check" },
+        { path: "sections.homeAbout", label: "Forside: vis om-blokk", type: "check" },
+        { path: "sections.homeNote", label: "Forside: vis infostripe", type: "check" },
+        { path: "sections.footerAdmin", label: "Footer: vis admin-lenke", type: "check" },
       ],
     },
     {
@@ -404,9 +420,13 @@
       ?.querySelectorAll("#content-fields [name], #logo-url-input, #favicon-url-input, #hero-interval-input")
       .forEach((el) => {
         if (!el.name) return;
-        let val = el.value;
-        if (el.name === "home.heroSlideInterval") {
-          val = Number(val) || 6500;
+        let val;
+        if (el.type === "checkbox") {
+          val = el.checked;
+        } else if (el.name === "home.heroSlideInterval") {
+          val = Number(el.value) || 6500;
+        } else {
+          val = el.value;
         }
         window.CCFCContent.setByPath(contentState, el.name, val);
       });
@@ -525,9 +545,20 @@
     const host = $("#content-fields");
     if (!section || !host || !contentState) return;
 
-    host.innerHTML = `<div class="admin-card"><h2>${section.label}</h2>${section.fields
+    host.innerHTML = `<div class="admin-card"><h2>${section.label}</h2>${
+      section.id === "nav"
+        ? `<p style="color:var(--muted);margin-bottom:0.85rem;font-size:0.9rem">Endre menynavn og huk av hvilke sider som skal vises i menyen.</p>`
+        : section.id === "sections"
+          ? `<p style="color:var(--muted);margin-bottom:0.85rem;font-size:0.9rem">Slå av/på større blokker på nettsiden uten å slette innholdet.</p>`
+          : ""
+    }${section.fields
       .map((f) => {
-        const val = window.CCFCContent.getByPath(contentState, f.path) ?? "";
+        const raw = window.CCFCContent.getByPath(contentState, f.path);
+        if (f.type === "check") {
+          const on = raw !== false;
+          return `<label class="check"><input type="checkbox" name="${f.path}" ${on ? "checked" : ""} /> ${escapeHtml(f.label)}</label>`;
+        }
+        const val = raw ?? "";
         if (f.type === "textarea") {
           return `<label>${f.label}<textarea name="${f.path}" rows="3">${escapeHtml(val)}</textarea></label>`;
         }
@@ -558,28 +589,56 @@
     window.CCFCContent.clearCache();
     contentState = await window.CCFCContent.load({ bypassCache: true });
 
-    // Seed slideshow from defaults if missing in stored CMS (older saves)
-    const slides = window.CCFCContent.getByPath(contentState, "home.heroSlides");
-    if (!Array.isArray(slides) || !slides.length) {
-      try {
-        const depth = location.pathname.includes("/admin") ? "../" : "";
-        const res = await fetch(depth + "assets/data/site-content.default.json");
-        if (res.ok) {
-          const defaults = await res.json();
+    // Seed slideshow + visibility defaults if missing in stored CMS (older saves)
+    try {
+      const depth = location.pathname.includes("/admin") ? "../" : "";
+      const res = await fetch(depth + "assets/data/site-content.default.json");
+      if (res.ok) {
+        const defaults = await res.json();
+        const slides = window.CCFCContent.getByPath(contentState, "home.heroSlides");
+        if (!Array.isArray(slides) || !slides.length) {
           if (Array.isArray(defaults?.home?.heroSlides)) {
             window.CCFCContent.setByPath(contentState, "home.heroSlides", defaults.home.heroSlides);
           }
-          if (window.CCFCContent.getByPath(contentState, "home.heroSlideInterval") == null) {
-            window.CCFCContent.setByPath(
-              contentState,
-              "home.heroSlideInterval",
-              defaults?.home?.heroSlideInterval ?? 6500
-            );
-          }
         }
-      } catch {
-        /* ignore */
+        if (window.CCFCContent.getByPath(contentState, "home.heroSlideInterval") == null) {
+          window.CCFCContent.setByPath(
+            contentState,
+            "home.heroSlideInterval",
+            defaults?.home?.heroSlideInterval ?? 6500
+          );
+        }
+        const navVisible = window.CCFCContent.getByPath(contentState, "nav.visible");
+        if (!navVisible || typeof navVisible !== "object") {
+          window.CCFCContent.setByPath(
+            contentState,
+            "nav.visible",
+            defaults?.nav?.visible || {
+              home: true,
+              fixtures: true,
+              stats: true,
+              news: true,
+              about: true,
+            }
+          );
+        }
+        const sections = window.CCFCContent.getByPath(contentState, "sections");
+        if (!sections || typeof sections !== "object") {
+          window.CCFCContent.setByPath(
+            contentState,
+            "sections",
+            defaults?.sections || {
+              homeMatches: true,
+              homeNews: true,
+              homeAbout: true,
+              homeNote: true,
+              footerAdmin: true,
+            }
+          );
+        }
       }
+    } catch {
+      /* ignore */
     }
 
     renderContentTabs();
@@ -840,7 +899,6 @@
   }
 
   function fillNewsForm(post) {
-    const form = $("#news-form");
     $("#news-form-title").textContent = "Rediger artikkel";
     $("#news-post-id").value = post.id || "";
     $("#news-title").value = post.title || "";
@@ -851,18 +909,24 @@
     $("#news-show-on-home").checked = !!post.show_on_home;
     const delBtn = $("#news-delete");
     if (delBtn) delBtn.hidden = false;
+    const saveBtn = $("#news-save-btn");
+    if (saveBtn) saveBtn.textContent = "Oppdater artikkel";
     $("#news-title").focus();
+    $("#news-form")?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   function resetNewsForm() {
     const form = $("#news-form");
-    $("#news-form-title").textContent = "Ny artikkel";
+    $("#news-form-title").textContent = "Legg til artikkel";
     form.reset();
     $("#news-post-id").value = "";
     $("#news-slug").value = "";
+    $("#news-published").checked = true;
     $("#news-show-on-home").checked = true;
     const delBtn = $("#news-delete");
     if (delBtn) delBtn.hidden = true;
+    const saveBtn = $("#news-save-btn");
+    if (saveBtn) saveBtn.textContent = "Lagre artikkel";
   }
 
   function syncNewsSlugFromTitle() {
@@ -876,6 +940,12 @@
   }
 
   $("#news-reset").addEventListener("click", resetNewsForm);
+  $("#news-new-btn")?.addEventListener("click", () => {
+    resetNewsForm();
+    showMsg(newsMsg, "");
+    $("#news-title")?.focus();
+    $("#news-form")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
 
   $("#news-delete")?.addEventListener("click", async () => {
     const id = $("#news-post-id")?.value;

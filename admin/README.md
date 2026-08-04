@@ -5,8 +5,8 @@ Admin-UI: https://pappgit.github.io/ccfc/admin/
 
 ## Menyer
 
-1. **Innhold** — tekster, meny, logo/favicon, forside-slideshow
-2. **Nyheter** — artikler til forside/nyheter
+1. **Innhold** — tekster, meny (synlighet), seksjoner, logo/favicon, forside-slideshow
+2. **Nyheter** — legg til, rediger og slett artikler
 3. **Ønsker** — kommentarer/forslag; huk av når gjennomført
 4. **Endringslogg** — oversikt over endringer (system + manuelt lagt til)
 5. **API** — synk-innstillinger (nøkler i GitHub Secrets)

@@ -14,7 +14,21 @@
     "fixtures": "Kamper",
     "stats": "Statistikk",
     "news": "Nyheter",
-    "about": "Om oss"
+    "about": "Om oss",
+    "visible": {
+      "home": true,
+      "fixtures": true,
+      "stats": true,
+      "news": true,
+      "about": true
+    }
+  },
+  "sections": {
+    "homeMatches": true,
+    "homeNews": true,
+    "homeAbout": true,
+    "homeNote": true,
+    "footerAdmin": true
   },
   "home": {
     "heroLine1": "Coventry City",

@@ -37,11 +37,11 @@
           <span></span><span></span><span></span>
         </button>
         <nav class="nav" id="site-nav">
-          <a href="index.html" data-cms="nav.home">Hjem</a>
-          <a href="kamper.html" data-cms="nav.fixtures">Kamper</a>
-          <a href="statistikk.html" data-cms="nav.stats">Statistikk</a>
-          <a href="nyheter.html" data-cms="nav.news">Nyheter</a>
-          <a href="om-oss.html" data-cms="nav.about">Om oss</a>
+          <a href="index.html" data-nav="home" data-cms="nav.home">Hjem</a>
+          <a href="kamper.html" data-nav="fixtures" data-cms="nav.fixtures">Kamper</a>
+          <a href="statistikk.html" data-nav="stats" data-cms="nav.stats">Statistikk</a>
+          <a href="nyheter.html" data-nav="news" data-cms="nav.news">Nyheter</a>
+          <a href="om-oss.html" data-nav="about" data-cms="nav.about">Om oss</a>
         </nav>
       </div>
     </header>
@@ -66,14 +66,14 @@
             nyheter samlet under ett tak.
           </p>
           <div class="cta-row">
-            <a class="btn btn--solid" href="kamper.html" data-cms="home.ctaFixtures">Se kamper</a>
-            <a class="btn btn--ghost" href="nyheter.html" data-cms="home.ctaNews">Les nyheter</a>
+            <a class="btn btn--solid" href="kamper.html" data-nav="fixtures" data-cms="home.ctaFixtures">Se kamper</a>
+            <a class="btn btn--ghost" href="nyheter.html" data-nav="news" data-cms="home.ctaNews">Les nyheter</a>
           </div>
           <div class="hero__dots" id="hero-dots" role="tablist" aria-label="Bytt forsidebilde"></div>
         </div>
       </section>
 
-      <section class="section">
+      <section class="section" data-section="homeMatches">
         <div class="wrap">
           <div class="section__head reveal">
             <p class="tag" data-cms="home.matchesTag">Neste kamper</p>
@@ -85,12 +85,12 @@
           </div>
           <div id="home-matches"></div>
           <div class="cta-row">
-            <a class="btn btn--sky" href="kamper.html" data-cms="home.matchesAll">Alle kamper</a>
+            <a class="btn btn--sky" href="kamper.html" data-nav="fixtures" data-cms="home.matchesAll">Alle kamper</a>
           </div>
         </div>
       </section>
 
-      <section class="section" style="padding-top: 0">
+      <section class="section" style="padding-top: 0" data-section="homeNews">
         <div class="wrap">
           <div class="section__head reveal">
             <p class="tag" data-cms="home.newsTag">Fra klubben</p>
@@ -101,7 +101,7 @@
         </div>
       </section>
 
-      <section class="section" style="padding-top: 0">
+      <section class="section" style="padding-top: 0" data-section="homeAbout">
         <div class="wrap split">
           <div class="split__copy">
             <p class="tag" data-cms="home.aboutTag">Sky Blues i nord</p>
@@ -115,14 +115,14 @@
               Dette nettstedet er et pitch-utkast. Visuelt språk er inspirert av
               CCFC sky blue. Offisiell logo og merkevare avklarer vi med klubben.
             </p>
-            <a class="btn btn--sky" href="om-oss.html" data-cms="home.aboutCta">Om supporterklubben</a>
+            <a class="btn btn--sky" href="om-oss.html" data-nav="about" data-cms="home.aboutCta">Om supporterklubben</a>
           </div>
           <div class="split__visual" role="img" aria-label="Sky blue pitch-atmosfære"></div>
         </div>
       </section>
     </main>
 
-    <div class="note">
+    <div class="note" data-section="homeNote">
       <div class="wrap" data-cms="home.note">
         Uoffisiell supporternettside · Farger inspirert av ccfc.co.uk · Merkevare avklares med klubben
       </div>
@@ -135,7 +135,7 @@
           <p data-cms="footer.text">Sky Blues supporterklubb for Skandinavia. Forum og medlemsinnlogging kommer i en senere fase.</p>
         </div>
         <div class="footer-meta" data-cms="footer.tagline">Sky blue forever</div>
-        <a class="footer-login" href="admin/" data-cms="footer.adminLabel">Admin</a>
+        <a class="footer-login" href="admin/" data-section="footerAdmin" data-cms="footer.adminLabel">Admin</a>
       </div>
     </footer>
 

@@ -129,6 +129,18 @@ window.CCFCContent = (function () {
     const fav = getByPath(content, "brand.faviconUrl");
     const icon = document.querySelector('link[rel="icon"]');
     if (fav && icon) icon.setAttribute("href", assetPath(fav));
+
+    root.querySelectorAll("[data-nav]").forEach((el) => {
+      const key = el.getAttribute("data-nav");
+      const visible = getByPath(content, `nav.visible.${key}`);
+      el.hidden = visible === false;
+    });
+
+    root.querySelectorAll("[data-section]").forEach((el) => {
+      const key = el.getAttribute("data-section");
+      const visible = getByPath(content, `sections.${key}`);
+      el.hidden = visible === false;
+    });
   }
 
   async function init() {

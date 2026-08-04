@@ -2,6 +2,15 @@
   "entries": [
     {
       "date": "2026-08-04",
+      "title": "Full kontroll i admin: meny, seksjoner og nyheter",
+      "items": [
+        "Velg hvilke menypunkter som skal være synlige",
+        "Slå av/på forside-seksjoner (kamper, nyheter, om-blokk, infostripe)",
+        "Tydeligere nyhetsflyt for å legge til, redigere og slette artikler"
+      ]
+    },
+    {
+      "date": "2026-08-04",
       "title": "Endringslogg og ønsker i admin",
       "items": [
         "Ny meny Endringslogg med oversikt over endringer",
