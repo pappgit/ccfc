@@ -78,6 +78,7 @@
     loginView.hidden = true;
     appView.hidden = false;
     $("#admin-email").textContent = session.user.email || session.user.id;
+    await loadContentEditor();
     await loadApiSettings();
     await loadNews();
   }
@@ -103,6 +104,239 @@
       if (panel) panel.classList.add("is-active");
     });
   });
+
+  /* —— Site content CMS —— */
+  const CONTENT_SECTIONS = [
+    {
+      id: "brand",
+      label: "Merkevare",
+      fields: [
+        { path: "brand.name", label: "Navn (linje 1)", type: "text" },
+        { path: "brand.sub", label: "Undertittel", type: "text" },
+        { path: "meta.siteTitle", label: "Sidetittel (browser)", type: "text" },
+        { path: "meta.siteDescription", label: "Meta-beskrivelse", type: "textarea" },
+      ],
+    },
+    {
+      id: "nav",
+      label: "Meny",
+      fields: [
+        { path: "nav.home", label: "Hjem", type: "text" },
+        { path: "nav.fixtures", label: "Kamper", type: "text" },
+        { path: "nav.stats", label: "Statistikk", type: "text" },
+        { path: "nav.news", label: "Nyheter", type: "text" },
+        { path: "nav.about", label: "Om oss", type: "text" },
+      ],
+    },
+    {
+      id: "home",
+      label: "Forside",
+      fields: [
+        { path: "home.heroLine1", label: "Hero linje 1", type: "text" },
+        { path: "home.heroLine2", label: "Hero linje 2", type: "text" },
+        { path: "home.heroLead", label: "Hero ingress", type: "textarea" },
+        { path: "home.ctaFixtures", label: "CTA kamper", type: "text" },
+        { path: "home.ctaNews", label: "CTA nyheter", type: "text" },
+        { path: "home.matchesTag", label: "Kamper · tag", type: "text" },
+        { path: "home.matchesTitle", label: "Kamper · tittel", type: "text" },
+        { path: "home.matchesLead", label: "Kamper · tekst", type: "textarea" },
+        { path: "home.matchesAll", label: "Knapp alle kamper", type: "text" },
+        { path: "home.matchesStats", label: "Knapp statistikk", type: "text" },
+        { path: "home.newsTag", label: "Nyheter · tag", type: "text" },
+        { path: "home.newsTitle", label: "Nyheter · tittel", type: "text" },
+        { path: "home.newsLead", label: "Nyheter · tekst", type: "textarea" },
+        { path: "home.aboutTag", label: "Om-blokk · tag", type: "text" },
+        { path: "home.aboutTitle", label: "Om-blokk · tittel", type: "text" },
+        { path: "home.aboutP1", label: "Om-blokk · avsnitt 1", type: "textarea" },
+        { path: "home.aboutP2", label: "Om-blokk · avsnitt 2", type: "textarea" },
+        { path: "home.aboutCta", label: "Om-blokk · knapp", type: "text" },
+        { path: "home.note", label: "Infostripe under forsiden", type: "textarea" },
+      ],
+    },
+    {
+      id: "fixtures",
+      label: "Kamper-side",
+      fields: [
+        { path: "fixtures.title", label: "Tittel", type: "text" },
+        { path: "fixtures.lead", label: "Ingress", type: "textarea" },
+        { path: "fixtures.note", label: "Infostripe", type: "textarea" },
+      ],
+    },
+    {
+      id: "stats",
+      label: "Statistikk-side",
+      fields: [
+        { path: "stats.title", label: "Tittel", type: "text" },
+        { path: "stats.lead", label: "Ingress", type: "textarea" },
+        { path: "stats.note", label: "Infostripe", type: "textarea" },
+      ],
+    },
+    {
+      id: "newsPage",
+      label: "Nyheter-side",
+      fields: [
+        { path: "newsPage.title", label: "Tittel", type: "text" },
+        { path: "newsPage.lead", label: "Ingress", type: "textarea" },
+      ],
+    },
+    {
+      id: "about",
+      label: "Om oss",
+      fields: [
+        { path: "about.title", label: "Tittel", type: "text" },
+        { path: "about.lead", label: "Ingress", type: "textarea" },
+        { path: "about.tag", label: "Tag", type: "text" },
+        { path: "about.heading", label: "Overskrift", type: "text" },
+        { path: "about.p1", label: "Avsnitt 1", type: "textarea" },
+        { path: "about.p2", label: "Avsnitt 2", type: "textarea" },
+        { path: "about.p3", label: "Avsnitt 3", type: "textarea" },
+        { path: "about.p4", label: "Avsnitt 4", type: "textarea" },
+        { path: "about.contactLabel", label: "Kontakt-knapp", type: "text" },
+        { path: "about.contactEmail", label: "Kontakt-e-post", type: "text" },
+        { path: "about.footerText", label: "Footer-tekst (om-siden)", type: "text" },
+      ],
+    },
+    {
+      id: "footer",
+      label: "Footer",
+      fields: [
+        { path: "footer.title", label: "Tittel", type: "text" },
+        { path: "footer.text", label: "Tekst", type: "textarea" },
+        { path: "footer.tagline", label: "Tagline", type: "text" },
+        { path: "footer.adminLabel", label: "Admin-lenke", type: "text" },
+      ],
+    },
+  ];
+
+  let contentState = null;
+  let activeContentSection = "brand";
+  const contentMsg = $("#content-msg");
+
+  function flushContentFields() {
+    if (!contentState) return;
+    const form = $("#content-form");
+    form
+      ?.querySelectorAll("#content-fields [name], #logo-url-input, #favicon-url-input")
+      .forEach((el) => {
+        if (!el.name) return;
+        window.CCFCContent.setByPath(contentState, el.name, el.value);
+      });
+  }
+
+  function renderContentTabs() {
+    const tabs = $("#content-tabs");
+    if (!tabs) return;
+    tabs.innerHTML = CONTENT_SECTIONS.map(
+      (s) =>
+        `<button type="button" class="filter-btn${s.id === activeContentSection ? " is-active" : ""}" data-content-tab="${s.id}">${s.label}</button>`
+    ).join("");
+    tabs.querySelectorAll("[data-content-tab]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        flushContentFields();
+        activeContentSection = btn.getAttribute("data-content-tab");
+        renderContentTabs();
+        renderContentFields();
+      });
+    });
+  }
+
+  function renderContentFields() {
+    const section = CONTENT_SECTIONS.find((s) => s.id === activeContentSection);
+    const host = $("#content-fields");
+    if (!section || !host || !contentState) return;
+
+    host.innerHTML = `<div class="admin-card"><h2>${section.label}</h2>${section.fields
+      .map((f) => {
+        const val = window.CCFCContent.getByPath(contentState, f.path) ?? "";
+        if (f.type === "textarea") {
+          return `<label>${f.label}<textarea name="${f.path}" rows="3">${escapeHtml(val)}</textarea></label>`;
+        }
+        return `<label>${f.label}<input type="text" name="${f.path}" value="${escapeAttr(val)}" /></label>`;
+      })
+      .join("")}</div>`;
+
+    const logoUrl = window.CCFCContent.getByPath(contentState, "brand.logoUrl") || "";
+    const favUrl = window.CCFCContent.getByPath(contentState, "brand.faviconUrl") || "";
+    $("#logo-url-input").value = logoUrl;
+    $("#favicon-url-input").value = favUrl;
+    const preview = $("#logo-preview");
+    if (preview) preview.src = window.CCFCContent.assetPath(logoUrl) || "";
+  }
+
+  function collectContentForm() {
+    flushContentFields();
+    return contentState;
+  }
+
+  async function loadContentEditor() {
+    if (!window.CCFCContent) return;
+    window.CCFCContent.clearCache();
+    contentState = await window.CCFCContent.load({ bypassCache: true });
+    renderContentTabs();
+    renderContentFields();
+  }
+
+  $("#content-form")?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const value = collectContentForm();
+    const { data: sessionData } = await client.auth.getSession();
+    const { error } = await client.from("site_settings").upsert({
+      key: "site",
+      value,
+      updated_by: sessionData.session?.user?.id || null,
+    });
+    if (error) showMsg(contentMsg, error.message, true);
+    else {
+      contentState = value;
+      window.CCFCContent.clearCache();
+      showMsg(contentMsg, "Innhold lagret. Oppdater forsiden for å se endringene.");
+    }
+  });
+
+  $("#content-reload")?.addEventListener("click", async () => {
+    showMsg(contentMsg, "Henter…");
+    await loadContentEditor();
+    showMsg(contentMsg, "Oppdatert fra database.");
+  });
+
+  $("#logo-upload-btn")?.addEventListener("click", async () => {
+    const fileInput = $("#logo-file");
+    const file = fileInput?.files?.[0];
+    if (!file) {
+      showMsg(contentMsg, "Velg en fil først.", true);
+      return;
+    }
+    showMsg(contentMsg, "Laster opp…");
+    const ext = file.name.split(".").pop() || "png";
+    const path = `brand/logo-${Date.now()}.${ext}`;
+    const { error: upErr } = await client.storage.from("media").upload(path, file, {
+      upsert: true,
+      contentType: file.type,
+    });
+    if (upErr) {
+      showMsg(contentMsg, upErr.message, true);
+      return;
+    }
+    const { data: pub } = client.storage.from("media").getPublicUrl(path);
+    const url = pub?.publicUrl;
+    if (!url) {
+      showMsg(contentMsg, "Fikk ikke public URL.", true);
+      return;
+    }
+    window.CCFCContent.setByPath(contentState, "brand.logoUrl", url);
+    window.CCFCContent.setByPath(contentState, "brand.faviconUrl", url);
+    $("#logo-url-input").value = url;
+    $("#favicon-url-input").value = url;
+    $("#logo-preview").src = url;
+    showMsg(contentMsg, "Logo lastet opp — husk å trykke Lagre innhold.");
+  });
+
+  function escapeAttr(s) {
+    return String(s)
+      .replace(/&/g, "&amp;")
+      .replace(/"/g, "&quot;")
+      .replace(/</g, "&lt;");
+  }
 
   /* —— Auth —— */
   $("#login-form").addEventListener("submit", async (e) => {

@@ -260,6 +260,20 @@
   align-items: flex-end;
 }
 
+/* Logo card always visible under content form */
+#logo-card {
+  margin-top: 1rem;
+}
+
+#logo-preview {
+  border: 1px solid var(--line-strong);
+}
+
+.admin-form input[type="file"] {
+  padding: 0.4rem 0;
+  border: none;
+}
+
 @media (max-width: 800px) {
   .admin-shell {
     grid-template-columns: 1fr;

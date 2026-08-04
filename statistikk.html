@@ -4,44 +4,32 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Statistikk — Coventry City Scandinavia</title>
-    <meta
-      name="description"
-      content="Championship-statistikk for Coventry City sesongene 2024/25 og 2025/26 — kampstats og spillerstats."
-    />
+    <meta name="description" content="Championship-statistikk for Coventry City." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="assets/css/styles.css" />
     <link rel="icon" href="assets/img/mark.svg" type="image/svg+xml" />
   </head>
-  <body>
+  <body data-cms-title="stats.title">
     <header class="site-header">
       <div class="wrap">
         <a class="brand" href="index.html">
-          <img class="brand__mark" src="assets/img/mark.svg" alt="" width="40" height="40" />
+          <img class="brand__mark" data-cms-src="brand.logoUrl" src="assets/img/mark.svg" alt="" width="40" height="40" />
           <span class="brand__text">
-            <span class="brand__name">Coventry City</span>
-            <span class="brand__sub">Scandinavia</span>
+            <span class="brand__name" data-cms="brand.name">Coventry City</span>
+            <span class="brand__sub" data-cms="brand.sub">Scandinavia</span>
           </span>
         </a>
-        <button
-          class="nav-toggle"
-          type="button"
-          aria-expanded="false"
-          aria-controls="site-nav"
-          aria-label="Meny"
-        >
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Meny">
           <span></span><span></span><span></span>
         </button>
         <nav class="nav" id="site-nav">
-          <a href="index.html">Hjem</a>
-          <a href="kamper.html">Kamper</a>
-          <a href="statistikk.html">Statistikk</a>
-          <a href="nyheter.html">Nyheter</a>
-          <a href="om-oss.html">Om oss</a>
+          <a href="index.html" data-cms="nav.home">Hjem</a>
+          <a href="kamper.html" data-cms="nav.fixtures">Kamper</a>
+          <a href="statistikk.html" data-cms="nav.stats">Statistikk</a>
+          <a href="nyheter.html" data-cms="nav.news">Nyheter</a>
+          <a href="om-oss.html" data-cms="nav.about">Om oss</a>
         </nav>
       </div>
     </header>
@@ -49,41 +37,37 @@
     <main>
       <header class="page-hero">
         <div class="wrap">
-          <h1>Statistikk</h1>
-          <p>
-            Championship 2024/25 og 2025/26 — sesongoversikt, hjemme/borte og
-            kamp for kamp. Spillerstats kobles på via API-Football.
-          </p>
+          <h1 data-cms="stats.title">Statistikk</h1>
+          <p data-cms="stats.lead">Championship 2024/25 og 2025/26 — sesongoversikt, hjemme/borte og kamp for kamp.</p>
         </div>
       </header>
 
       <section class="section">
         <div class="wrap">
           <div class="season-tabs" id="season-tabs" role="tablist" aria-label="Sesong"></div>
-          <div id="stats-root">
-            <p class="empty-state">Laster statistikk…</p>
-          </div>
+          <div id="stats-root"><p class="empty-state">Laster statistikk…</p></div>
         </div>
       </section>
     </main>
 
     <div class="note">
-      <div class="wrap">
-        Kampstats: football-data.co.uk · Spillerstats: API-Football (kommer)
-      </div>
+      <div class="wrap" data-cms="stats.note">Kampstats: football-data.co.uk · Spillerstats: API-Football (kommer)</div>
     </div>
 
     <footer class="site-footer">
       <div class="wrap">
         <div>
-          <strong>Coventry City Scandinavia</strong>
-          <p>Sky Blues supporterklubb for Skandinavia.</p>
+          <strong data-cms="footer.title">Coventry City Scandinavia</strong>
+          <p data-cms="footer.text">Sky Blues supporterklubb for Skandinavia.</p>
         </div>
-        <div class="footer-meta">Sky blue forever</div>
-        <a class="footer-login" href="admin/">Admin</a>
+        <div class="footer-meta" data-cms="footer.tagline">Sky blue forever</div>
+        <a class="footer-login" href="admin/" data-cms="footer.adminLabel">Admin</a>
       </div>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="assets/js/supabase-config.js"></script>
+    <script src="assets/js/content.js"></script>
     <script src="assets/js/main.js"></script>
   </body>
 </html>

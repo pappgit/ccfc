@@ -4,44 +4,32 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Om oss — Coventry City Scandinavia</title>
-    <meta
-      name="description"
-      content="Om Coventry City Scandinavia — supporterklubb for Sky Blues i Norden."
-    />
+    <meta name="description" content="Om Coventry City Scandinavia." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="assets/css/styles.css" />
     <link rel="icon" href="assets/img/mark.svg" type="image/svg+xml" />
   </head>
-  <body>
+  <body data-cms-title="about.title">
     <header class="site-header">
       <div class="wrap">
         <a class="brand" href="index.html">
-          <img class="brand__mark" src="assets/img/mark.svg" alt="" width="40" height="40" />
+          <img class="brand__mark" data-cms-src="brand.logoUrl" src="assets/img/mark.svg" alt="" width="40" height="40" />
           <span class="brand__text">
-            <span class="brand__name">Coventry City</span>
-            <span class="brand__sub">Scandinavia</span>
+            <span class="brand__name" data-cms="brand.name">Coventry City</span>
+            <span class="brand__sub" data-cms="brand.sub">Scandinavia</span>
           </span>
         </a>
-        <button
-          class="nav-toggle"
-          type="button"
-          aria-expanded="false"
-          aria-controls="site-nav"
-          aria-label="Meny"
-        >
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Meny">
           <span></span><span></span><span></span>
         </button>
         <nav class="nav" id="site-nav">
-          <a href="index.html">Hjem</a>
-          <a href="kamper.html">Kamper</a>
-          <a href="statistikk.html">Statistikk</a>
-          <a href="nyheter.html">Nyheter</a>
-          <a href="om-oss.html">Om oss</a>
+          <a href="index.html" data-cms="nav.home">Hjem</a>
+          <a href="kamper.html" data-cms="nav.fixtures">Kamper</a>
+          <a href="statistikk.html" data-cms="nav.stats">Statistikk</a>
+          <a href="nyheter.html" data-cms="nav.news">Nyheter</a>
+          <a href="om-oss.html" data-cms="nav.about">Om oss</a>
         </nav>
       </div>
     </header>
@@ -49,40 +37,21 @@
     <main>
       <header class="page-hero">
         <div class="wrap">
-          <h1>Om oss</h1>
-          <p>
-            Supporterklubben for Coventry City-fans i Skandinavia.
-          </p>
+          <h1 data-cms="about.title">Om oss</h1>
+          <p data-cms="about.lead">Supporterklubben for Coventry City-fans i Skandinavia.</p>
         </div>
       </header>
 
       <section class="section">
         <div class="wrap split">
           <div class="split__copy article">
-            <p class="tag">Hvem vi er</p>
-            <h2>Sky Blues i Norden</h2>
-            <p>
-              Coventry City Scandinavia er for alle som følger The Sky Blues fra
-              Norge, Sverige, Danmark og resten av regionen. Vi deler kamper,
-              resultater og nyheter — og bygger fellesskap rundt laget.
-            </p>
-            <p>
-              Nettsiden hostes på GitHub Pages: lav kostnad, enkel å vedlikeholde
-              for en liten klubb. Kampdata planlegges oppdatert ukentlig (typisk
-              mandag), med målscorere og statistikk etter fullførte kamper.
-            </p>
-            <p>
-              <strong>Merkevare:</strong> Farger og uttrykk er inspirert av
-              CCFC. Vi bruker foreløpig et eget CCS-merke, ikke offisiell
-              klubblogo. Etter pitch avklarer vi med Coventry City hva som er
-              greit å bruke.
-            </p>
-            <p>
-              <strong>Senere:</strong> Forum bak innlogging kommer når klubben
-              har sagt ja til retningen — det krever tjenester utenfor GitHub
-              Pages.
-            </p>
-            <a class="btn btn--sky" href="mailto:hello@example.com">Kontakt oss</a>
+            <p class="tag" data-cms="about.tag">Hvem vi er</p>
+            <h2 data-cms="about.heading">Sky Blues i Norden</h2>
+            <p data-cms="about.p1"></p>
+            <p data-cms="about.p2"></p>
+            <p data-cms="about.p3"></p>
+            <p data-cms="about.p4"></p>
+            <a class="btn btn--sky" data-cms="about.contactLabel" data-cms-href="about.contactEmail" data-cms-mailto>Kontakt oss</a>
           </div>
           <div class="split__visual" role="img" aria-label="Sky blue atmosfære"></div>
         </div>
@@ -92,14 +61,17 @@
     <footer class="site-footer">
       <div class="wrap">
         <div>
-          <strong>Coventry City Scandinavia</strong>
-          <p>Uoffisiell supporternettside · Pitch-utkast</p>
+          <strong data-cms="footer.title">Coventry City Scandinavia</strong>
+          <p data-cms="about.footerText">Uoffisiell supporternettside · Pitch-utkast</p>
         </div>
-        <div class="footer-meta">Sky blue forever</div>
-        <a class="footer-login" href="admin/">Admin</a>
+        <div class="footer-meta" data-cms="footer.tagline">Sky blue forever</div>
+        <a class="footer-login" href="admin/" data-cms="footer.adminLabel">Admin</a>
       </div>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="assets/js/supabase-config.js"></script>
+    <script src="assets/js/content.js"></script>
     <script src="assets/js/main.js"></script>
   </body>
 </html>

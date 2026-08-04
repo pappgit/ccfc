@@ -19,7 +19,7 @@
     <div id="login-view" class="login-page" hidden>
       <div class="login-box">
         <h1>Admin</h1>
-        <p class="lead">Logg inn for å styre API-innstillinger og nyheter.</p>
+        <p class="lead">Logg inn for å styre innhold, nyheter og API.</p>
         <form id="login-form" class="admin-form">
           <label>
             E-post
@@ -50,8 +50,9 @@
           <span>Scandinavia · Admin</span>
         </a>
         <nav class="admin-nav" aria-label="Admin">
-          <button type="button" data-panel="api" class="is-active">API</button>
+          <button type="button" data-panel="content" class="is-active">Innhold</button>
           <button type="button" data-panel="news">Nyheter</button>
+          <button type="button" data-panel="api">API</button>
         </nav>
         <div class="admin-side__foot">
           <div id="admin-email"></div>
@@ -60,7 +61,49 @@
       </aside>
 
       <main class="admin-main">
-        <section class="admin-panel is-active" id="panel-api">
+        <section class="admin-panel is-active" id="panel-content">
+          <h1>Innhold</h1>
+          <p class="lead">
+            Rediger tekster, meny, logo og øvrig innhold som vises på nettsiden.
+          </p>
+
+          <div class="filters season-tabs" id="content-tabs" style="margin-bottom: 1.25rem"></div>
+
+          <form id="content-form" class="admin-form" style="max-width: 44rem">
+            <div id="content-fields"></div>
+
+            <div class="admin-card" id="logo-card">
+              <h2>Logo / favicon</h2>
+              <p style="color: var(--muted); margin-bottom: 0.75rem; font-size: 0.9rem">
+                Last opp bilde (PNG, JPG, SVG, WebP — maks 5 MB). Lagres i Supabase Storage.
+              </p>
+              <label>
+                Ny logo
+                <input type="file" id="logo-file" accept="image/png,image/jpeg,image/webp,image/svg+xml,image/gif" />
+              </label>
+              <div class="row" style="margin-top: 0.75rem; align-items: center">
+                <img id="logo-preview" src="" alt="" width="64" height="64" style="background: var(--ink); object-fit: contain" />
+                <button class="btn btn--solid" type="button" id="logo-upload-btn">Last opp logo</button>
+              </div>
+              <label style="margin-top: 1rem">
+                Logo-URL (kan også lims inn)
+                <input type="url" name="brand.logoUrl" id="logo-url-input" />
+              </label>
+              <label>
+                Favicon-URL
+                <input type="url" name="brand.faviconUrl" id="favicon-url-input" />
+              </label>
+            </div>
+
+            <div class="row" style="margin-top: 1rem">
+              <button class="btn btn--sky" type="submit">Lagre innhold</button>
+              <button class="btn btn--solid" type="button" id="content-reload">Hent på nytt</button>
+            </div>
+            <p class="admin-msg" id="content-msg" hidden></p>
+          </form>
+        </section>
+
+        <section class="admin-panel" id="panel-api">
           <h1>API</h1>
           <p class="lead">
             Innstillinger for kampdata-synk. Hemmelige nøkler ligger i GitHub Secrets — ikke her.
@@ -178,6 +221,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="../assets/js/supabase-config.js"></script>
+    <script src="../assets/js/content.js"></script>
     <script src="../assets/js/admin.js"></script>
   </body>
 </html>

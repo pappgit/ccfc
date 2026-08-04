@@ -4,44 +4,32 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Kamper — Coventry City Scandinavia</title>
-    <meta
-      name="description"
-      content="Kampprogram og resultater for Coventry City, inkludert cup. Oppdateres ukentlig."
-    />
+    <meta name="description" content="Kampprogram og resultater for Coventry City." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="assets/css/styles.css" />
     <link rel="icon" href="assets/img/mark.svg" type="image/svg+xml" />
   </head>
-  <body>
+  <body data-cms-title="fixtures.title">
     <header class="site-header">
       <div class="wrap">
         <a class="brand" href="index.html">
-          <img class="brand__mark" src="assets/img/mark.svg" alt="" width="40" height="40" />
+          <img class="brand__mark" data-cms-src="brand.logoUrl" src="assets/img/mark.svg" alt="" width="40" height="40" />
           <span class="brand__text">
-            <span class="brand__name">Coventry City</span>
-            <span class="brand__sub">Scandinavia</span>
+            <span class="brand__name" data-cms="brand.name">Coventry City</span>
+            <span class="brand__sub" data-cms="brand.sub">Scandinavia</span>
           </span>
         </a>
-        <button
-          class="nav-toggle"
-          type="button"
-          aria-expanded="false"
-          aria-controls="site-nav"
-          aria-label="Meny"
-        >
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Meny">
           <span></span><span></span><span></span>
         </button>
         <nav class="nav" id="site-nav">
-          <a href="index.html">Hjem</a>
-          <a href="kamper.html">Kamper</a>
-          <a href="statistikk.html">Statistikk</a>
-          <a href="nyheter.html">Nyheter</a>
-          <a href="om-oss.html">Om oss</a>
+          <a href="index.html" data-cms="nav.home">Hjem</a>
+          <a href="kamper.html" data-cms="nav.fixtures">Kamper</a>
+          <a href="statistikk.html" data-cms="nav.stats">Statistikk</a>
+          <a href="nyheter.html" data-cms="nav.news">Nyheter</a>
+          <a href="om-oss.html" data-cms="nav.about">Om oss</a>
         </nav>
       </div>
     </header>
@@ -49,10 +37,9 @@
     <main>
       <header class="page-hero">
         <div class="wrap">
-          <h1>Kamper</h1>
-          <p>
-            Alle Coventry-kamper — liga og cup. Resultater får målscorere og
-            statistikk når kampen er ferdig. Data oppdateres typisk hver mandag.
+          <h1 data-cms="fixtures.title">Kamper</h1>
+          <p data-cms="fixtures.lead">
+            Alle Coventry-kamper — liga og cup. Resultater får målscorere og statistikk når kampen er ferdig.
           </p>
         </div>
       </header>
@@ -76,22 +63,23 @@
     </main>
 
     <div class="note">
-      <div class="wrap">
-        Premier League 2026/27 · Kickoff kan endres (TV) · Synk mandag når football-data.org-nøkkel er satt
-      </div>
+      <div class="wrap" data-cms="fixtures.note">Premier League 2026/27 · Kickoff kan endres (TV)</div>
     </div>
 
     <footer class="site-footer">
       <div class="wrap">
         <div>
-          <strong>Coventry City Scandinavia</strong>
-          <p>Sky Blues supporterklubb for Skandinavia.</p>
+          <strong data-cms="footer.title">Coventry City Scandinavia</strong>
+          <p data-cms="footer.text">Sky Blues supporterklubb for Skandinavia.</p>
         </div>
-        <div class="footer-meta">Sky blue forever</div>
-        <a class="footer-login" href="admin/">Admin</a>
+        <div class="footer-meta" data-cms="footer.tagline">Sky blue forever</div>
+        <a class="footer-login" href="admin/" data-cms="footer.adminLabel">Admin</a>
       </div>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="assets/js/supabase-config.js"></script>
+    <script src="assets/js/content.js"></script>
     <script src="assets/js/main.js"></script>
   </body>
 </html>

@@ -1,0 +1,73 @@
+{
+  "brand": {
+    "name": "Coventry City",
+    "sub": "Scandinavia",
+    "logoUrl": "assets/img/mark.svg",
+    "faviconUrl": "assets/img/mark.svg"
+  },
+  "meta": {
+    "siteTitle": "Coventry City Scandinavia — Sky Blues supporterklubb",
+    "siteDescription": "Offisiell nettside for Coventry City Scandinavia. Kamper, resultater og nyheter for skandinaviske Sky Blues-supportere."
+  },
+  "nav": {
+    "home": "Hjem",
+    "fixtures": "Kamper",
+    "stats": "Statistikk",
+    "news": "Nyheter",
+    "about": "Om oss"
+  },
+  "home": {
+    "heroLine1": "Coventry City",
+    "heroLine2": "Scandinavia",
+    "heroLead": "Supporterklubben for Sky Blues i Norden — kamper, resultater og nyheter samlet under ett tak.",
+    "ctaFixtures": "Se kamper",
+    "ctaNews": "Les nyheter",
+    "matchesTag": "Neste kamper",
+    "matchesTitle": "Kampprogram",
+    "matchesLead": "Liga og cup speiles ukentlig. Resultater med målscorere og statistikk vises etter fullført kamp.",
+    "matchesAll": "Alle kamper",
+    "matchesStats": "Championship-statistikk",
+    "newsTag": "Fra klubben",
+    "newsTitle": "Nyheter",
+    "newsLead": "Oppdateringer for skandinaviske supportere.",
+    "aboutTag": "Sky Blues i nord",
+    "aboutTitle": "En klubb for Norden",
+    "aboutP1": "Coventry City Scandinavia samler fans i Norge, Sverige, Danmark og resten av regionen. Vi følger laget gjennom sesongen — hjemme, borte og i cup.",
+    "aboutP2": "Dette nettstedet er et pitch-utkast. Visuelt språk er inspirert av CCFC sky blue. Offisiell logo og merkevare avklarer vi med klubben.",
+    "aboutCta": "Om supporterklubben",
+    "note": "Uoffisiell supporternettside · Farger inspirert av ccfc.co.uk · Merkevare avklares med klubben"
+  },
+  "fixtures": {
+    "title": "Kamper",
+    "lead": "Alle Coventry-kamper — liga og cup. Resultater får målscorere og statistikk når kampen er ferdig. Data oppdateres typisk hver mandag.",
+    "note": "Premier League 2026/27 · Kickoff kan endres (TV) · Synk mandag når football-data.org-nøkkel er satt"
+  },
+  "stats": {
+    "title": "Statistikk",
+    "lead": "Championship 2024/25 og 2025/26 — sesongoversikt, hjemme/borte og kamp for kamp. Spillerstats kobles på via API-Football.",
+    "note": "Kampstats: football-data.co.uk · Spillerstats: API-Football (kommer)"
+  },
+  "newsPage": {
+    "title": "Nyheter",
+    "lead": "Info om samlinger, reiser og sesongen — skrevet for skandinaviske Sky Blues."
+  },
+  "about": {
+    "title": "Om oss",
+    "lead": "Supporterklubben for Coventry City-fans i Skandinavia.",
+    "tag": "Hvem vi er",
+    "heading": "Sky Blues i Norden",
+    "p1": "Coventry City Scandinavia er for alle som følger The Sky Blues fra Norge, Sverige, Danmark og resten av regionen. Vi deler kamper, resultater og nyheter — og bygger fellesskap rundt laget.",
+    "p2": "Nettsiden hostes på GitHub Pages: lav kostnad, enkel å vedlikeholde for en liten klubb. Kampdata planlegges oppdatert ukentlig (typisk mandag), med målscorere og statistikk etter fullførte kamper.",
+    "p3": "Merkevare: Farger og uttrykk er inspirert av CCFC. Vi bruker foreløpig et eget CCS-merke, ikke offisiell klubblogo. Etter pitch avklarer vi med Coventry City hva som er greit å bruke.",
+    "p4": "Senere: Forum bak innlogging kommer når klubben har sagt ja til retningen — det krever tjenester utenfor GitHub Pages.",
+    "contactLabel": "Kontakt oss",
+    "contactEmail": "hello@example.com",
+    "footerText": "Uoffisiell supporternettside · Pitch-utkast"
+  },
+  "footer": {
+    "title": "Coventry City Scandinavia",
+    "text": "Sky Blues supporterklubb for Skandinavia. Forum og medlemsinnlogging kommer i en senere fase.",
+    "tagline": "Sky blue forever",
+    "adminLabel": "Admin"
+  }
+}
