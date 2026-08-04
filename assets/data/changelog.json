@@ -2,6 +2,24 @@
   "entries": [
     {
       "date": "2026-08-04",
+      "title": "Medlemskap: godkjenning og HTML-e-post",
+      "items": [
+        "Innmelding går til godkjenning før medlemskap aktiveres",
+        "Admin kan godkjenne, legge inn manuelt eller melde ut",
+        "Redigerbare HTML-maler for velkomst- og avslutningsmail"
+      ]
+    },
+    {
+      "date": "2026-08-04",
+      "title": "Medlemshåndtering på nettsiden",
+      "items": [
+        "Ny side for innmelding med personvernsamtykke",
+        "Utmelding via sikker lenke i e-post",
+        "Admin-fane Medlemmer med liste, filter og e-postkø"
+      ]
+    },
+    {
+      "date": "2026-08-04",
       "title": "Finere forsidebilder fra ccfc.co.uk",
       "items": [
         "Slideshow byttet til profesjonelle kampbilder fra klubbens nettside",

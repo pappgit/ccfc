@@ -52,5 +52,6 @@ Supabase-prosjekt `ccfc-scandinavia` styrer innlogging, nyheter, medlemmer og AP
 - Panel: `/admin/` (lenke nederst til høyre i footer)
 - Medlem: `/medlem.html` · utmelding: `/utmelding.html`
 - Plan/logg: `docs/medlemshandtering/`
+- Endringslogg: `assets/data/changelog.json` (oppdateres ved alle synlige endringer; også synlig under Admin → Endringslogg)
 - Dashboard: https://supabase.com/dashboard/project/zzqhgqcwuztbqgkvpxjg
 - Se `admin/README.md` for første admin-bruker
