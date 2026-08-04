@@ -424,8 +424,12 @@
       label: "Footer",
       fields: [
         { path: "footer.title", label: "Tittel", type: "text" },
-        { path: "footer.text", label: "Tekst", type: "textarea" },
-        { path: "footer.tagline", label: "Tagline", type: "text" },
+        {
+          path: "footer.text",
+          label: "Tekst under tittel",
+          type: "textarea",
+        },
+        { path: "footer.tagline", label: "Tagline (f.eks. Play Up Sky Blues)", type: "text" },
         { path: "footer.adminLabel", label: "Admin-lenke", type: "text" },
       ],
     },
@@ -572,7 +576,9 @@
         ? `<p style="color:var(--muted);margin-bottom:0.85rem;font-size:0.9rem">Endre menynavn og huk av hvilke sider som skal vises i menyen.</p>`
         : section.id === "sections"
           ? `<p style="color:var(--muted);margin-bottom:0.85rem;font-size:0.9rem">Slå av/på større blokker på nettsiden uten å slette innholdet.</p>`
-          : ""
+          : section.id === "footer"
+            ? `<p style="color:var(--muted);margin-bottom:0.85rem;font-size:0.9rem">Tittel og tekst vises nederst på alle sider. Tomme felt fylles automatisk med standardtekst.</p>`
+            : ""
     }${section.fields
       .map((f) => {
         const raw = window.CCFCContent.getByPath(contentState, f.path);
