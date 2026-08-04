@@ -162,11 +162,4 @@ $$;
 
 grant execute on function public.admin_exists() to anon, authenticated;
 
-drop policy if exists "admins_bootstrap_first" on public.admins;
-create policy "admins_bootstrap_first"
-  on public.admins for insert
-  to authenticated
-  with check (
-    user_id = auth.uid()
-    and not exists (select 1 from public.admins)
-  );
+-- Bootstrap self-signup removed; admins are created in Supabase dashboard.

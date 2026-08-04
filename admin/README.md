@@ -5,15 +5,22 @@ Admin-UI: https://pappgit.github.io/ccfc/admin/
 
 ## Menyer
 
-1. **Innhold** — alle tekster, meny, logo/favicon (lastes opp til Storage)
+1. **Innhold** — tekster, meny, logo/favicon
 2. **Nyheter** — artikler til forside/nyheter
 3. **API** — synk-innstillinger (nøkler i GitHub Secrets)
 
-## Første innlogging
+## Brukere
 
-1. Åpne `/admin/`
-2. Fyll e-post + passord
-3. Klikk **Opprett første admin**
-4. Rediger under **Innhold** og lagre
+Åpen registrering er **av**. Brukere opprettes i Supabase:
 
-Endringer synes på forsiden etter refresh (session cache tømmes ved lagring i admin).
+1. Dashboard → **Authentication** → **Users** → **Add user**
+2. Sett e-post + passord (auto-confirm)
+3. Kjør SQL for admin-tilgang:
+
+```sql
+insert into public.admins (user_id, email)
+select id, email from auth.users where email = 'deg@example.com'
+on conflict (user_id) do update set email = excluded.email;
+```
+
+Deretter logg inn på `/admin/` med samme e-post/passord.

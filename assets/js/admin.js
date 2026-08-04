@@ -13,7 +13,6 @@
   const loginMsg = $("#login-msg");
   const apiMsg = $("#api-msg");
   const newsMsg = $("#news-msg");
-  const signupBtn = $("#signup-btn");
 
   function showMsg(el, text, isError) {
     if (!el) return;
@@ -35,30 +34,14 @@
       .slice(0, 60);
   }
 
-  async function adminCount() {
-    const { data, error } = await client.rpc("admin_exists");
-    if (error) return null;
-    return data ? 1 : 0;
-  }
-
-  async function ensureAdmin(user) {
-    const { data } = await client
+  async function isAdminUser(userId) {
+    const { data, error } = await client
       .from("admins")
       .select("user_id")
-      .eq("user_id", user.id)
+      .eq("user_id", userId)
       .maybeSingle();
-    if (data) return true;
-
-    const count = await adminCount();
-    if (count === 0) {
-      const { error } = await client.from("admins").insert({
-        user_id: user.id,
-        email: user.email,
-      });
-      if (error) throw error;
-      return true;
-    }
-    return false;
+    if (error) throw error;
+    return !!data;
   }
 
   async function requireSession() {
@@ -67,12 +50,16 @@
   }
 
   async function showApp(session) {
-    const ok = await ensureAdmin(session.user);
+    const ok = await isAdminUser(session.user.id);
     if (!ok) {
       await client.auth.signOut();
       loginView.hidden = false;
       appView.hidden = true;
-      showMsg(loginMsg, "Brukeren er ikke admin. Be en admin legge deg inn i Supabase.", true);
+      showMsg(
+        loginMsg,
+        "Brukeren er ikke admin. Legg til e-posten i Supabase (auth + tabellen admins).",
+        true
+      );
       return;
     }
     loginView.hidden = true;
@@ -86,12 +73,6 @@
   async function showLogin() {
     loginView.hidden = false;
     appView.hidden = true;
-    const count = await adminCount();
-    // count may be null for anon if RLS blocks — bootstrap insert still works when empty
-    signupBtn.hidden = count !== 0 && count !== null;
-    if (count === 0) {
-      showMsg(loginMsg, "Ingen admin ennå — opprett første bruker her.", false);
-    }
   }
 
   /* —— Nav —— */
@@ -349,32 +330,6 @@
     });
     if (error) {
       showMsg(loginMsg, error.message, true);
-      return;
-    }
-    await showApp(data.session);
-  });
-
-  signupBtn.addEventListener("click", async () => {
-    const form = $("#login-form");
-    const fd = new FormData(form);
-    const email = String(fd.get("email") || "");
-    const password = String(fd.get("password") || "");
-    if (!email || !password) {
-      showMsg(loginMsg, "Fyll inn e-post og passord først.", true);
-      return;
-    }
-    showMsg(loginMsg, "Oppretter admin…");
-    const { data, error } = await client.auth.signUp({ email, password });
-    if (error) {
-      showMsg(loginMsg, error.message, true);
-      return;
-    }
-    if (!data.session) {
-      showMsg(
-        loginMsg,
-        "Bruker opprettet. Bekreft e-post hvis påkrevd, deretter logg inn.",
-        false
-      );
       return;
     }
     await showApp(data.session);
