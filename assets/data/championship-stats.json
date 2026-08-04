@@ -1,0 +1,5085 @@
+{
+  "team": "Coventry City",
+  "updated": "2026-08-04",
+  "note": "Kampstatistikk fra football-data.co.uk (gratis CSV). Spillerstats fylles via API-Football.",
+  "apiRecommendation": {
+    "primary": "API-Football (api-sports.io)",
+    "leagueId": 40,
+    "teamIdHint": "søk Coventry — typisk 1346 eller 388",
+    "endpoints": [
+      "GET /players?team={id}&season=2024",
+      "GET /players?team={id}&season=2025",
+      "GET /players/topscorers?league=40&season=2024",
+      "GET /fixtures?team={id}&season=2024&league=40",
+      "GET /fixtures/statistics?fixture={id}"
+    ]
+  },
+  "seasons": [
+    {
+      "id": "2025-26",
+      "label": "2025/26",
+      "competition": "Championship",
+      "source": "football-data.co.uk",
+      "played": 46,
+      "record": {
+        "w": 28,
+        "d": 11,
+        "l": 7,
+        "pts": 95
+      },
+      "goals": {
+        "for": 97,
+        "against": 45,
+        "diff": 52
+      },
+      "averages": {
+        "gf": 2.11,
+        "ga": 0.98,
+        "shots": 16.33,
+        "shotsOnTarget": 5.57,
+        "corners": 5.33,
+        "fouls": 9.63
+      },
+      "totals": {
+        "shots": 751,
+        "shotsOnTarget": 256,
+        "corners": 245,
+        "fouls": 443,
+        "yellow": 69,
+        "red": 3
+      },
+      "home": {
+        "played": 23,
+        "w": 17,
+        "d": 4,
+        "l": 2
+      },
+      "away": {
+        "played": 23,
+        "w": 11,
+        "d": 7,
+        "l": 5
+      },
+      "matches": [
+        {
+          "date": "09/08/2025",
+          "time": "12:30",
+          "home": "Coventry",
+          "away": "Hull",
+          "score": {
+            "home": 0,
+            "away": 0
+          },
+          "result": "D",
+          "ht": {
+            "home": 0,
+            "away": 0
+          },
+          "referee": "R Madley",
+          "stats": {
+            "shots": {
+              "home": 18,
+              "away": 7
+            },
+            "shotsOnTarget": {
+              "home": 3,
+              "away": 3
+            },
+            "fouls": {
+              "home": 7,
+              "away": 11
+            },
+            "corners": {
+              "home": 8,
+              "away": 2
+            },
+            "yellow": {
+              "home": 3,
+              "away": 3
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "H",
+            "gf": 0,
+            "ga": 0,
+            "shots": 18,
+            "shotsOnTarget": 3,
+            "fouls": 7,
+            "corners": 8,
+            "yellow": 3,
+            "red": 0,
+            "result": "D"
+          }
+        },
+        {
+          "date": "16/08/2025",
+          "time": "12:30",
+          "home": "Derby",
+          "away": "Coventry",
+          "score": {
+            "home": 3,
+            "away": 5
+          },
+          "result": "A",
+          "ht": {
+            "home": 2,
+            "away": 2
+          },
+          "referee": "A Backhouse",
+          "stats": {
+            "shots": {
+              "home": 13,
+              "away": 20
+            },
+            "shotsOnTarget": {
+              "home": 4,
+              "away": 10
+            },
+            "fouls": {
+              "home": 14,
+              "away": 11
+            },
+            "corners": {
+              "home": 6,
+              "away": 5
+            },
+            "yellow": {
+              "home": 2,
+              "away": 5
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "A",
+            "gf": 5,
+            "ga": 3,
+            "shots": 20,
+            "shotsOnTarget": 10,
+            "fouls": 11,
+            "corners": 5,
+            "yellow": 5,
+            "red": 0,
+            "result": "W"
+          }
+        },
+        {
+          "date": "23/08/2025",
+          "time": "15:00",
+          "home": "Coventry",
+          "away": "QPR",
+          "score": {
+            "home": 7,
+            "away": 1
+          },
+          "result": "H",
+          "ht": {
+            "home": 5,
+            "away": 0
+          },
+          "referee": "A Herczeg",
+          "stats": {
+            "shots": {
+              "home": 19,
+              "away": 10
+            },
+            "shotsOnTarget": {
+              "home": 8,
+              "away": 1
+            },
+            "fouls": {
+              "home": 15,
+              "away": 8
+            },
+            "corners": {
+              "home": 9,
+              "away": 4
+            },
+            "yellow": {
+              "home": 1,
+              "away": 2
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "H",
+            "gf": 7,
+            "ga": 1,
+            "shots": 19,
+            "shotsOnTarget": 8,
+            "fouls": 15,
+            "corners": 9,
+            "yellow": 1,
+            "red": 0,
+            "result": "W"
+          }
+        },
+        {
+          "date": "30/08/2025",
+          "time": "15:00",
+          "home": "Oxford",
+          "away": "Coventry",
+          "score": {
+            "home": 2,
+            "away": 2
+          },
+          "result": "D",
+          "ht": {
+            "home": 1,
+            "away": 2
+          },
+          "referee": "R Ricardo",
+          "stats": {
+            "shots": {
+              "home": 14,
+              "away": 15
+            },
+            "shotsOnTarget": {
+              "home": 3,
+              "away": 6
+            },
+            "fouls": {
+              "home": 13,
+              "away": 10
+            },
+            "corners": {
+              "home": 0,
+              "away": 5
+            },
+            "yellow": {
+              "home": 1,
+              "away": 2
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "A",
+            "gf": 2,
+            "ga": 2,
+            "shots": 15,
+            "shotsOnTarget": 6,
+            "fouls": 10,
+            "corners": 5,
+            "yellow": 2,
+            "red": 0,
+            "result": "D"
+          }
+        },
+        {
+          "date": "13/09/2025",
+          "time": "15:00",
+          "home": "Coventry",
+          "away": "Norwich",
+          "score": {
+            "home": 1,
+            "away": 1
+          },
+          "result": "D",
+          "ht": {
+            "home": 0,
+            "away": 1
+          },
+          "referee": "G Ward",
+          "stats": {
+            "shots": {
+              "home": 28,
+              "away": 4
+            },
+            "shotsOnTarget": {
+              "home": 4,
+              "away": 1
+            },
+            "fouls": {
+              "home": 12,
+              "away": 7
+            },
+            "corners": {
+              "home": 11,
+              "away": 2
+            },
+            "yellow": {
+              "home": 2,
+              "away": 6
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "H",
+            "gf": 1,
+            "ga": 1,
+            "shots": 28,
+            "shotsOnTarget": 4,
+            "fouls": 12,
+            "corners": 11,
+            "yellow": 2,
+            "red": 0,
+            "result": "D"
+          }
+        },
+        {
+          "date": "20/09/2025",
+          "time": "12:30",
+          "home": "Leicester",
+          "away": "Coventry",
+          "score": {
+            "home": 0,
+            "away": 0
+          },
+          "result": "D",
+          "ht": {
+            "home": 0,
+            "away": 0
+          },
+          "referee": "O Langford",
+          "stats": {
+            "shots": {
+              "home": 17,
+              "away": 11
+            },
+            "shotsOnTarget": {
+              "home": 9,
+              "away": 3
+            },
+            "fouls": {
+              "home": 8,
+              "away": 11
+            },
+            "corners": {
+              "home": 10,
+              "away": 3
+            },
+            "yellow": {
+              "home": 0,
+              "away": 3
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "A",
+            "gf": 0,
+            "ga": 0,
+            "shots": 11,
+            "shotsOnTarget": 3,
+            "fouls": 11,
+            "corners": 3,
+            "yellow": 3,
+            "red": 0,
+            "result": "D"
+          }
+        },
+        {
+          "date": "27/09/2025",
+          "time": "12:30",
+          "home": "Coventry",
+          "away": "Birmingham",
+          "score": {
+            "home": 3,
+            "away": 0
+          },
+          "result": "H",
+          "ht": {
+            "home": 1,
+            "away": 0
+          },
+          "referee": "T Kirk",
+          "stats": {
+            "shots": {
+              "home": 14,
+              "away": 5
+            },
+            "shotsOnTarget": {
+              "home": 5,
+              "away": 0
+            },
+            "fouls": {
+              "home": 11,
+              "away": 12
+            },
+            "corners": {
+              "home": 3,
+              "away": 4
+            },
+            "yellow": {
+              "home": 1,
+              "away": 2
+            },
+            "red": {
+              "home": 0,
+              "away": 1
+            }
+          },
+          "coventry": {
+            "venue": "H",
+            "gf": 3,
+            "ga": 0,
+            "shots": 14,
+            "shotsOnTarget": 5,
+            "fouls": 11,
+            "corners": 3,
+            "yellow": 1,
+            "red": 0,
+            "result": "W"
+          }
+        },
+        {
+          "date": "01/10/2025",
+          "time": "19:45",
+          "home": "Millwall",
+          "away": "Coventry",
+          "score": {
+            "home": 0,
+            "away": 4
+          },
+          "result": "A",
+          "ht": {
+            "home": 0,
+            "away": 1
+          },
+          "referee": "L Smith",
+          "stats": {
+            "shots": {
+              "home": 13,
+              "away": 13
+            },
+            "shotsOnTarget": {
+              "home": 3,
+              "away": 5
+            },
+            "fouls": {
+              "home": 9,
+              "away": 9
+            },
+            "corners": {
+              "home": 3,
+              "away": 3
+            },
+            "yellow": {
+              "home": 2,
+              "away": 2
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "A",
+            "gf": 4,
+            "ga": 0,
+            "shots": 13,
+            "shotsOnTarget": 5,
+            "fouls": 9,
+            "corners": 3,
+            "yellow": 2,
+            "red": 0,
+            "result": "W"
+          }
+        },
+        {
+          "date": "04/10/2025",
+          "time": "12:30",
+          "home": "Sheffield Weds",
+          "away": "Coventry",
+          "score": {
+            "home": 0,
+            "away": 5
+          },
+          "result": "A",
+          "ht": {
+            "home": 0,
+            "away": 3
+          },
+          "referee": "A Herczeg",
+          "stats": {
+            "shots": {
+              "home": 9,
+              "away": 21
+            },
+            "shotsOnTarget": {
+              "home": 0,
+              "away": 10
+            },
+            "fouls": {
+              "home": 9,
+              "away": 3
+            },
+            "corners": {
+              "home": 13,
+              "away": 8
+            },
+            "yellow": {
+              "home": 1,
+              "away": 1
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "A",
+            "gf": 5,
+            "ga": 0,
+            "shots": 21,
+            "shotsOnTarget": 10,
+            "fouls": 3,
+            "corners": 8,
+            "yellow": 1,
+            "red": 0,
+            "result": "W"
+          }
+        },
+        {
+          "date": "18/10/2025",
+          "time": "15:00",
+          "home": "Coventry",
+          "away": "Blackburn",
+          "score": {
+            "home": 2,
+            "away": 0
+          },
+          "result": "H",
+          "ht": {
+            "home": 0,
+            "away": 0
+          },
+          "referee": "S Allison",
+          "stats": {
+            "shots": {
+              "home": 14,
+              "away": 17
+            },
+            "shotsOnTarget": {
+              "home": 5,
+              "away": 3
+            },
+            "fouls": {
+              "home": 7,
+              "away": 15
+            },
+            "corners": {
+              "home": 2,
+              "away": 7
+            },
+            "yellow": {
+              "home": 0,
+              "away": 2
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "H",
+            "gf": 2,
+            "ga": 0,
+            "shots": 14,
+            "shotsOnTarget": 5,
+            "fouls": 7,
+            "corners": 2,
+            "yellow": 0,
+            "red": 0,
+            "result": "W"
+          }
+        },
+        {
+          "date": "21/10/2025",
+          "time": "19:45",
+          "home": "Portsmouth",
+          "away": "Coventry",
+          "score": {
+            "home": 1,
+            "away": 2
+          },
+          "result": "A",
+          "ht": {
+            "home": 0,
+            "away": 1
+          },
+          "referee": "G Ward",
+          "stats": {
+            "shots": {
+              "home": 15,
+              "away": 19
+            },
+            "shotsOnTarget": {
+              "home": 5,
+              "away": 7
+            },
+            "fouls": {
+              "home": 5,
+              "away": 12
+            },
+            "corners": {
+              "home": 6,
+              "away": 5
+            },
+            "yellow": {
+              "home": 1,
+              "away": 1
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "A",
+            "gf": 2,
+            "ga": 1,
+            "shots": 19,
+            "shotsOnTarget": 7,
+            "fouls": 12,
+            "corners": 5,
+            "yellow": 1,
+            "red": 0,
+            "result": "W"
+          }
+        },
+        {
+          "date": "25/10/2025",
+          "time": "12:30",
+          "home": "Coventry",
+          "away": "Watford",
+          "score": {
+            "home": 3,
+            "away": 1
+          },
+          "result": "H",
+          "ht": {
+            "home": 3,
+            "away": 0
+          },
+          "referee": "D Whitestone",
+          "stats": {
+            "shots": {
+              "home": 12,
+              "away": 13
+            },
+            "shotsOnTarget": {
+              "home": 3,
+              "away": 8
+            },
+            "fouls": {
+              "home": 10,
+              "away": 8
+            },
+            "corners": {
+              "home": 5,
+              "away": 7
+            },
+            "yellow": {
+              "home": 3,
+              "away": 2
+            },
+            "red": {
+              "home": 0,
+              "away": 1
+            }
+          },
+          "coventry": {
+            "venue": "H",
+            "gf": 3,
+            "ga": 1,
+            "shots": 12,
+            "shotsOnTarget": 3,
+            "fouls": 10,
+            "corners": 5,
+            "yellow": 3,
+            "red": 0,
+            "result": "W"
+          }
+        },
+        {
+          "date": "31/10/2025",
+          "time": "20:00",
+          "home": "Wrexham",
+          "away": "Coventry",
+          "score": {
+            "home": 3,
+            "away": 2
+          },
+          "result": "H",
+          "ht": {
+            "home": 0,
+            "away": 1
+          },
+          "referee": "A Backhouse",
+          "stats": {
+            "shots": {
+              "home": 13,
+              "away": 18
+            },
+            "shotsOnTarget": {
+              "home": 7,
+              "away": 5
+            },
+            "fouls": {
+              "home": 9,
+              "away": 10
+            },
+            "corners": {
+              "home": 3,
+              "away": 6
+            },
+            "yellow": {
+              "home": 2,
+              "away": 1
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "A",
+            "gf": 2,
+            "ga": 3,
+            "shots": 18,
+            "shotsOnTarget": 5,
+            "fouls": 10,
+            "corners": 6,
+            "yellow": 1,
+            "red": 0,
+            "result": "L"
+          }
+        },
+        {
+          "date": "04/11/2025",
+          "time": "20:00",
+          "home": "Coventry",
+          "away": "Sheffield United",
+          "score": {
+            "home": 3,
+            "away": 1
+          },
+          "result": "H",
+          "ht": {
+            "home": 0,
+            "away": 1
+          },
+          "referee": "J Linington",
+          "stats": {
+            "shots": {
+              "home": 17,
+              "away": 11
+            },
+            "shotsOnTarget": {
+              "home": 8,
+              "away": 4
+            },
+            "fouls": {
+              "home": 5,
+              "away": 14
+            },
+            "corners": {
+              "home": 6,
+              "away": 13
+            },
+            "yellow": {
+              "home": 3,
+              "away": 2
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "H",
+            "gf": 3,
+            "ga": 1,
+            "shots": 17,
+            "shotsOnTarget": 8,
+            "fouls": 5,
+            "corners": 6,
+            "yellow": 3,
+            "red": 0,
+            "result": "W"
+          }
+        },
+        {
+          "date": "08/11/2025",
+          "time": "15:00",
+          "home": "Stoke",
+          "away": "Coventry",
+          "score": {
+            "home": 0,
+            "away": 1
+          },
+          "result": "A",
+          "ht": {
+            "home": 0,
+            "away": 0
+          },
+          "referee": "J Busby",
+          "stats": {
+            "shots": {
+              "home": 10,
+              "away": 17
+            },
+            "shotsOnTarget": {
+              "home": 2,
+              "away": 3
+            },
+            "fouls": {
+              "home": 9,
+              "away": 9
+            },
+            "corners": {
+              "home": 3,
+              "away": 6
+            },
+            "yellow": {
+              "home": 3,
+              "away": 3
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "A",
+            "gf": 1,
+            "ga": 0,
+            "shots": 17,
+            "shotsOnTarget": 3,
+            "fouls": 9,
+            "corners": 6,
+            "yellow": 3,
+            "red": 0,
+            "result": "W"
+          }
+        },
+        {
+          "date": "22/11/2025",
+          "time": "12:30",
+          "home": "Coventry",
+          "away": "West Brom",
+          "score": {
+            "home": 3,
+            "away": 2
+          },
+          "result": "H",
+          "ht": {
+            "home": 1,
+            "away": 2
+          },
+          "referee": "A Kitchen",
+          "stats": {
+            "shots": {
+              "home": 24,
+              "away": 7
+            },
+            "shotsOnTarget": {
+              "home": 11,
+              "away": 5
+            },
+            "fouls": {
+              "home": 10,
+              "away": 9
+            },
+            "corners": {
+              "home": 8,
+              "away": 1
+            },
+            "yellow": {
+              "home": 2,
+              "away": 1
+            },
+            "red": {
+              "home": 0,
+              "away": 1
+            }
+          },
+          "coventry": {
+            "venue": "H",
+            "gf": 3,
+            "ga": 2,
+            "shots": 24,
+            "shotsOnTarget": 11,
+            "fouls": 10,
+            "corners": 8,
+            "yellow": 2,
+            "red": 0,
+            "result": "W"
+          }
+        },
+        {
+          "date": "25/11/2025",
+          "time": "19:45",
+          "home": "Middlesbrough",
+          "away": "Coventry",
+          "score": {
+            "home": 2,
+            "away": 4
+          },
+          "result": "A",
+          "ht": {
+            "home": 1,
+            "away": 2
+          },
+          "referee": "M Donohue",
+          "stats": {
+            "shots": {
+              "home": 11,
+              "away": 20
+            },
+            "shotsOnTarget": {
+              "home": 2,
+              "away": 8
+            },
+            "fouls": {
+              "home": 12,
+              "away": 16
+            },
+            "corners": {
+              "home": 8,
+              "away": 3
+            },
+            "yellow": {
+              "home": 0,
+              "away": 0
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "A",
+            "gf": 4,
+            "ga": 2,
+            "shots": 20,
+            "shotsOnTarget": 8,
+            "fouls": 16,
+            "corners": 3,
+            "yellow": 0,
+            "red": 0,
+            "result": "W"
+          }
+        },
+        {
+          "date": "29/11/2025",
+          "time": "15:00",
+          "home": "Coventry",
+          "away": "Charlton",
+          "score": {
+            "home": 3,
+            "away": 1
+          },
+          "result": "H",
+          "ht": {
+            "home": 2,
+            "away": 1
+          },
+          "referee": "D Webb",
+          "stats": {
+            "shots": {
+              "home": 26,
+              "away": 9
+            },
+            "shotsOnTarget": {
+              "home": 8,
+              "away": 4
+            },
+            "fouls": {
+              "home": 3,
+              "away": 12
+            },
+            "corners": {
+              "home": 6,
+              "away": 3
+            },
+            "yellow": {
+              "home": 1,
+              "away": 1
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "H",
+            "gf": 3,
+            "ga": 1,
+            "shots": 26,
+            "shotsOnTarget": 8,
+            "fouls": 3,
+            "corners": 6,
+            "yellow": 1,
+            "red": 0,
+            "result": "W"
+          }
+        },
+        {
+          "date": "06/12/2025",
+          "time": "15:00",
+          "home": "Ipswich",
+          "away": "Coventry",
+          "score": {
+            "home": 3,
+            "away": 0
+          },
+          "result": "H",
+          "ht": {
+            "home": 1,
+            "away": 0
+          },
+          "referee": "P Tierney",
+          "stats": {
+            "shots": {
+              "home": 10,
+              "away": 11
+            },
+            "shotsOnTarget": {
+              "home": 6,
+              "away": 5
+            },
+            "fouls": {
+              "home": 14,
+              "away": 9
+            },
+            "corners": {
+              "home": 2,
+              "away": 5
+            },
+            "yellow": {
+              "home": 5,
+              "away": 2
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "A",
+            "gf": 0,
+            "ga": 3,
+            "shots": 11,
+            "shotsOnTarget": 5,
+            "fouls": 9,
+            "corners": 5,
+            "yellow": 2,
+            "red": 0,
+            "result": "L"
+          }
+        },
+        {
+          "date": "09/12/2025",
+          "time": "19:45",
+          "home": "Preston",
+          "away": "Coventry",
+          "score": {
+            "home": 1,
+            "away": 1
+          },
+          "result": "D",
+          "ht": {
+            "home": 0,
+            "away": 0
+          },
+          "referee": "B Toner",
+          "stats": {
+            "shots": {
+              "home": 6,
+              "away": 21
+            },
+            "shotsOnTarget": {
+              "home": 2,
+              "away": 5
+            },
+            "fouls": {
+              "home": 9,
+              "away": 9
+            },
+            "corners": {
+              "home": 4,
+              "away": 8
+            },
+            "yellow": {
+              "home": 1,
+              "away": 0
+            },
+            "red": {
+              "home": 1,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "A",
+            "gf": 1,
+            "ga": 1,
+            "shots": 21,
+            "shotsOnTarget": 5,
+            "fouls": 9,
+            "corners": 8,
+            "yellow": 0,
+            "red": 0,
+            "result": "D"
+          }
+        },
+        {
+          "date": "13/12/2025",
+          "time": "15:00",
+          "home": "Coventry",
+          "away": "Bristol City",
+          "score": {
+            "home": 1,
+            "away": 0
+          },
+          "result": "H",
+          "ht": {
+            "home": 0,
+            "away": 0
+          },
+          "referee": "S Martin",
+          "stats": {
+            "shots": {
+              "home": 21,
+              "away": 15
+            },
+            "shotsOnTarget": {
+              "home": 4,
+              "away": 8
+            },
+            "fouls": {
+              "home": 13,
+              "away": 15
+            },
+            "corners": {
+              "home": 4,
+              "away": 5
+            },
+            "yellow": {
+              "home": 1,
+              "away": 3
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "H",
+            "gf": 1,
+            "ga": 0,
+            "shots": 21,
+            "shotsOnTarget": 4,
+            "fouls": 13,
+            "corners": 4,
+            "yellow": 1,
+            "red": 0,
+            "result": "W"
+          }
+        },
+        {
+          "date": "20/12/2025",
+          "time": "12:30",
+          "home": "Southampton",
+          "away": "Coventry",
+          "score": {
+            "home": 1,
+            "away": 1
+          },
+          "result": "D",
+          "ht": {
+            "home": 0,
+            "away": 1
+          },
+          "referee": "A Herczeg",
+          "stats": {
+            "shots": {
+              "home": 23,
+              "away": 8
+            },
+            "shotsOnTarget": {
+              "home": 7,
+              "away": 4
+            },
+            "fouls": {
+              "home": 10,
+              "away": 11
+            },
+            "corners": {
+              "home": 7,
+              "away": 2
+            },
+            "yellow": {
+              "home": 1,
+              "away": 1
+            },
+            "red": {
+              "home": 0,
+              "away": 1
+            }
+          },
+          "coventry": {
+            "venue": "A",
+            "gf": 1,
+            "ga": 1,
+            "shots": 8,
+            "shotsOnTarget": 4,
+            "fouls": 11,
+            "corners": 2,
+            "yellow": 1,
+            "red": 1,
+            "result": "D"
+          }
+        },
+        {
+          "date": "26/12/2025",
+          "time": "15:00",
+          "home": "Coventry",
+          "away": "Swansea",
+          "score": {
+            "home": 1,
+            "away": 0
+          },
+          "result": "H",
+          "ht": {
+            "home": 1,
+            "away": 0
+          },
+          "referee": "S Allison",
+          "stats": {
+            "shots": {
+              "home": 16,
+              "away": 11
+            },
+            "shotsOnTarget": {
+              "home": 7,
+              "away": 2
+            },
+            "fouls": {
+              "home": 13,
+              "away": 13
+            },
+            "corners": {
+              "home": 7,
+              "away": 4
+            },
+            "yellow": {
+              "home": 0,
+              "away": 2
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "H",
+            "gf": 1,
+            "ga": 0,
+            "shots": 16,
+            "shotsOnTarget": 7,
+            "fouls": 13,
+            "corners": 7,
+            "yellow": 0,
+            "red": 0,
+            "result": "W"
+          }
+        },
+        {
+          "date": "29/12/2025",
+          "time": "18:00",
+          "home": "Coventry",
+          "away": "Ipswich",
+          "score": {
+            "home": 0,
+            "away": 2
+          },
+          "result": "A",
+          "ht": {
+            "home": 0,
+            "away": 0
+          },
+          "referee": "A Backhouse",
+          "stats": {
+            "shots": {
+              "home": 10,
+              "away": 18
+            },
+            "shotsOnTarget": {
+              "home": 3,
+              "away": 7
+            },
+            "fouls": {
+              "home": 12,
+              "away": 14
+            },
+            "corners": {
+              "home": 3,
+              "away": 6
+            },
+            "yellow": {
+              "home": 1,
+              "away": 2
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "H",
+            "gf": 0,
+            "ga": 2,
+            "shots": 10,
+            "shotsOnTarget": 3,
+            "fouls": 12,
+            "corners": 3,
+            "yellow": 1,
+            "red": 0,
+            "result": "L"
+          }
+        },
+        {
+          "date": "01/01/2026",
+          "time": "15:00",
+          "home": "Charlton",
+          "away": "Coventry",
+          "score": {
+            "home": 1,
+            "away": 1
+          },
+          "result": "D",
+          "ht": {
+            "home": 0,
+            "away": 1
+          },
+          "referee": "J Smith",
+          "stats": {
+            "shots": {
+              "home": 15,
+              "away": 20
+            },
+            "shotsOnTarget": {
+              "home": 3,
+              "away": 7
+            },
+            "fouls": {
+              "home": 10,
+              "away": 7
+            },
+            "corners": {
+              "home": 9,
+              "away": 3
+            },
+            "yellow": {
+              "home": 3,
+              "away": 2
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "A",
+            "gf": 1,
+            "ga": 1,
+            "shots": 20,
+            "shotsOnTarget": 7,
+            "fouls": 7,
+            "corners": 3,
+            "yellow": 2,
+            "red": 0,
+            "result": "D"
+          }
+        },
+        {
+          "date": "04/01/2026",
+          "time": "12:00",
+          "home": "Birmingham",
+          "away": "Coventry",
+          "score": {
+            "home": 3,
+            "away": 2
+          },
+          "result": "H",
+          "ht": {
+            "home": 2,
+            "away": 1
+          },
+          "referee": "J Linington",
+          "stats": {
+            "shots": {
+              "home": 9,
+              "away": 17
+            },
+            "shotsOnTarget": {
+              "home": 4,
+              "away": 6
+            },
+            "fouls": {
+              "home": 13,
+              "away": 8
+            },
+            "corners": {
+              "home": 2,
+              "away": 6
+            },
+            "yellow": {
+              "home": 3,
+              "away": 1
+            },
+            "red": {
+              "home": 0,
+              "away": 1
+            }
+          },
+          "coventry": {
+            "venue": "A",
+            "gf": 2,
+            "ga": 3,
+            "shots": 17,
+            "shotsOnTarget": 6,
+            "fouls": 8,
+            "corners": 6,
+            "yellow": 1,
+            "red": 1,
+            "result": "L"
+          }
+        },
+        {
+          "date": "17/01/2026",
+          "time": "12:30",
+          "home": "Coventry",
+          "away": "Leicester",
+          "score": {
+            "home": 2,
+            "away": 1
+          },
+          "result": "H",
+          "ht": {
+            "home": 0,
+            "away": 1
+          },
+          "referee": "L Smith",
+          "stats": {
+            "shots": {
+              "home": 19,
+              "away": 14
+            },
+            "shotsOnTarget": {
+              "home": 6,
+              "away": 6
+            },
+            "fouls": {
+              "home": 8,
+              "away": 14
+            },
+            "corners": {
+              "home": 5,
+              "away": 3
+            },
+            "yellow": {
+              "home": 1,
+              "away": 4
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "H",
+            "gf": 2,
+            "ga": 1,
+            "shots": 19,
+            "shotsOnTarget": 6,
+            "fouls": 8,
+            "corners": 5,
+            "yellow": 1,
+            "red": 0,
+            "result": "W"
+          }
+        },
+        {
+          "date": "20/01/2026",
+          "time": "19:45",
+          "home": "Coventry",
+          "away": "Millwall",
+          "score": {
+            "home": 2,
+            "away": 1
+          },
+          "result": "H",
+          "ht": {
+            "home": 1,
+            "away": 1
+          },
+          "referee": "A Kitchen",
+          "stats": {
+            "shots": {
+              "home": 15,
+              "away": 14
+            },
+            "shotsOnTarget": {
+              "home": 4,
+              "away": 4
+            },
+            "fouls": {
+              "home": 7,
+              "away": 12
+            },
+            "corners": {
+              "home": 4,
+              "away": 3
+            },
+            "yellow": {
+              "home": 2,
+              "away": 1
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "H",
+            "gf": 2,
+            "ga": 1,
+            "shots": 15,
+            "shotsOnTarget": 4,
+            "fouls": 7,
+            "corners": 4,
+            "yellow": 2,
+            "red": 0,
+            "result": "W"
+          }
+        },
+        {
+          "date": "26/01/2026",
+          "time": "20:00",
+          "home": "Norwich",
+          "away": "Coventry",
+          "score": {
+            "home": 2,
+            "away": 1
+          },
+          "result": "H",
+          "ht": {
+            "home": 0,
+            "away": 1
+          },
+          "referee": "T Kirk",
+          "stats": {
+            "shots": {
+              "home": 16,
+              "away": 16
+            },
+            "shotsOnTarget": {
+              "home": 5,
+              "away": 5
+            },
+            "fouls": {
+              "home": 10,
+              "away": 9
+            },
+            "corners": {
+              "home": 4,
+              "away": 7
+            },
+            "yellow": {
+              "home": 1,
+              "away": 1
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "A",
+            "gf": 1,
+            "ga": 2,
+            "shots": 16,
+            "shotsOnTarget": 5,
+            "fouls": 9,
+            "corners": 7,
+            "yellow": 1,
+            "red": 0,
+            "result": "L"
+          }
+        },
+        {
+          "date": "31/01/2026",
+          "time": "15:00",
+          "home": "QPR",
+          "away": "Coventry",
+          "score": {
+            "home": 2,
+            "away": 1
+          },
+          "result": "H",
+          "ht": {
+            "home": 0,
+            "away": 0
+          },
+          "referee": "J Smith",
+          "stats": {
+            "shots": {
+              "home": 15,
+              "away": 9
+            },
+            "shotsOnTarget": {
+              "home": 8,
+              "away": 2
+            },
+            "fouls": {
+              "home": 7,
+              "away": 8
+            },
+            "corners": {
+              "home": 5,
+              "away": 5
+            },
+            "yellow": {
+              "home": 1,
+              "away": 2
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "A",
+            "gf": 1,
+            "ga": 2,
+            "shots": 9,
+            "shotsOnTarget": 2,
+            "fouls": 8,
+            "corners": 5,
+            "yellow": 2,
+            "red": 0,
+            "result": "L"
+          }
+        },
+        {
+          "date": "07/02/2026",
+          "time": "15:01",
+          "home": "Coventry",
+          "away": "Oxford",
+          "score": {
+            "home": 0,
+            "away": 0
+          },
+          "result": "D",
+          "ht": {
+            "home": 0,
+            "away": 0
+          },
+          "referee": "R Ricardo",
+          "stats": {
+            "shots": {
+              "home": 24,
+              "away": 4
+            },
+            "shotsOnTarget": {
+              "home": 5,
+              "away": 0
+            },
+            "fouls": {
+              "home": 7,
+              "away": 13
+            },
+            "corners": {
+              "home": 10,
+              "away": 0
+            },
+            "yellow": {
+              "home": 1,
+              "away": 6
+            },
+            "red": {
+              "home": 0,
+              "away": 1
+            }
+          },
+          "coventry": {
+            "venue": "H",
+            "gf": 0,
+            "ga": 0,
+            "shots": 24,
+            "shotsOnTarget": 5,
+            "fouls": 7,
+            "corners": 10,
+            "yellow": 1,
+            "red": 0,
+            "result": "D"
+          }
+        },
+        {
+          "date": "16/02/2026",
+          "time": "20:00",
+          "home": "Coventry",
+          "away": "Middlesbrough",
+          "score": {
+            "home": 3,
+            "away": 1
+          },
+          "result": "H",
+          "ht": {
+            "home": 1,
+            "away": 0
+          },
+          "referee": "T Bramall",
+          "stats": {
+            "shots": {
+              "home": 9,
+              "away": 18
+            },
+            "shotsOnTarget": {
+              "home": 4,
+              "away": 4
+            },
+            "fouls": {
+              "home": 17,
+              "away": 13
+            },
+            "corners": {
+              "home": 3,
+              "away": 2
+            },
+            "yellow": {
+              "home": 3,
+              "away": 2
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "H",
+            "gf": 3,
+            "ga": 1,
+            "shots": 9,
+            "shotsOnTarget": 4,
+            "fouls": 17,
+            "corners": 3,
+            "yellow": 3,
+            "red": 0,
+            "result": "W"
+          }
+        },
+        {
+          "date": "21/02/2026",
+          "time": "12:30",
+          "home": "West Brom",
+          "away": "Coventry",
+          "score": {
+            "home": 0,
+            "away": 2
+          },
+          "result": "A",
+          "ht": {
+            "home": 0,
+            "away": 2
+          },
+          "referee": "J Linington",
+          "stats": {
+            "shots": {
+              "home": 11,
+              "away": 10
+            },
+            "shotsOnTarget": {
+              "home": 1,
+              "away": 3
+            },
+            "fouls": {
+              "home": 10,
+              "away": 7
+            },
+            "corners": {
+              "home": 3,
+              "away": 2
+            },
+            "yellow": {
+              "home": 0,
+              "away": 3
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "A",
+            "gf": 2,
+            "ga": 0,
+            "shots": 10,
+            "shotsOnTarget": 3,
+            "fouls": 7,
+            "corners": 2,
+            "yellow": 3,
+            "red": 0,
+            "result": "W"
+          }
+        },
+        {
+          "date": "25/02/2026",
+          "time": "19:45",
+          "home": "Sheffield United",
+          "away": "Coventry",
+          "score": {
+            "home": 1,
+            "away": 2
+          },
+          "result": "A",
+          "ht": {
+            "home": 0,
+            "away": 0
+          },
+          "referee": "J Busby",
+          "stats": {
+            "shots": {
+              "home": 22,
+              "away": 11
+            },
+            "shotsOnTarget": {
+              "home": 4,
+              "away": 5
+            },
+            "fouls": {
+              "home": 12,
+              "away": 14
+            },
+            "corners": {
+              "home": 7,
+              "away": 3
+            },
+            "yellow": {
+              "home": 3,
+              "away": 2
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "A",
+            "gf": 2,
+            "ga": 1,
+            "shots": 11,
+            "shotsOnTarget": 5,
+            "fouls": 14,
+            "corners": 3,
+            "yellow": 2,
+            "red": 0,
+            "result": "W"
+          }
+        },
+        {
+          "date": "28/02/2026",
+          "time": "15:00",
+          "home": "Coventry",
+          "away": "Stoke",
+          "score": {
+            "home": 2,
+            "away": 1
+          },
+          "result": "H",
+          "ht": {
+            "home": 1,
+            "away": 1
+          },
+          "referee": "A Kitchen",
+          "stats": {
+            "shots": {
+              "home": 20,
+              "away": 3
+            },
+            "shotsOnTarget": {
+              "home": 8,
+              "away": 1
+            },
+            "fouls": {
+              "home": 7,
+              "away": 6
+            },
+            "corners": {
+              "home": 7,
+              "away": 1
+            },
+            "yellow": {
+              "home": 1,
+              "away": 1
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "H",
+            "gf": 2,
+            "ga": 1,
+            "shots": 20,
+            "shotsOnTarget": 8,
+            "fouls": 7,
+            "corners": 7,
+            "yellow": 1,
+            "red": 0,
+            "result": "W"
+          }
+        },
+        {
+          "date": "07/03/2026",
+          "time": "15:00",
+          "home": "Bristol City",
+          "away": "Coventry",
+          "score": {
+            "home": 0,
+            "away": 2
+          },
+          "result": "A",
+          "ht": {
+            "home": 0,
+            "away": 2
+          },
+          "referee": "M Donohue",
+          "stats": {
+            "shots": {
+              "home": 24,
+              "away": 10
+            },
+            "shotsOnTarget": {
+              "home": 6,
+              "away": 7
+            },
+            "fouls": {
+              "home": 9,
+              "away": 6
+            },
+            "corners": {
+              "home": 11,
+              "away": 3
+            },
+            "yellow": {
+              "home": 2,
+              "away": 2
+            },
+            "red": {
+              "home": 1,
+              "away": 1
+            }
+          },
+          "coventry": {
+            "venue": "A",
+            "gf": 2,
+            "ga": 0,
+            "shots": 10,
+            "shotsOnTarget": 7,
+            "fouls": 6,
+            "corners": 3,
+            "yellow": 2,
+            "red": 1,
+            "result": "W"
+          }
+        },
+        {
+          "date": "11/03/2026",
+          "time": "20:00",
+          "home": "Coventry",
+          "away": "Preston",
+          "score": {
+            "home": 3,
+            "away": 0
+          },
+          "result": "H",
+          "ht": {
+            "home": 2,
+            "away": 0
+          },
+          "referee": "L Smith",
+          "stats": {
+            "shots": {
+              "home": 25,
+              "away": 5
+            },
+            "shotsOnTarget": {
+              "home": 9,
+              "away": 2
+            },
+            "fouls": {
+              "home": 9,
+              "away": 9
+            },
+            "corners": {
+              "home": 8,
+              "away": 1
+            },
+            "yellow": {
+              "home": 0,
+              "away": 0
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "H",
+            "gf": 3,
+            "ga": 0,
+            "shots": 25,
+            "shotsOnTarget": 9,
+            "fouls": 9,
+            "corners": 8,
+            "yellow": 0,
+            "red": 0,
+            "result": "W"
+          }
+        },
+        {
+          "date": "14/03/2026",
+          "time": "12:30",
+          "home": "Coventry",
+          "away": "Southampton",
+          "score": {
+            "home": 1,
+            "away": 2
+          },
+          "result": "A",
+          "ht": {
+            "home": 0,
+            "away": 0
+          },
+          "referee": "F Hallam",
+          "stats": {
+            "shots": {
+              "home": 20,
+              "away": 8
+            },
+            "shotsOnTarget": {
+              "home": 6,
+              "away": 3
+            },
+            "fouls": {
+              "home": 13,
+              "away": 13
+            },
+            "corners": {
+              "home": 7,
+              "away": 5
+            },
+            "yellow": {
+              "home": 3,
+              "away": 2
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "H",
+            "gf": 1,
+            "ga": 2,
+            "shots": 20,
+            "shotsOnTarget": 6,
+            "fouls": 13,
+            "corners": 7,
+            "yellow": 3,
+            "red": 0,
+            "result": "L"
+          }
+        },
+        {
+          "date": "21/03/2026",
+          "time": "17:15",
+          "home": "Swansea",
+          "away": "Coventry",
+          "score": {
+            "home": 0,
+            "away": 3
+          },
+          "result": "A",
+          "ht": {
+            "home": 0,
+            "away": 3
+          },
+          "referee": "S Martin",
+          "stats": {
+            "shots": {
+              "home": 11,
+              "away": 14
+            },
+            "shotsOnTarget": {
+              "home": 2,
+              "away": 7
+            },
+            "fouls": {
+              "home": 10,
+              "away": 15
+            },
+            "corners": {
+              "home": 2,
+              "away": 7
+            },
+            "yellow": {
+              "home": 3,
+              "away": 1
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "A",
+            "gf": 3,
+            "ga": 0,
+            "shots": 14,
+            "shotsOnTarget": 7,
+            "fouls": 15,
+            "corners": 7,
+            "yellow": 1,
+            "red": 0,
+            "result": "W"
+          }
+        },
+        {
+          "date": "03/04/2026",
+          "time": "20:00",
+          "home": "Coventry",
+          "away": "Derby",
+          "score": {
+            "home": 3,
+            "away": 2
+          },
+          "result": "H",
+          "ht": {
+            "home": 1,
+            "away": 1
+          },
+          "referee": "T Nield",
+          "stats": {
+            "shots": {
+              "home": 13,
+              "away": 8
+            },
+            "shotsOnTarget": {
+              "home": 7,
+              "away": 3
+            },
+            "fouls": {
+              "home": 12,
+              "away": 15
+            },
+            "corners": {
+              "home": 6,
+              "away": 2
+            },
+            "yellow": {
+              "home": 0,
+              "away": 2
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "H",
+            "gf": 3,
+            "ga": 2,
+            "shots": 13,
+            "shotsOnTarget": 7,
+            "fouls": 12,
+            "corners": 6,
+            "yellow": 0,
+            "red": 0,
+            "result": "W"
+          }
+        },
+        {
+          "date": "06/04/2026",
+          "time": "20:00",
+          "home": "Hull",
+          "away": "Coventry",
+          "score": {
+            "home": 0,
+            "away": 0
+          },
+          "result": "D",
+          "ht": {
+            "home": 0,
+            "away": 0
+          },
+          "referee": "D Webb",
+          "stats": {
+            "shots": {
+              "home": 13,
+              "away": 6
+            },
+            "shotsOnTarget": {
+              "home": 5,
+              "away": 1
+            },
+            "fouls": {
+              "home": 10,
+              "away": 12
+            },
+            "corners": {
+              "home": 2,
+              "away": 4
+            },
+            "yellow": {
+              "home": 1,
+              "away": 1
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "A",
+            "gf": 0,
+            "ga": 0,
+            "shots": 6,
+            "shotsOnTarget": 1,
+            "fouls": 12,
+            "corners": 4,
+            "yellow": 1,
+            "red": 0,
+            "result": "D"
+          }
+        },
+        {
+          "date": "11/04/2026",
+          "time": "12:30",
+          "home": "Coventry",
+          "away": "Sheffield Weds",
+          "score": {
+            "home": 0,
+            "away": 0
+          },
+          "result": "D",
+          "ht": {
+            "home": 0,
+            "away": 0
+          },
+          "referee": "M Donohue",
+          "stats": {
+            "shots": {
+              "home": 20,
+              "away": 8
+            },
+            "shotsOnTarget": {
+              "home": 3,
+              "away": 0
+            },
+            "fouls": {
+              "home": 10,
+              "away": 16
+            },
+            "corners": {
+              "home": 7,
+              "away": 2
+            },
+            "yellow": {
+              "home": 0,
+              "away": 3
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "H",
+            "gf": 0,
+            "ga": 0,
+            "shots": 20,
+            "shotsOnTarget": 3,
+            "fouls": 10,
+            "corners": 7,
+            "yellow": 0,
+            "red": 0,
+            "result": "D"
+          }
+        },
+        {
+          "date": "17/04/2026",
+          "time": "20:00",
+          "home": "Blackburn",
+          "away": "Coventry",
+          "score": {
+            "home": 1,
+            "away": 1
+          },
+          "result": "D",
+          "ht": {
+            "home": 0,
+            "away": 0
+          },
+          "referee": "L Smith",
+          "stats": {
+            "shots": {
+              "home": 7,
+              "away": 12
+            },
+            "shotsOnTarget": {
+              "home": 2,
+              "away": 2
+            },
+            "fouls": {
+              "home": 10,
+              "away": 9
+            },
+            "corners": {
+              "home": 3,
+              "away": 3
+            },
+            "yellow": {
+              "home": 4,
+              "away": 1
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "A",
+            "gf": 1,
+            "ga": 1,
+            "shots": 12,
+            "shotsOnTarget": 2,
+            "fouls": 9,
+            "corners": 3,
+            "yellow": 1,
+            "red": 0,
+            "result": "D"
+          }
+        },
+        {
+          "date": "21/04/2026",
+          "time": "19:45",
+          "home": "Coventry",
+          "away": "Portsmouth",
+          "score": {
+            "home": 5,
+            "away": 1
+          },
+          "result": "H",
+          "ht": {
+            "home": 1,
+            "away": 0
+          },
+          "referee": "A Kitchen",
+          "stats": {
+            "shots": {
+              "home": 15,
+              "away": 4
+            },
+            "shotsOnTarget": {
+              "home": 6,
+              "away": 2
+            },
+            "fouls": {
+              "home": 4,
+              "away": 10
+            },
+            "corners": {
+              "home": 3,
+              "away": 1
+            },
+            "yellow": {
+              "home": 0,
+              "away": 1
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "H",
+            "gf": 5,
+            "ga": 1,
+            "shots": 15,
+            "shotsOnTarget": 6,
+            "fouls": 4,
+            "corners": 3,
+            "yellow": 0,
+            "red": 0,
+            "result": "W"
+          }
+        },
+        {
+          "date": "26/04/2026",
+          "time": "12:00",
+          "home": "Coventry",
+          "away": "Wrexham",
+          "score": {
+            "home": 3,
+            "away": 1
+          },
+          "result": "H",
+          "ht": {
+            "home": 1,
+            "away": 1
+          },
+          "referee": "S Allison",
+          "stats": {
+            "shots": {
+              "home": 15,
+              "away": 13
+            },
+            "shotsOnTarget": {
+              "home": 6,
+              "away": 2
+            },
+            "fouls": {
+              "home": 6,
+              "away": 18
+            },
+            "corners": {
+              "home": 5,
+              "away": 4
+            },
+            "yellow": {
+              "home": 2,
+              "away": 2
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "H",
+            "gf": 3,
+            "ga": 1,
+            "shots": 15,
+            "shotsOnTarget": 6,
+            "fouls": 6,
+            "corners": 5,
+            "yellow": 2,
+            "red": 0,
+            "result": "W"
+          }
+        },
+        {
+          "date": "02/05/2026",
+          "time": "12:30",
+          "home": "Watford",
+          "away": "Coventry",
+          "score": {
+            "home": 0,
+            "away": 4
+          },
+          "result": "A",
+          "ht": {
+            "home": 0,
+            "away": 2
+          },
+          "referee": "R Ricardo",
+          "stats": {
+            "shots": {
+              "home": 13,
+              "away": 18
+            },
+            "shotsOnTarget": {
+              "home": 4,
+              "away": 7
+            },
+            "fouls": {
+              "home": 16,
+              "away": 10
+            },
+            "corners": {
+              "home": 0,
+              "away": 6
+            },
+            "yellow": {
+              "home": 2,
+              "away": 1
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "A",
+            "gf": 4,
+            "ga": 0,
+            "shots": 18,
+            "shotsOnTarget": 7,
+            "fouls": 10,
+            "corners": 6,
+            "yellow": 1,
+            "red": 0,
+            "result": "W"
+          }
+        }
+      ],
+      "players": null
+    },
+    {
+      "id": "2024-25",
+      "label": "2024/25",
+      "competition": "Championship",
+      "source": "football-data.co.uk",
+      "played": 46,
+      "record": {
+        "w": 20,
+        "d": 9,
+        "l": 17,
+        "pts": 69
+      },
+      "goals": {
+        "for": 64,
+        "against": 58,
+        "diff": 6
+      },
+      "averages": {
+        "gf": 1.39,
+        "ga": 1.26,
+        "shots": 13.13,
+        "shotsOnTarget": 4.35,
+        "corners": 5.96,
+        "fouls": 10.96
+      },
+      "totals": {
+        "shots": 604,
+        "shotsOnTarget": 200,
+        "corners": 274,
+        "fouls": 504,
+        "yellow": 76,
+        "red": 1
+      },
+      "home": {
+        "played": 23,
+        "w": 14,
+        "d": 3,
+        "l": 6
+      },
+      "away": {
+        "played": 23,
+        "w": 6,
+        "d": 6,
+        "l": 11
+      },
+      "matches": [
+        {
+          "date": "10/08/2024",
+          "time": "12:30",
+          "home": "Stoke",
+          "away": "Coventry",
+          "score": {
+            "home": 1,
+            "away": 0
+          },
+          "result": "H",
+          "ht": {
+            "home": 0,
+            "away": 0
+          },
+          "referee": "G Ward",
+          "stats": {
+            "shots": {
+              "home": 11,
+              "away": 8
+            },
+            "shotsOnTarget": {
+              "home": 2,
+              "away": 1
+            },
+            "fouls": {
+              "home": 7,
+              "away": 9
+            },
+            "corners": {
+              "home": 9,
+              "away": 7
+            },
+            "yellow": {
+              "home": 2,
+              "away": 1
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "A",
+            "gf": 0,
+            "ga": 1,
+            "shots": 8,
+            "shotsOnTarget": 1,
+            "fouls": 9,
+            "corners": 7,
+            "yellow": 1,
+            "red": 0,
+            "result": "L"
+          }
+        },
+        {
+          "date": "16/08/2024",
+          "time": "20:00",
+          "home": "Coventry",
+          "away": "Oxford",
+          "score": {
+            "home": 3,
+            "away": 2
+          },
+          "result": "H",
+          "ht": {
+            "home": 2,
+            "away": 1
+          },
+          "referee": "D Coote",
+          "stats": {
+            "shots": {
+              "home": 26,
+              "away": 7
+            },
+            "shotsOnTarget": {
+              "home": 10,
+              "away": 2
+            },
+            "fouls": {
+              "home": 9,
+              "away": 7
+            },
+            "corners": {
+              "home": 14,
+              "away": 1
+            },
+            "yellow": {
+              "home": 0,
+              "away": 2
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "H",
+            "gf": 3,
+            "ga": 2,
+            "shots": 26,
+            "shotsOnTarget": 10,
+            "fouls": 9,
+            "corners": 14,
+            "yellow": 0,
+            "red": 0,
+            "result": "W"
+          }
+        },
+        {
+          "date": "24/08/2024",
+          "time": "12:30",
+          "home": "Bristol City",
+          "away": "Coventry",
+          "score": {
+            "home": 1,
+            "away": 1
+          },
+          "result": "D",
+          "ht": {
+            "home": 1,
+            "away": 0
+          },
+          "referee": "A Kitchen",
+          "stats": {
+            "shots": {
+              "home": 12,
+              "away": 8
+            },
+            "shotsOnTarget": {
+              "home": 7,
+              "away": 1
+            },
+            "fouls": {
+              "home": 8,
+              "away": 16
+            },
+            "corners": {
+              "home": 8,
+              "away": 2
+            },
+            "yellow": {
+              "home": 2,
+              "away": 4
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "A",
+            "gf": 1,
+            "ga": 1,
+            "shots": 8,
+            "shotsOnTarget": 1,
+            "fouls": 16,
+            "corners": 2,
+            "yellow": 4,
+            "red": 0,
+            "result": "D"
+          }
+        },
+        {
+          "date": "31/08/2024",
+          "time": "12:30",
+          "home": "Coventry",
+          "away": "Norwich",
+          "score": {
+            "home": 0,
+            "away": 1
+          },
+          "result": "A",
+          "ht": {
+            "home": 0,
+            "away": 0
+          },
+          "referee": "A Davies",
+          "stats": {
+            "shots": {
+              "home": 14,
+              "away": 9
+            },
+            "shotsOnTarget": {
+              "home": 5,
+              "away": 1
+            },
+            "fouls": {
+              "home": 11,
+              "away": 10
+            },
+            "corners": {
+              "home": 6,
+              "away": 3
+            },
+            "yellow": {
+              "home": 4,
+              "away": 3
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "H",
+            "gf": 0,
+            "ga": 1,
+            "shots": 14,
+            "shotsOnTarget": 5,
+            "fouls": 11,
+            "corners": 6,
+            "yellow": 4,
+            "red": 0,
+            "result": "L"
+          }
+        },
+        {
+          "date": "14/09/2024",
+          "time": "15:00",
+          "home": "Watford",
+          "away": "Coventry",
+          "score": {
+            "home": 1,
+            "away": 1
+          },
+          "result": "D",
+          "ht": {
+            "home": 0,
+            "away": 1
+          },
+          "referee": "R Madley",
+          "stats": {
+            "shots": {
+              "home": 18,
+              "away": 17
+            },
+            "shotsOnTarget": {
+              "home": 6,
+              "away": 5
+            },
+            "fouls": {
+              "home": 9,
+              "away": 10
+            },
+            "corners": {
+              "home": 6,
+              "away": 10
+            },
+            "yellow": {
+              "home": 2,
+              "away": 2
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "A",
+            "gf": 1,
+            "ga": 1,
+            "shots": 17,
+            "shotsOnTarget": 5,
+            "fouls": 10,
+            "corners": 10,
+            "yellow": 2,
+            "red": 0,
+            "result": "D"
+          }
+        },
+        {
+          "date": "21/09/2024",
+          "time": "15:00",
+          "home": "Coventry",
+          "away": "Swansea",
+          "score": {
+            "home": 1,
+            "away": 2
+          },
+          "result": "A",
+          "ht": {
+            "home": 1,
+            "away": 2
+          },
+          "referee": "J Linington",
+          "stats": {
+            "shots": {
+              "home": 20,
+              "away": 11
+            },
+            "shotsOnTarget": {
+              "home": 7,
+              "away": 4
+            },
+            "fouls": {
+              "home": 12,
+              "away": 5
+            },
+            "corners": {
+              "home": 6,
+              "away": 3
+            },
+            "yellow": {
+              "home": 2,
+              "away": 3
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "H",
+            "gf": 1,
+            "ga": 2,
+            "shots": 20,
+            "shotsOnTarget": 7,
+            "fouls": 12,
+            "corners": 6,
+            "yellow": 2,
+            "red": 0,
+            "result": "L"
+          }
+        },
+        {
+          "date": "28/09/2024",
+          "time": "15:00",
+          "home": "Leeds",
+          "away": "Coventry",
+          "score": {
+            "home": 3,
+            "away": 0
+          },
+          "result": "H",
+          "ht": {
+            "home": 1,
+            "away": 0
+          },
+          "referee": "G Ward",
+          "stats": {
+            "shots": {
+              "home": 13,
+              "away": 7
+            },
+            "shotsOnTarget": {
+              "home": 8,
+              "away": 2
+            },
+            "fouls": {
+              "home": 16,
+              "away": 15
+            },
+            "corners": {
+              "home": 7,
+              "away": 3
+            },
+            "yellow": {
+              "home": 1,
+              "away": 1
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "A",
+            "gf": 0,
+            "ga": 3,
+            "shots": 7,
+            "shotsOnTarget": 2,
+            "fouls": 15,
+            "corners": 3,
+            "yellow": 1,
+            "red": 0,
+            "result": "L"
+          }
+        },
+        {
+          "date": "01/10/2024",
+          "time": "19:45",
+          "home": "Coventry",
+          "away": "Blackburn",
+          "score": {
+            "home": 3,
+            "away": 0
+          },
+          "result": "H",
+          "ht": {
+            "home": 1,
+            "away": 0
+          },
+          "referee": "J Busby",
+          "stats": {
+            "shots": {
+              "home": 18,
+              "away": 10
+            },
+            "shotsOnTarget": {
+              "home": 8,
+              "away": 3
+            },
+            "fouls": {
+              "home": 12,
+              "away": 12
+            },
+            "corners": {
+              "home": 5,
+              "away": 1
+            },
+            "yellow": {
+              "home": 1,
+              "away": 3
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "H",
+            "gf": 3,
+            "ga": 0,
+            "shots": 18,
+            "shotsOnTarget": 8,
+            "fouls": 12,
+            "corners": 5,
+            "yellow": 1,
+            "red": 0,
+            "result": "W"
+          }
+        },
+        {
+          "date": "05/10/2024",
+          "time": "15:00",
+          "home": "Coventry",
+          "away": "Sheffield Weds",
+          "score": {
+            "home": 1,
+            "away": 2
+          },
+          "result": "A",
+          "ht": {
+            "home": 1,
+            "away": 1
+          },
+          "referee": "D Whitestone",
+          "stats": {
+            "shots": {
+              "home": 13,
+              "away": 13
+            },
+            "shotsOnTarget": {
+              "home": 2,
+              "away": 5
+            },
+            "fouls": {
+              "home": 12,
+              "away": 17
+            },
+            "corners": {
+              "home": 6,
+              "away": 6
+            },
+            "yellow": {
+              "home": 4,
+              "away": 3
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "H",
+            "gf": 1,
+            "ga": 2,
+            "shots": 13,
+            "shotsOnTarget": 2,
+            "fouls": 12,
+            "corners": 6,
+            "yellow": 4,
+            "red": 0,
+            "result": "L"
+          }
+        },
+        {
+          "date": "19/10/2024",
+          "time": "12:30",
+          "home": "Preston",
+          "away": "Coventry",
+          "score": {
+            "home": 1,
+            "away": 0
+          },
+          "result": "H",
+          "ht": {
+            "home": 0,
+            "away": 0
+          },
+          "referee": "J Smith",
+          "stats": {
+            "shots": {
+              "home": 18,
+              "away": 12
+            },
+            "shotsOnTarget": {
+              "home": 3,
+              "away": 1
+            },
+            "fouls": {
+              "home": 12,
+              "away": 12
+            },
+            "corners": {
+              "home": 9,
+              "away": 9
+            },
+            "yellow": {
+              "home": 4,
+              "away": 0
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "A",
+            "gf": 0,
+            "ga": 1,
+            "shots": 12,
+            "shotsOnTarget": 1,
+            "fouls": 12,
+            "corners": 9,
+            "yellow": 0,
+            "red": 0,
+            "result": "L"
+          }
+        },
+        {
+          "date": "22/10/2024",
+          "time": "20:00",
+          "home": "QPR",
+          "away": "Coventry",
+          "score": {
+            "home": 1,
+            "away": 1
+          },
+          "result": "D",
+          "ht": {
+            "home": 0,
+            "away": 1
+          },
+          "referee": "J Bell",
+          "stats": {
+            "shots": {
+              "home": 16,
+              "away": 8
+            },
+            "shotsOnTarget": {
+              "home": 5,
+              "away": 3
+            },
+            "fouls": {
+              "home": 7,
+              "away": 13
+            },
+            "corners": {
+              "home": 7,
+              "away": 3
+            },
+            "yellow": {
+              "home": 2,
+              "away": 1
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "A",
+            "gf": 1,
+            "ga": 1,
+            "shots": 8,
+            "shotsOnTarget": 3,
+            "fouls": 13,
+            "corners": 3,
+            "yellow": 1,
+            "red": 0,
+            "result": "D"
+          }
+        },
+        {
+          "date": "26/10/2024",
+          "time": "12:30",
+          "home": "Coventry",
+          "away": "Luton",
+          "score": {
+            "home": 3,
+            "away": 2
+          },
+          "result": "H",
+          "ht": {
+            "home": 0,
+            "away": 2
+          },
+          "referee": "R Madley",
+          "stats": {
+            "shots": {
+              "home": 26,
+              "away": 9
+            },
+            "shotsOnTarget": {
+              "home": 10,
+              "away": 5
+            },
+            "fouls": {
+              "home": 9,
+              "away": 16
+            },
+            "corners": {
+              "home": 11,
+              "away": 5
+            },
+            "yellow": {
+              "home": 2,
+              "away": 3
+            },
+            "red": {
+              "home": 0,
+              "away": 1
+            }
+          },
+          "coventry": {
+            "venue": "H",
+            "gf": 3,
+            "ga": 2,
+            "shots": 26,
+            "shotsOnTarget": 10,
+            "fouls": 9,
+            "corners": 11,
+            "yellow": 2,
+            "red": 0,
+            "result": "W"
+          }
+        },
+        {
+          "date": "02/11/2024",
+          "time": "15:00",
+          "home": "Middlesbrough",
+          "away": "Coventry",
+          "score": {
+            "home": 0,
+            "away": 3
+          },
+          "result": "A",
+          "ht": {
+            "home": 0,
+            "away": 1
+          },
+          "referee": "T Bramall",
+          "stats": {
+            "shots": {
+              "home": 9,
+              "away": 10
+            },
+            "shotsOnTarget": {
+              "home": 1,
+              "away": 4
+            },
+            "fouls": {
+              "home": 4,
+              "away": 12
+            },
+            "corners": {
+              "home": 6,
+              "away": 8
+            },
+            "yellow": {
+              "home": 1,
+              "away": 3
+            },
+            "red": {
+              "home": 1,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "A",
+            "gf": 3,
+            "ga": 0,
+            "shots": 10,
+            "shotsOnTarget": 4,
+            "fouls": 12,
+            "corners": 8,
+            "yellow": 3,
+            "red": 0,
+            "result": "W"
+          }
+        },
+        {
+          "date": "06/11/2024",
+          "time": "19:45",
+          "home": "Coventry",
+          "away": "Derby",
+          "score": {
+            "home": 1,
+            "away": 2
+          },
+          "result": "A",
+          "ht": {
+            "home": 0,
+            "away": 1
+          },
+          "referee": "J Linington",
+          "stats": {
+            "shots": {
+              "home": 11,
+              "away": 3
+            },
+            "shotsOnTarget": {
+              "home": 3,
+              "away": 1
+            },
+            "fouls": {
+              "home": 5,
+              "away": 11
+            },
+            "corners": {
+              "home": 9,
+              "away": 6
+            },
+            "yellow": {
+              "home": 0,
+              "away": 2
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "H",
+            "gf": 1,
+            "ga": 2,
+            "shots": 11,
+            "shotsOnTarget": 3,
+            "fouls": 5,
+            "corners": 9,
+            "yellow": 0,
+            "red": 0,
+            "result": "L"
+          }
+        },
+        {
+          "date": "09/11/2024",
+          "time": "15:00",
+          "home": "Sunderland",
+          "away": "Coventry",
+          "score": {
+            "home": 2,
+            "away": 2
+          },
+          "result": "D",
+          "ht": {
+            "home": 2,
+            "away": 0
+          },
+          "referee": "L Doughty",
+          "stats": {
+            "shots": {
+              "home": 9,
+              "away": 8
+            },
+            "shotsOnTarget": {
+              "home": 5,
+              "away": 3
+            },
+            "fouls": {
+              "home": 10,
+              "away": 16
+            },
+            "corners": {
+              "home": 2,
+              "away": 7
+            },
+            "yellow": {
+              "home": 3,
+              "away": 4
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "A",
+            "gf": 2,
+            "ga": 2,
+            "shots": 8,
+            "shotsOnTarget": 3,
+            "fouls": 16,
+            "corners": 7,
+            "yellow": 4,
+            "red": 0,
+            "result": "D"
+          }
+        },
+        {
+          "date": "23/11/2024",
+          "time": "12:30",
+          "home": "Coventry",
+          "away": "Sheffield United",
+          "score": {
+            "home": 2,
+            "away": 2
+          },
+          "result": "D",
+          "ht": {
+            "home": 1,
+            "away": 2
+          },
+          "referee": "D Bond",
+          "stats": {
+            "shots": {
+              "home": 20,
+              "away": 7
+            },
+            "shotsOnTarget": {
+              "home": 6,
+              "away": 2
+            },
+            "fouls": {
+              "home": 13,
+              "away": 6
+            },
+            "corners": {
+              "home": 12,
+              "away": 2
+            },
+            "yellow": {
+              "home": 4,
+              "away": 2
+            },
+            "red": {
+              "home": 0,
+              "away": 1
+            }
+          },
+          "coventry": {
+            "venue": "H",
+            "gf": 2,
+            "ga": 2,
+            "shots": 20,
+            "shotsOnTarget": 6,
+            "fouls": 13,
+            "corners": 12,
+            "yellow": 4,
+            "red": 0,
+            "result": "D"
+          }
+        },
+        {
+          "date": "26/11/2024",
+          "time": "19:45",
+          "home": "Burnley",
+          "away": "Coventry",
+          "score": {
+            "home": 2,
+            "away": 0
+          },
+          "result": "H",
+          "ht": {
+            "home": 0,
+            "away": 0
+          },
+          "referee": "A Backhouse",
+          "stats": {
+            "shots": {
+              "home": 12,
+              "away": 3
+            },
+            "shotsOnTarget": {
+              "home": 3,
+              "away": 1
+            },
+            "fouls": {
+              "home": 10,
+              "away": 7
+            },
+            "corners": {
+              "home": 6,
+              "away": 2
+            },
+            "yellow": {
+              "home": 0,
+              "away": 1
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "A",
+            "gf": 0,
+            "ga": 2,
+            "shots": 3,
+            "shotsOnTarget": 1,
+            "fouls": 7,
+            "corners": 2,
+            "yellow": 1,
+            "red": 0,
+            "result": "L"
+          }
+        },
+        {
+          "date": "30/11/2024",
+          "time": "15:00",
+          "home": "Coventry",
+          "away": "Cardiff",
+          "score": {
+            "home": 2,
+            "away": 2
+          },
+          "result": "D",
+          "ht": {
+            "home": 1,
+            "away": 1
+          },
+          "referee": "J Bell",
+          "stats": {
+            "shots": {
+              "home": 11,
+              "away": 10
+            },
+            "shotsOnTarget": {
+              "home": 6,
+              "away": 4
+            },
+            "fouls": {
+              "home": 10,
+              "away": 15
+            },
+            "corners": {
+              "home": 5,
+              "away": 1
+            },
+            "yellow": {
+              "home": 1,
+              "away": 5
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "H",
+            "gf": 2,
+            "ga": 2,
+            "shots": 11,
+            "shotsOnTarget": 6,
+            "fouls": 10,
+            "corners": 5,
+            "yellow": 1,
+            "red": 0,
+            "result": "D"
+          }
+        },
+        {
+          "date": "07/12/2024",
+          "time": "15:00",
+          "home": "Millwall",
+          "away": "Coventry",
+          "score": {
+            "home": 0,
+            "away": 1
+          },
+          "result": "A",
+          "ht": {
+            "home": 0,
+            "away": 0
+          },
+          "referee": "T Bramall",
+          "stats": {
+            "shots": {
+              "home": 9,
+              "away": 14
+            },
+            "shotsOnTarget": {
+              "home": 0,
+              "away": 3
+            },
+            "fouls": {
+              "home": 11,
+              "away": 11
+            },
+            "corners": {
+              "home": 7,
+              "away": 8
+            },
+            "yellow": {
+              "home": 2,
+              "away": 1
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "A",
+            "gf": 1,
+            "ga": 0,
+            "shots": 14,
+            "shotsOnTarget": 3,
+            "fouls": 11,
+            "corners": 8,
+            "yellow": 1,
+            "red": 0,
+            "result": "W"
+          }
+        },
+        {
+          "date": "11/12/2024",
+          "time": "20:00",
+          "home": "West Brom",
+          "away": "Coventry",
+          "score": {
+            "home": 2,
+            "away": 0
+          },
+          "result": "H",
+          "ht": {
+            "home": 1,
+            "away": 0
+          },
+          "referee": "J Busby",
+          "stats": {
+            "shots": {
+              "home": 10,
+              "away": 16
+            },
+            "shotsOnTarget": {
+              "home": 2,
+              "away": 4
+            },
+            "fouls": {
+              "home": 5,
+              "away": 7
+            },
+            "corners": {
+              "home": 9,
+              "away": 9
+            },
+            "yellow": {
+              "home": 1,
+              "away": 1
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "A",
+            "gf": 0,
+            "ga": 2,
+            "shots": 16,
+            "shotsOnTarget": 4,
+            "fouls": 7,
+            "corners": 9,
+            "yellow": 1,
+            "red": 0,
+            "result": "L"
+          }
+        },
+        {
+          "date": "14/12/2024",
+          "time": "12:30",
+          "home": "Coventry",
+          "away": "Hull",
+          "score": {
+            "home": 2,
+            "away": 1
+          },
+          "result": "H",
+          "ht": {
+            "home": 0,
+            "away": 1
+          },
+          "referee": "R Madley",
+          "stats": {
+            "shots": {
+              "home": 18,
+              "away": 10
+            },
+            "shotsOnTarget": {
+              "home": 7,
+              "away": 4
+            },
+            "fouls": {
+              "home": 16,
+              "away": 11
+            },
+            "corners": {
+              "home": 10,
+              "away": 2
+            },
+            "yellow": {
+              "home": 3,
+              "away": 3
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "H",
+            "gf": 2,
+            "ga": 1,
+            "shots": 18,
+            "shotsOnTarget": 7,
+            "fouls": 16,
+            "corners": 10,
+            "yellow": 3,
+            "red": 0,
+            "result": "W"
+          }
+        },
+        {
+          "date": "21/12/2024",
+          "time": "12:30",
+          "home": "Portsmouth",
+          "away": "Coventry",
+          "score": {
+            "home": 4,
+            "away": 1
+          },
+          "result": "H",
+          "ht": {
+            "home": 2,
+            "away": 1
+          },
+          "referee": "D Whitestone",
+          "stats": {
+            "shots": {
+              "home": 12,
+              "away": 7
+            },
+            "shotsOnTarget": {
+              "home": 7,
+              "away": 3
+            },
+            "fouls": {
+              "home": 14,
+              "away": 14
+            },
+            "corners": {
+              "home": 10,
+              "away": 2
+            },
+            "yellow": {
+              "home": 1,
+              "away": 0
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "A",
+            "gf": 1,
+            "ga": 4,
+            "shots": 7,
+            "shotsOnTarget": 3,
+            "fouls": 14,
+            "corners": 2,
+            "yellow": 0,
+            "red": 0,
+            "result": "L"
+          }
+        },
+        {
+          "date": "26/12/2024",
+          "time": "15:00",
+          "home": "Coventry",
+          "away": "Plymouth",
+          "score": {
+            "home": 4,
+            "away": 0
+          },
+          "result": "H",
+          "ht": {
+            "home": 4,
+            "away": 0
+          },
+          "referee": "A Herczeg",
+          "stats": {
+            "shots": {
+              "home": 19,
+              "away": 5
+            },
+            "shotsOnTarget": {
+              "home": 9,
+              "away": 1
+            },
+            "fouls": {
+              "home": 7,
+              "away": 11
+            },
+            "corners": {
+              "home": 4,
+              "away": 4
+            },
+            "yellow": {
+              "home": 0,
+              "away": 1
+            },
+            "red": {
+              "home": 0,
+              "away": 1
+            }
+          },
+          "coventry": {
+            "venue": "H",
+            "gf": 4,
+            "ga": 0,
+            "shots": 19,
+            "shotsOnTarget": 9,
+            "fouls": 7,
+            "corners": 4,
+            "yellow": 0,
+            "red": 0,
+            "result": "W"
+          }
+        },
+        {
+          "date": "29/12/2024",
+          "time": "15:00",
+          "home": "Coventry",
+          "away": "Millwall",
+          "score": {
+            "home": 0,
+            "away": 0
+          },
+          "result": "D",
+          "ht": {
+            "home": 0,
+            "away": 0
+          },
+          "referee": "A Kitchen",
+          "stats": {
+            "shots": {
+              "home": 6,
+              "away": 10
+            },
+            "shotsOnTarget": {
+              "home": 1,
+              "away": 2
+            },
+            "fouls": {
+              "home": 13,
+              "away": 15
+            },
+            "corners": {
+              "home": 5,
+              "away": 5
+            },
+            "yellow": {
+              "home": 0,
+              "away": 1
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "H",
+            "gf": 0,
+            "ga": 0,
+            "shots": 6,
+            "shotsOnTarget": 1,
+            "fouls": 13,
+            "corners": 5,
+            "yellow": 0,
+            "red": 0,
+            "result": "D"
+          }
+        },
+        {
+          "date": "01/01/2025",
+          "time": "15:00",
+          "home": "Cardiff",
+          "away": "Coventry",
+          "score": {
+            "home": 1,
+            "away": 1
+          },
+          "result": "D",
+          "ht": {
+            "home": 1,
+            "away": 0
+          },
+          "referee": "G Eltringham",
+          "stats": {
+            "shots": {
+              "home": 12,
+              "away": 17
+            },
+            "shotsOnTarget": {
+              "home": 2,
+              "away": 7
+            },
+            "fouls": {
+              "home": 8,
+              "away": 9
+            },
+            "corners": {
+              "home": 6,
+              "away": 9
+            },
+            "yellow": {
+              "home": 2,
+              "away": 0
+            },
+            "red": {
+              "home": 1,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "A",
+            "gf": 1,
+            "ga": 1,
+            "shots": 17,
+            "shotsOnTarget": 7,
+            "fouls": 9,
+            "corners": 9,
+            "yellow": 0,
+            "red": 0,
+            "result": "D"
+          }
+        },
+        {
+          "date": "04/01/2025",
+          "time": "15:00",
+          "home": "Norwich",
+          "away": "Coventry",
+          "score": {
+            "home": 2,
+            "away": 1
+          },
+          "result": "H",
+          "ht": {
+            "home": 0,
+            "away": 1
+          },
+          "referee": "J Bell",
+          "stats": {
+            "shots": {
+              "home": 24,
+              "away": 6
+            },
+            "shotsOnTarget": {
+              "home": 9,
+              "away": 2
+            },
+            "fouls": {
+              "home": 9,
+              "away": 16
+            },
+            "corners": {
+              "home": 9,
+              "away": 1
+            },
+            "yellow": {
+              "home": 1,
+              "away": 2
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "A",
+            "gf": 1,
+            "ga": 2,
+            "shots": 6,
+            "shotsOnTarget": 2,
+            "fouls": 16,
+            "corners": 1,
+            "yellow": 2,
+            "red": 0,
+            "result": "L"
+          }
+        },
+        {
+          "date": "18/01/2025",
+          "time": "15:00",
+          "home": "Coventry",
+          "away": "Bristol City",
+          "score": {
+            "home": 1,
+            "away": 0
+          },
+          "result": "H",
+          "ht": {
+            "home": 0,
+            "away": 0
+          },
+          "referee": "R Madley",
+          "stats": {
+            "shots": {
+              "home": 16,
+              "away": 10
+            },
+            "shotsOnTarget": {
+              "home": 4,
+              "away": 2
+            },
+            "fouls": {
+              "home": 3,
+              "away": 11
+            },
+            "corners": {
+              "home": 3,
+              "away": 5
+            },
+            "yellow": {
+              "home": 0,
+              "away": 0
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "H",
+            "gf": 1,
+            "ga": 0,
+            "shots": 16,
+            "shotsOnTarget": 4,
+            "fouls": 3,
+            "corners": 3,
+            "yellow": 0,
+            "red": 0,
+            "result": "W"
+          }
+        },
+        {
+          "date": "21/01/2025",
+          "time": "19:45",
+          "home": "Blackburn",
+          "away": "Coventry",
+          "score": {
+            "home": 0,
+            "away": 2
+          },
+          "result": "A",
+          "ht": {
+            "home": 0,
+            "away": 1
+          },
+          "referee": "O Langford",
+          "stats": {
+            "shots": {
+              "home": 14,
+              "away": 9
+            },
+            "shotsOnTarget": {
+              "home": 7,
+              "away": 4
+            },
+            "fouls": {
+              "home": 11,
+              "away": 15
+            },
+            "corners": {
+              "home": 4,
+              "away": 4
+            },
+            "yellow": {
+              "home": 0,
+              "away": 1
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "A",
+            "gf": 2,
+            "ga": 0,
+            "shots": 9,
+            "shotsOnTarget": 4,
+            "fouls": 15,
+            "corners": 4,
+            "yellow": 1,
+            "red": 0,
+            "result": "W"
+          }
+        },
+        {
+          "date": "25/01/2025",
+          "time": "15:00",
+          "home": "Coventry",
+          "away": "Watford",
+          "score": {
+            "home": 2,
+            "away": 1
+          },
+          "result": "H",
+          "ht": {
+            "home": 1,
+            "away": 0
+          },
+          "referee": "M Coy",
+          "stats": {
+            "shots": {
+              "home": 14,
+              "away": 12
+            },
+            "shotsOnTarget": {
+              "home": 2,
+              "away": 3
+            },
+            "fouls": {
+              "home": 10,
+              "away": 12
+            },
+            "corners": {
+              "home": 5,
+              "away": 3
+            },
+            "yellow": {
+              "home": 3,
+              "away": 4
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "H",
+            "gf": 2,
+            "ga": 1,
+            "shots": 14,
+            "shotsOnTarget": 2,
+            "fouls": 10,
+            "corners": 5,
+            "yellow": 3,
+            "red": 0,
+            "result": "W"
+          }
+        },
+        {
+          "date": "01/02/2025",
+          "time": "15:00",
+          "home": "Swansea",
+          "away": "Coventry",
+          "score": {
+            "home": 0,
+            "away": 2
+          },
+          "result": "A",
+          "ht": {
+            "home": 0,
+            "away": 2
+          },
+          "referee": "S Allison",
+          "stats": {
+            "shots": {
+              "home": 6,
+              "away": 16
+            },
+            "shotsOnTarget": {
+              "home": 1,
+              "away": 5
+            },
+            "fouls": {
+              "home": 13,
+              "away": 11
+            },
+            "corners": {
+              "home": 8,
+              "away": 2
+            },
+            "yellow": {
+              "home": 2,
+              "away": 0
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "A",
+            "gf": 2,
+            "ga": 0,
+            "shots": 16,
+            "shotsOnTarget": 5,
+            "fouls": 11,
+            "corners": 2,
+            "yellow": 0,
+            "red": 0,
+            "result": "W"
+          }
+        },
+        {
+          "date": "05/02/2025",
+          "time": "19:45",
+          "home": "Coventry",
+          "away": "Leeds",
+          "score": {
+            "home": 0,
+            "away": 2
+          },
+          "result": "A",
+          "ht": {
+            "home": 0,
+            "away": 2
+          },
+          "referee": "D Whitestone",
+          "stats": {
+            "shots": {
+              "home": 9,
+              "away": 20
+            },
+            "shotsOnTarget": {
+              "home": 4,
+              "away": 8
+            },
+            "fouls": {
+              "home": 11,
+              "away": 10
+            },
+            "corners": {
+              "home": 3,
+              "away": 8
+            },
+            "yellow": {
+              "home": 2,
+              "away": 1
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "H",
+            "gf": 0,
+            "ga": 2,
+            "shots": 9,
+            "shotsOnTarget": 4,
+            "fouls": 11,
+            "corners": 3,
+            "yellow": 2,
+            "red": 0,
+            "result": "L"
+          }
+        },
+        {
+          "date": "11/02/2025",
+          "time": "19:45",
+          "home": "Coventry",
+          "away": "QPR",
+          "score": {
+            "home": 1,
+            "away": 0
+          },
+          "result": "H",
+          "ht": {
+            "home": 0,
+            "away": 0
+          },
+          "referee": "W Finnie",
+          "stats": {
+            "shots": {
+              "home": 10,
+              "away": 12
+            },
+            "shotsOnTarget": {
+              "home": 6,
+              "away": 3
+            },
+            "fouls": {
+              "home": 10,
+              "away": 8
+            },
+            "corners": {
+              "home": 10,
+              "away": 9
+            },
+            "yellow": {
+              "home": 3,
+              "away": 2
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "H",
+            "gf": 1,
+            "ga": 0,
+            "shots": 10,
+            "shotsOnTarget": 6,
+            "fouls": 10,
+            "corners": 10,
+            "yellow": 3,
+            "red": 0,
+            "result": "W"
+          }
+        },
+        {
+          "date": "15/02/2025",
+          "time": "15:00",
+          "home": "Sheffield Weds",
+          "away": "Coventry",
+          "score": {
+            "home": 1,
+            "away": 2
+          },
+          "result": "A",
+          "ht": {
+            "home": 0,
+            "away": 1
+          },
+          "referee": "J Smith",
+          "stats": {
+            "shots": {
+              "home": 22,
+              "away": 9
+            },
+            "shotsOnTarget": {
+              "home": 8,
+              "away": 4
+            },
+            "fouls": {
+              "home": 11,
+              "away": 9
+            },
+            "corners": {
+              "home": 10,
+              "away": 1
+            },
+            "yellow": {
+              "home": 0,
+              "away": 1
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "A",
+            "gf": 2,
+            "ga": 1,
+            "shots": 9,
+            "shotsOnTarget": 4,
+            "fouls": 9,
+            "corners": 1,
+            "yellow": 1,
+            "red": 0,
+            "result": "W"
+          }
+        },
+        {
+          "date": "22/02/2025",
+          "time": "15:00",
+          "home": "Coventry",
+          "away": "Preston",
+          "score": {
+            "home": 2,
+            "away": 1
+          },
+          "result": "H",
+          "ht": {
+            "home": 2,
+            "away": 0
+          },
+          "referee": "O Langford",
+          "stats": {
+            "shots": {
+              "home": 17,
+              "away": 7
+            },
+            "shotsOnTarget": {
+              "home": 9,
+              "away": 3
+            },
+            "fouls": {
+              "home": 10,
+              "away": 10
+            },
+            "corners": {
+              "home": 10,
+              "away": 3
+            },
+            "yellow": {
+              "home": 0,
+              "away": 1
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "H",
+            "gf": 2,
+            "ga": 1,
+            "shots": 17,
+            "shotsOnTarget": 9,
+            "fouls": 10,
+            "corners": 10,
+            "yellow": 0,
+            "red": 0,
+            "result": "W"
+          }
+        },
+        {
+          "date": "01/03/2025",
+          "time": "12:30",
+          "home": "Oxford",
+          "away": "Coventry",
+          "score": {
+            "home": 2,
+            "away": 3
+          },
+          "result": "A",
+          "ht": {
+            "home": 0,
+            "away": 1
+          },
+          "referee": "J Simpson",
+          "stats": {
+            "shots": {
+              "home": 10,
+              "away": 18
+            },
+            "shotsOnTarget": {
+              "home": 4,
+              "away": 6
+            },
+            "fouls": {
+              "home": 14,
+              "away": 10
+            },
+            "corners": {
+              "home": 3,
+              "away": 11
+            },
+            "yellow": {
+              "home": 3,
+              "away": 3
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "A",
+            "gf": 3,
+            "ga": 2,
+            "shots": 18,
+            "shotsOnTarget": 6,
+            "fouls": 10,
+            "corners": 11,
+            "yellow": 3,
+            "red": 0,
+            "result": "W"
+          }
+        },
+        {
+          "date": "08/03/2025",
+          "time": "12:30",
+          "home": "Coventry",
+          "away": "Stoke",
+          "score": {
+            "home": 3,
+            "away": 2
+          },
+          "result": "H",
+          "ht": {
+            "home": 2,
+            "away": 0
+          },
+          "referee": "D Webb",
+          "stats": {
+            "shots": {
+              "home": 13,
+              "away": 11
+            },
+            "shotsOnTarget": {
+              "home": 3,
+              "away": 4
+            },
+            "fouls": {
+              "home": 8,
+              "away": 8
+            },
+            "corners": {
+              "home": 7,
+              "away": 5
+            },
+            "yellow": {
+              "home": 1,
+              "away": 3
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "H",
+            "gf": 3,
+            "ga": 2,
+            "shots": 13,
+            "shotsOnTarget": 3,
+            "fouls": 8,
+            "corners": 7,
+            "yellow": 1,
+            "red": 0,
+            "result": "W"
+          }
+        },
+        {
+          "date": "11/03/2025",
+          "time": "19:45",
+          "home": "Derby",
+          "away": "Coventry",
+          "score": {
+            "home": 2,
+            "away": 0
+          },
+          "result": "H",
+          "ht": {
+            "home": 1,
+            "away": 0
+          },
+          "referee": "S Allison",
+          "stats": {
+            "shots": {
+              "home": 6,
+              "away": 13
+            },
+            "shotsOnTarget": {
+              "home": 2,
+              "away": 4
+            },
+            "fouls": {
+              "home": 6,
+              "away": 8
+            },
+            "corners": {
+              "home": 4,
+              "away": 8
+            },
+            "yellow": {
+              "home": 2,
+              "away": 1
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "A",
+            "gf": 0,
+            "ga": 2,
+            "shots": 13,
+            "shotsOnTarget": 4,
+            "fouls": 8,
+            "corners": 8,
+            "yellow": 1,
+            "red": 0,
+            "result": "L"
+          }
+        },
+        {
+          "date": "15/03/2025",
+          "time": "15:00",
+          "home": "Coventry",
+          "away": "Sunderland",
+          "score": {
+            "home": 3,
+            "away": 0
+          },
+          "result": "H",
+          "ht": {
+            "home": 2,
+            "away": 0
+          },
+          "referee": "D Whitestone",
+          "stats": {
+            "shots": {
+              "home": 21,
+              "away": 6
+            },
+            "shotsOnTarget": {
+              "home": 5,
+              "away": 1
+            },
+            "fouls": {
+              "home": 9,
+              "away": 11
+            },
+            "corners": {
+              "home": 6,
+              "away": 1
+            },
+            "yellow": {
+              "home": 1,
+              "away": 2
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "H",
+            "gf": 3,
+            "ga": 0,
+            "shots": 21,
+            "shotsOnTarget": 5,
+            "fouls": 9,
+            "corners": 6,
+            "yellow": 1,
+            "red": 0,
+            "result": "W"
+          }
+        },
+        {
+          "date": "28/03/2025",
+          "time": "20:00",
+          "home": "Sheffield United",
+          "away": "Coventry",
+          "score": {
+            "home": 3,
+            "away": 1
+          },
+          "result": "H",
+          "ht": {
+            "home": 2,
+            "away": 0
+          },
+          "referee": "O Langford",
+          "stats": {
+            "shots": {
+              "home": 16,
+              "away": 11
+            },
+            "shotsOnTarget": {
+              "home": 6,
+              "away": 4
+            },
+            "fouls": {
+              "home": 11,
+              "away": 9
+            },
+            "corners": {
+              "home": 8,
+              "away": 2
+            },
+            "yellow": {
+              "home": 1,
+              "away": 2
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "A",
+            "gf": 1,
+            "ga": 3,
+            "shots": 11,
+            "shotsOnTarget": 4,
+            "fouls": 9,
+            "corners": 2,
+            "yellow": 2,
+            "red": 0,
+            "result": "L"
+          }
+        },
+        {
+          "date": "05/04/2025",
+          "time": "12:30",
+          "home": "Coventry",
+          "away": "Burnley",
+          "score": {
+            "home": 1,
+            "away": 2
+          },
+          "result": "A",
+          "ht": {
+            "home": 1,
+            "away": 1
+          },
+          "referee": "J Bell",
+          "stats": {
+            "shots": {
+              "home": 14,
+              "away": 13
+            },
+            "shotsOnTarget": {
+              "home": 4,
+              "away": 6
+            },
+            "fouls": {
+              "home": 14,
+              "away": 18
+            },
+            "corners": {
+              "home": 1,
+              "away": 5
+            },
+            "yellow": {
+              "home": 2,
+              "away": 4
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "H",
+            "gf": 1,
+            "ga": 2,
+            "shots": 14,
+            "shotsOnTarget": 4,
+            "fouls": 14,
+            "corners": 1,
+            "yellow": 2,
+            "red": 0,
+            "result": "L"
+          }
+        },
+        {
+          "date": "09/04/2025",
+          "time": "20:00",
+          "home": "Coventry",
+          "away": "Portsmouth",
+          "score": {
+            "home": 1,
+            "away": 0
+          },
+          "result": "H",
+          "ht": {
+            "home": 0,
+            "away": 0
+          },
+          "referee": "G Ward",
+          "stats": {
+            "shots": {
+              "home": 16,
+              "away": 10
+            },
+            "shotsOnTarget": {
+              "home": 3,
+              "away": 1
+            },
+            "fouls": {
+              "home": 9,
+              "away": 8
+            },
+            "corners": {
+              "home": 5,
+              "away": 4
+            },
+            "yellow": {
+              "home": 1,
+              "away": 3
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "H",
+            "gf": 1,
+            "ga": 0,
+            "shots": 16,
+            "shotsOnTarget": 3,
+            "fouls": 9,
+            "corners": 5,
+            "yellow": 1,
+            "red": 0,
+            "result": "W"
+          }
+        },
+        {
+          "date": "14/04/2025",
+          "time": "20:00",
+          "home": "Hull",
+          "away": "Coventry",
+          "score": {
+            "home": 1,
+            "away": 1
+          },
+          "result": "D",
+          "ht": {
+            "home": 0,
+            "away": 0
+          },
+          "referee": "A Kitchen",
+          "stats": {
+            "shots": {
+              "home": 9,
+              "away": 14
+            },
+            "shotsOnTarget": {
+              "home": 3,
+              "away": 8
+            },
+            "fouls": {
+              "home": 12,
+              "away": 9
+            },
+            "corners": {
+              "home": 7,
+              "away": 7
+            },
+            "yellow": {
+              "home": 0,
+              "away": 1
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "A",
+            "gf": 1,
+            "ga": 1,
+            "shots": 14,
+            "shotsOnTarget": 8,
+            "fouls": 9,
+            "corners": 7,
+            "yellow": 1,
+            "red": 0,
+            "result": "D"
+          }
+        },
+        {
+          "date": "18/04/2025",
+          "time": "15:00",
+          "home": "Coventry",
+          "away": "West Brom",
+          "score": {
+            "home": 2,
+            "away": 0
+          },
+          "result": "H",
+          "ht": {
+            "home": 1,
+            "away": 0
+          },
+          "referee": "C Pawson",
+          "stats": {
+            "shots": {
+              "home": 10,
+              "away": 7
+            },
+            "shotsOnTarget": {
+              "home": 4,
+              "away": 0
+            },
+            "fouls": {
+              "home": 17,
+              "away": 13
+            },
+            "corners": {
+              "home": 5,
+              "away": 5
+            },
+            "yellow": {
+              "home": 3,
+              "away": 0
+            },
+            "red": {
+              "home": 0,
+              "away": 1
+            }
+          },
+          "coventry": {
+            "venue": "H",
+            "gf": 2,
+            "ga": 0,
+            "shots": 10,
+            "shotsOnTarget": 4,
+            "fouls": 17,
+            "corners": 5,
+            "yellow": 3,
+            "red": 0,
+            "result": "W"
+          }
+        },
+        {
+          "date": "21/04/2025",
+          "time": "15:00",
+          "home": "Plymouth",
+          "away": "Coventry",
+          "score": {
+            "home": 3,
+            "away": 1
+          },
+          "result": "H",
+          "ht": {
+            "home": 2,
+            "away": 1
+          },
+          "referee": "A Davies",
+          "stats": {
+            "shots": {
+              "home": 10,
+              "away": 11
+            },
+            "shotsOnTarget": {
+              "home": 5,
+              "away": 3
+            },
+            "fouls": {
+              "home": 9,
+              "away": 8
+            },
+            "corners": {
+              "home": 3,
+              "away": 4
+            },
+            "yellow": {
+              "home": 1,
+              "away": 1
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "A",
+            "gf": 1,
+            "ga": 3,
+            "shots": 11,
+            "shotsOnTarget": 3,
+            "fouls": 8,
+            "corners": 4,
+            "yellow": 1,
+            "red": 0,
+            "result": "L"
+          }
+        },
+        {
+          "date": "26/04/2025",
+          "time": "12:30",
+          "home": "Luton",
+          "away": "Coventry",
+          "score": {
+            "home": 1,
+            "away": 0
+          },
+          "result": "H",
+          "ht": {
+            "home": 0,
+            "away": 0
+          },
+          "referee": "O Langford",
+          "stats": {
+            "shots": {
+              "home": 23,
+              "away": 3
+            },
+            "shotsOnTarget": {
+              "home": 8,
+              "away": 0
+            },
+            "fouls": {
+              "home": 9,
+              "away": 16
+            },
+            "corners": {
+              "home": 18,
+              "away": 2
+            },
+            "yellow": {
+              "home": 2,
+              "away": 5
+            },
+            "red": {
+              "home": 1,
+              "away": 1
+            }
+          },
+          "coventry": {
+            "venue": "A",
+            "gf": 0,
+            "ga": 1,
+            "shots": 3,
+            "shotsOnTarget": 0,
+            "fouls": 16,
+            "corners": 2,
+            "yellow": 5,
+            "red": 1,
+            "result": "L"
+          }
+        },
+        {
+          "date": "03/05/2025",
+          "time": "12:30",
+          "home": "Coventry",
+          "away": "Middlesbrough",
+          "score": {
+            "home": 2,
+            "away": 0
+          },
+          "result": "H",
+          "ht": {
+            "home": 1,
+            "away": 0
+          },
+          "referee": "S Attwell",
+          "stats": {
+            "shots": {
+              "home": 17,
+              "away": 21
+            },
+            "shotsOnTarget": {
+              "home": 4,
+              "away": 6
+            },
+            "fouls": {
+              "home": 12,
+              "away": 6
+            },
+            "corners": {
+              "home": 5,
+              "away": 5
+            },
+            "yellow": {
+              "home": 3,
+              "away": 1
+            },
+            "red": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "coventry": {
+            "venue": "H",
+            "gf": 2,
+            "ga": 0,
+            "shots": 17,
+            "shotsOnTarget": 4,
+            "fouls": 12,
+            "corners": 5,
+            "yellow": 3,
+            "red": 0,
+            "result": "W"
+          }
+        }
+      ],
+      "players": null
+    }
+  ]
+}

@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Kamper — Coventry City Scandinavia</title>
+    <title>Statistikk — Coventry City Scandinavia</title>
     <meta
       name="description"
-      content="Kampprogram og resultater for Coventry City, inkludert cup. Oppdateres ukentlig."
+      content="Championship-statistikk for Coventry City sesongene 2024/25 og 2025/26 — kampstats og spillerstats."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -49,35 +49,27 @@
     <main>
       <header class="page-hero">
         <div class="wrap">
-          <h1>Kamper</h1>
+          <h1>Statistikk</h1>
           <p>
-            Alle Coventry-kamper — liga og cup. Resultater får målscorere og
-            statistikk når kampen er ferdig. Data oppdateres typisk hver mandag.
+            Championship 2024/25 og 2025/26 — sesongoversikt, hjemme/borte og
+            kamp for kamp. Spillerstats kobles på via API-Football.
           </p>
         </div>
       </header>
 
       <section class="section">
         <div class="wrap">
-          <div class="filters" role="tablist" aria-label="Visning">
-            <a class="filter-btn" data-view="upcoming" href="kamper.html?view=upcoming">Kommende</a>
-            <a class="filter-btn" data-view="results" href="kamper.html?view=results">Resultater</a>
-            <a class="filter-btn" data-view="all" href="kamper.html?view=all">Alle</a>
+          <div class="season-tabs" id="season-tabs" role="tablist" aria-label="Sesong"></div>
+          <div id="stats-root">
+            <p class="empty-state">Laster statistikk…</p>
           </div>
-          <div class="filters" aria-label="Konkurranse">
-            <button type="button" class="filter-btn is-active" data-filter="all">Alle turneringer</button>
-            <button type="button" class="filter-btn" data-filter="league">Liga</button>
-            <button type="button" class="filter-btn" data-filter="cup">Cup</button>
-          </div>
-          <p class="tag" id="fixtures-updated" style="margin-bottom: 1rem"></p>
-          <div id="fixtures-root"></div>
         </div>
       </section>
     </main>
 
     <div class="note">
       <div class="wrap">
-        Eksempeldata i pitch-utkastet · Live-synk via API kobles på etter godkjenning
+        Kampstats: football-data.co.uk · Spillerstats: API-Football (kommer)
       </div>
     </div>
 

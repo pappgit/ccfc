@@ -254,10 +254,192 @@
     }
   }
 
+  function parseUkDate(dmy) {
+    // DD/MM/YYYY
+    const [dd, mm, yyyy] = dmy.split("/").map(Number);
+    return new Date(yyyy, mm - 1, dd);
+  }
+
+  function formatUkDate(dmy) {
+    const d = parseUkDate(dmy);
+    return `${String(d.getDate()).padStart(2, "0")}. ${MONTHS_NO[d.getMonth()]}`;
+  }
+
+  function renderSeason(season) {
+    const r = season.record;
+    const g = season.goals;
+    const a = season.averages;
+    const t = season.totals;
+    const h = season.home;
+    const aw = season.away;
+
+    const playerBlock = season.players
+      ? `<div class="section__head" style="margin-top:2rem"><p class="tag">Spillere</p><h2>Spillerstatistikk</h2></div>
+         <div class="stat-table-wrap"><table class="stat-table"><thead><tr>
+           <th>Spiller</th><th>Pos</th><th>K</th><th>Min</th><th>Mål</th><th>Assist</th><th>Gult</th><th>Rødt</th>
+         </tr></thead><tbody>
+         ${season.players
+           .map(
+             (p) => `<tr>
+               <td>${p.name}</td>
+               <td>${p.position || "–"}</td>
+               <td>${p.apps ?? "–"}</td>
+               <td>${p.minutes ?? "–"}</td>
+               <td>${p.goals ?? "–"}</td>
+               <td>${p.assists ?? "–"}</td>
+               <td>${p.yellow ?? "–"}</td>
+               <td>${p.red ?? "–"}</td>
+             </tr>`
+           )
+           .join("")}
+         </tbody></table></div>`
+      : `<div class="callout">
+           <strong>Spillerstatistikk:</strong> Klar for API-Football
+           (<code>/players?team=…&amp;season=${season.id.slice(0, 4)}</code>).
+           Gratis plan: 100 kall/dag — nok til engangsimport av begge sesongene inn i JSON.
+         </div>`;
+
+    const matches = [...season.matches].sort((x, y) =>
+      parseUkDate(x.date) - parseUkDate(y.date)
+    );
+
+    return `
+      <p class="tag">${season.competition} · ${season.label}</p>
+      <div class="stat-grid">
+        <div class="stat-cell">
+          <div class="stat-cell__label">Poeng</div>
+          <div class="stat-cell__value stat-cell__value--sky">${r.pts}</div>
+          <div class="stat-cell__hint">${r.w}–${r.d}–${r.l} · ${season.played} kamper</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-cell__label">Mål</div>
+          <div class="stat-cell__value">${g.for}–${g.against}</div>
+          <div class="stat-cell__hint">Diff ${g.diff > 0 ? "+" : ""}${g.diff}</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-cell__label">Skudd / kamp</div>
+          <div class="stat-cell__value">${a.shots ?? "–"}</div>
+          <div class="stat-cell__hint">${a.shotsOnTarget ?? "–"} på mål</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-cell__label">Corners / kamp</div>
+          <div class="stat-cell__value">${a.corners ?? "–"}</div>
+          <div class="stat-cell__hint">${t.yellow ?? 0} gule · ${t.red ?? 0} røde</div>
+        </div>
+      </div>
+
+      <div class="stat-grid" style="margin-bottom:2.5rem">
+        <div class="stat-cell">
+          <div class="stat-cell__label">Hjemme</div>
+          <div class="stat-cell__value">${h.w}–${h.d}–${h.l}</div>
+          <div class="stat-cell__hint">${h.played} kamper</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-cell__label">Borte</div>
+          <div class="stat-cell__value">${aw.w}–${aw.d}–${aw.l}</div>
+          <div class="stat-cell__hint">${aw.played} kamper</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-cell__label">Mål snitt</div>
+          <div class="stat-cell__value">${a.gf ?? "–"}</div>
+          <div class="stat-cell__hint">Sluppet inn ${a.ga ?? "–"}</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-cell__label">Skudd totalt</div>
+          <div class="stat-cell__value">${t.shots ?? "–"}</div>
+          <div class="stat-cell__hint">${t.shotsOnTarget ?? "–"} på mål</div>
+        </div>
+      </div>
+
+      ${playerBlock}
+
+      <div class="section__head">
+        <p class="tag">Kamp for kamp</p>
+        <h2>Kampstatistikk</h2>
+        <p>Skudd, på mål, corners, kort — Coventry sitt tall per kamp.</p>
+      </div>
+      <div class="stat-table-wrap">
+        <table class="stat-table">
+          <thead>
+            <tr>
+              <th>Dato</th>
+              <th>Motstander</th>
+              <th>Res</th>
+              <th>Score</th>
+              <th>Skudd</th>
+              <th>På mål</th>
+              <th>Corners</th>
+              <th>Fouls</th>
+              <th>Kort</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${matches
+              .map((m) => {
+                const c = m.coventry;
+                const opp = c.venue === "H" ? m.away : m.home;
+                const where = c.venue === "H" ? "H" : "B";
+                return `<tr>
+                  <td>${formatUkDate(m.date)}</td>
+                  <td>${where} · ${opp}</td>
+                  <td class="res-${c.result}">${c.result}</td>
+                  <td>${m.score.home}–${m.score.away}</td>
+                  <td>${c.shots ?? "–"}</td>
+                  <td>${c.shotsOnTarget ?? "–"}</td>
+                  <td>${c.corners ?? "–"}</td>
+                  <td>${c.fouls ?? "–"}</td>
+                  <td>${c.yellow ?? 0}/${c.red ?? 0}</td>
+                </tr>`;
+              })
+              .join("")}
+          </tbody>
+        </table>
+      </div>
+      <p class="tag">Kilde: ${season.source} · Oppdatert i datafil</p>
+    `;
+  }
+
+  async function renderStatsPage() {
+    const root = $("#stats-root");
+    const tabs = $("#season-tabs");
+    if (!root || !tabs) return;
+
+    try {
+      const data = await loadJSON("assets/data/championship-stats.json");
+      let active = data.seasons[0]?.id;
+
+      function paint() {
+        tabs.innerHTML = data.seasons
+          .map(
+            (s) =>
+              `<button type="button" class="filter-btn${s.id === active ? " is-active" : ""}" data-season="${s.id}">${s.label}</button>`
+          )
+          .join("");
+
+        $$("[data-season]", tabs).forEach((btn) => {
+          btn.addEventListener("click", () => {
+            active = btn.getAttribute("data-season");
+            paint();
+          });
+        });
+
+        const season = data.seasons.find((s) => s.id === active);
+        root.innerHTML = season
+          ? renderSeason(season)
+          : `<p class="empty-state">Ingen sesong valgt.</p>`;
+      }
+
+      paint();
+    } catch {
+      root.innerHTML = `<p class="empty-state">Kunne ikke laste statistikk.</p>`;
+    }
+  }
+
   setCurrentNav();
   initNav();
   renderHomeMatches();
   renderHomeNews();
   renderFixturesPage();
   renderNewsPage();
+  renderStatsPage();
 })();

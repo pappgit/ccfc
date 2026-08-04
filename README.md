@@ -2,7 +2,7 @@
 
 Pitch-utkast til nettside for skandinavisk Coventry City-supporterklubb.
 
-**Sky blue forever** — farger inspirert av [ccfc.co.uk](https://www.ccfc.co.uk/) (`#059DD9`). Eget CCS-merke (ikke offisiell klubblogo) til vi har avklart merkevare med klubben.
+**Sky blue forever** — farger inspirert av [ccfc.co.uk](https://www.ccfc.co.uk/) (`#62B5E5`). Eget CCS-merke (ikke offisiell klubblogo) til vi har avklart merkevare med klubben.
 
 ## Hva som er med
 
