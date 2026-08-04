@@ -47,8 +47,10 @@ python3 -m http.server 8080
 
 ## Admin
 
-Supabase-prosjekt `ccfc-scandinavia` styrer innlogging, nyheter og API-innstillinger.
+Supabase-prosjekt `ccfc-scandinavia` styrer innlogging, nyheter, medlemmer og API-innstillinger.
 
 - Panel: `/admin/` (lenke nederst til høyre i footer)
+- Medlem: `/medlem.html` · utmelding: `/utmelding.html`
+- Plan/logg: `docs/medlemshandtering/`
 - Dashboard: https://supabase.com/dashboard/project/zzqhgqcwuztbqgkvpxjg
 - Se `admin/README.md` for første admin-bruker

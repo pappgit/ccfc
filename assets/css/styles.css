@@ -1024,3 +1024,105 @@ p {
 .callout strong {
   color: var(--ink);
 }
+
+/* —— Medlemskap —— */
+.member-layout {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: 1fr;
+  align-items: start;
+}
+
+@media (min-width: 860px) {
+  .member-layout {
+    grid-template-columns: 1fr minmax(18rem, 24rem);
+    gap: 2.5rem;
+  }
+}
+
+.member-form-card {
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.92), rgba(194, 226, 245, 0.45));
+  border: 1px solid var(--line-strong);
+  padding: 1.35rem 1.4rem 1.5rem;
+}
+
+.member-form {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.member-form label {
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.member-form input,
+.member-form select,
+.member-form textarea {
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: normal;
+  text-transform: none;
+  color: var(--ink);
+  background: var(--white);
+  border: 1px solid var(--line-strong);
+  padding: 0.65rem 0.75rem;
+  width: 100%;
+}
+
+.member-form input:focus,
+.member-form select:focus,
+.member-form textarea:focus {
+  outline: 2px solid var(--sky);
+  outline-offset: 1px;
+}
+
+.member-check {
+  display: grid !important;
+  grid-template-columns: auto 1fr;
+  gap: 0.65rem;
+  align-items: start;
+  text-transform: none !important;
+  letter-spacing: normal !important;
+  font-size: 0.92rem !important;
+  font-weight: 500 !important;
+  color: var(--ink) !important;
+}
+
+.member-check input {
+  width: auto;
+  margin-top: 0.2rem;
+}
+
+.member-check span {
+  line-height: 1.45;
+}
+
+.member-lead {
+  color: var(--muted);
+  margin-bottom: 1rem;
+}
+
+.member-msg {
+  margin: 0.25rem 0 0;
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+}
+
+.member-msg.is-error {
+  color: #a33;
+}
+
+.member-msg.is-ok {
+  color: var(--ink-soft);
+}
+
+.member-msg[hidden] {
+  display: none !important;
+}
