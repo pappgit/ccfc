@@ -2,6 +2,15 @@
   "entries": [
     {
       "date": "2026-08-04",
+      "title": "Valgfritt bilde i nyhetsartikler",
+      "items": [
+        "Admin: last opp eller lim inn bilde-URL per artikkel",
+        "Uten bilde vises ingen bildeplass — layouten tilpasser seg",
+        "Bildet skalerer responsivt på forsiden og nyhetssiden"
+      ]
+    },
+    {
+      "date": "2026-08-04",
       "title": "Medlemskap: godkjenning og HTML-e-post",
       "items": [
         "Innmelding går til godkjenning før medlemskap aktiveres",

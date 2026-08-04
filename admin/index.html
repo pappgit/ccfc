@@ -12,7 +12,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../assets/css/styles.css" />
-    <link rel="stylesheet" href="../assets/css/admin.css?v=20260804m" />
+    <link rel="stylesheet" href="../assets/css/admin.css?v=20260804-news-img" />
     <link rel="icon" href="../assets/img/logo.jpg" type="image/jpeg" />
   </head>
   <body>
@@ -299,6 +299,41 @@
                 Brødtekst
                 <textarea name="body" id="news-body" rows="8" required></textarea>
               </label>
+              <div class="news-image-field">
+                <p class="news-image-field__hint">
+                  Bilde er valgfritt. Uten bilde vises ingen bildeplass på siden — layouten tilpasser seg selv.
+                </p>
+                <label>
+                  Last opp bilde
+                  <input
+                    type="file"
+                    id="news-image-file"
+                    accept="image/png,image/jpeg,image/webp,image/gif"
+                  />
+                </label>
+                <div class="row" style="align-items: center; flex-wrap: wrap; gap: 0.75rem">
+                  <button class="btn btn--solid" type="button" id="news-image-upload-btn">
+                    Last opp bilde
+                  </button>
+                  <button class="btn btn--ghost" type="button" id="news-image-remove" hidden>
+                    Fjern bilde
+                  </button>
+                </div>
+                <div class="news-image-preview-wrap" id="news-image-preview-wrap" hidden>
+                  <img id="news-image-preview" src="" alt="Forhåndsvisning av artikkelbilde" />
+                </div>
+                <label>
+                  Eller bilde-URL
+                  <input
+                    type="text"
+                    name="image_url"
+                    id="news-image-url"
+                    inputmode="url"
+                    autocomplete="off"
+                    placeholder="https://… eller assets/img/…"
+                  />
+                </label>
+              </div>
               <div class="row">
                 <label class="check">
                   <input type="checkbox" name="published" id="news-published" checked />
@@ -496,6 +531,6 @@
     <script src="../assets/js/vendor/supabase.js?v=2.112.0"></script>
     <script src="../assets/js/supabase-config.js"></script>
     <script src="../assets/js/content.js"></script>
-    <script src="../assets/js/admin.js?v=20260804-changelog2"></script>
+    <script src="../assets/js/admin.js?v=20260804-news-img"></script>
   </body>
 </html>
