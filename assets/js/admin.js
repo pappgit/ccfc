@@ -48,28 +48,59 @@
       .slice(0, 60);
   }
 
+  const loginBtn = $("#login-form")?.querySelector('button[type="submit"]');
+  let authBusy = false;
+  let enteredAppForUser = null;
+
+  function withTimeout(promise, ms, label) {
+    return new Promise((resolve, reject) => {
+      const t = setTimeout(
+        () => reject(new Error(`${label || "Forespørsel"} tok for lang tid (${ms / 1000}s).`)),
+        ms
+      );
+      Promise.resolve(promise).then(
+        (v) => {
+          clearTimeout(t);
+          resolve(v);
+        },
+        (e) => {
+          clearTimeout(t);
+          reject(e);
+        }
+      );
+    });
+  }
+
+  function setLoginBusy(busy) {
+    authBusy = busy;
+    if (loginBtn) loginBtn.disabled = busy;
+  }
+
   async function isAdminUser(userId) {
-    const { data, error } = await client
-      .from("admins")
-      .select("user_id")
-      .eq("user_id", userId)
-      .maybeSingle();
+    const { data, error } = await withTimeout(
+      client.from("admins").select("user_id").eq("user_id", userId).maybeSingle(),
+      15000,
+      "Admin-sjekk"
+    );
     if (error) throw error;
     return !!data;
   }
 
-  async function requireSession() {
-    const { data } = await client.auth.getSession();
-    return data.session;
-  }
-
   async function showApp(session) {
+    if (!session?.user?.id) {
+      await showLogin();
+      return;
+    }
+    // Avoid re-entering for the same user (form + auth listener can both fire).
+    if (enteredAppForUser === session.user.id && !appView.hidden) return;
+
     try {
+      showMsg(loginMsg, "Sjekker admin-tilgang…");
       const ok = await isAdminUser(session.user.id);
       if (!ok) {
+        enteredAppForUser = null;
         await client.auth.signOut();
-        loginView.hidden = false;
-        appView.hidden = true;
+        await showLogin();
         showMsg(
           loginMsg,
           "Brukeren er ikke admin. Legg til e-posten i Supabase (auth + tabellen admins).",
@@ -77,27 +108,23 @@
         );
         return;
       }
+
+      enteredAppForUser = session.user.id;
       loginView.hidden = true;
       appView.hidden = false;
+      showMsg(loginMsg, "");
       $("#admin-email").textContent = session.user.email || session.user.id;
-      try {
-        await loadContentEditor();
-      } catch (err) {
-        console.error(err);
-      }
-      try {
-        await loadApiSettings();
-      } catch (err) {
-        console.error(err);
-      }
-      try {
-        await loadNews();
-      } catch (err) {
-        console.error(err);
-      }
+
+      // Load panels independently — failure must not kick the user out.
+      await Promise.allSettled([loadContentEditor(), loadApiSettings(), loadNews()]);
     } catch (err) {
       console.error(err);
+      enteredAppForUser = null;
+      loginView.hidden = false;
+      appView.hidden = true;
       showMsg(loginMsg, formatAuthError(err), true);
+    } finally {
+      setLoginBusy(false);
     }
   }
 
@@ -106,12 +133,29 @@
     if (/load failed|failed to fetch|networkerror|network request failed/i.test(msg)) {
       return "Nettverksfeil: nettleseren når ikke Supabase (brannmur/VPN/adblock). Prøv et annet nettverk, eller skru av VPN/adblock for supabase.co.";
     }
+    if (/tok for lang tid/i.test(msg)) {
+      return msg + " Sjekk nettverk/VPN og prøv igjen.";
+    }
     return msg;
   }
 
   async function showLogin() {
+    enteredAppForUser = null;
     loginView.hidden = false;
     appView.hidden = true;
+    setLoginBusy(false);
+  }
+
+  /**
+   * Supabase holds an auth lock while onAuthStateChange runs.
+   * Awaiting other client calls inside the callback deadlocks — defer first.
+   */
+  function afterAuthLock(fn) {
+    setTimeout(() => {
+      Promise.resolve()
+        .then(fn)
+        .catch((err) => console.error(err));
+    }, 0);
   }
 
   /* —— Nav —— */
@@ -361,31 +405,50 @@
   /* —— Auth —— */
   $("#login-form").addEventListener("submit", async (e) => {
     e.preventDefault();
+    if (authBusy) return;
     const fd = new FormData(e.target);
+    setLoginBusy(true);
     showMsg(loginMsg, "Logger inn…");
     try {
-      const { data, error } = await client.auth.signInWithPassword({
-        email: String(fd.get("email")).trim(),
-        password: String(fd.get("password")),
-      });
+      const { data, error } = await withTimeout(
+        client.auth.signInWithPassword({
+          email: String(fd.get("email")).trim(),
+          password: String(fd.get("password")),
+        }),
+        20000,
+        "Innlogging"
+      );
       if (error) {
+        setLoginBusy(false);
         showMsg(loginMsg, formatAuthError(error), true);
         return;
       }
       if (!data.session) {
+        setLoginBusy(false);
         showMsg(loginMsg, "Innlogging lyktes ikke (ingen sesjon).", true);
         return;
       }
-      await showApp(data.session);
+      // UI transition is handled by onAuthStateChange (deferred) to avoid
+      // racing the auth lock. Fallback if the event was already consumed.
+      afterAuthLock(async () => {
+        if (appView.hidden) await showApp(data.session);
+        else setLoginBusy(false);
+      });
     } catch (err) {
       console.error(err);
+      setLoginBusy(false);
       showMsg(loginMsg, formatAuthError(err), true);
     }
   });
 
   $("#logout-btn").addEventListener("click", async () => {
-    await client.auth.signOut();
-    await showLogin();
+    setLoginBusy(true);
+    try {
+      await client.auth.signOut();
+    } finally {
+      await showLogin();
+      showMsg(loginMsg, "");
+    }
   });
 
   /* —— API settings —— */
@@ -558,14 +621,28 @@
   }
 
   /* —— boot —— */
-  (async () => {
-    const session = await requireSession();
-    if (session) await showApp(session);
-    else await showLogin();
+  // Show login immediately so the page is never blank while session resolves.
+  loginView.hidden = false;
+  appView.hidden = true;
 
-    client.auth.onAuthStateChange(async (event, session) => {
-      if (event === "SIGNED_OUT") await showLogin();
-      if (event === "SIGNED_IN" && session) await showApp(session);
+  client.auth.onAuthStateChange((event, session) => {
+    // Never await Supabase calls directly in this callback (auth lock deadlock).
+    afterAuthLock(async () => {
+      if (event === "SIGNED_OUT") {
+        await showLogin();
+        return;
+      }
+      if (
+        (event === "SIGNED_IN" || event === "INITIAL_SESSION" || event === "TOKEN_REFRESHED") &&
+        session
+      ) {
+        await showApp(session);
+        return;
+      }
+      if (event === "INITIAL_SESSION" && !session) {
+        await showLogin();
+      }
     });
-  })();
+  });
 })();
+
