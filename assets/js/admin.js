@@ -394,11 +394,106 @@
     if (!contentState) return;
     const form = $("#content-form");
     form
-      ?.querySelectorAll("#content-fields [name], #logo-url-input, #favicon-url-input")
+      ?.querySelectorAll("#content-fields [name], #logo-url-input, #favicon-url-input, #hero-interval-input")
       .forEach((el) => {
         if (!el.name) return;
-        window.CCFCContent.setByPath(contentState, el.name, el.value);
+        let val = el.value;
+        if (el.name === "home.heroSlideInterval") {
+          val = Number(val) || 6500;
+        }
+        window.CCFCContent.setByPath(contentState, el.name, val);
       });
+
+    // Persist slide URL/alt edits from the list
+    const slides = ensureHeroSlides();
+    $("#hero-slides-list")
+      ?.querySelectorAll("[data-slide-index]")
+      .forEach((row) => {
+        const i = Number(row.getAttribute("data-slide-index"));
+        if (!slides[i]) return;
+        const urlInput = row.querySelector('[data-field="url"]');
+        const altInput = row.querySelector('[data-field="alt"]');
+        if (urlInput) slides[i].url = urlInput.value.trim();
+        if (altInput) slides[i].alt = altInput.value.trim();
+      });
+    window.CCFCContent.setByPath(contentState, "home.heroSlides", slides.filter((s) => s.url));
+  }
+
+  function ensureHeroSlides() {
+    let slides = window.CCFCContent.getByPath(contentState, "home.heroSlides");
+    if (!Array.isArray(slides)) {
+      slides = [];
+      window.CCFCContent.setByPath(contentState, "home.heroSlides", slides);
+    }
+    return slides;
+  }
+
+  function renderHeroSlidesEditor() {
+    const card = $("#hero-slides-card");
+    const list = $("#hero-slides-list");
+    if (!card || !list || !contentState) return;
+
+    const show = activeContentSection === "home";
+    card.hidden = !show;
+    if (!show) return;
+
+    const interval = window.CCFCContent.getByPath(contentState, "home.heroSlideInterval") ?? 6500;
+    const intervalInput = $("#hero-interval-input");
+    if (intervalInput) intervalInput.value = interval;
+
+    const slides = ensureHeroSlides();
+    if (!slides.length) {
+      list.innerHTML = `<p class="empty-state" style="margin:0.5rem 0">Ingen slideshow-bilder ennå. Last opp eller lim inn en URL.</p>`;
+      return;
+    }
+
+    list.innerHTML = slides
+      .map((s, i) => {
+        const src = window.CCFCContent.assetPath(s.url || "") || "";
+        return `<div class="hero-slide-row" data-slide-index="${i}">
+          <img class="hero-slide-row__thumb" src="${escapeAttr(src)}" alt="" />
+          <div class="hero-slide-row__fields">
+            <label>Bilde-URL
+              <input type="url" data-field="url" value="${escapeAttr(s.url || "")}" />
+            </label>
+            <label>Alt-tekst
+              <input type="text" data-field="alt" value="${escapeAttr(s.alt || "")}" />
+            </label>
+          </div>
+          <div class="hero-slide-row__actions">
+            <button type="button" class="btn btn--solid" data-hero-move="-1" ${i === 0 ? "disabled" : ""} title="Flytt opp">↑</button>
+            <button type="button" class="btn btn--solid" data-hero-move="1" ${i === slides.length - 1 ? "disabled" : ""} title="Flytt ned">↓</button>
+            <button type="button" class="btn btn--danger" data-hero-remove title="Fjern">Fjern</button>
+          </div>
+        </div>`;
+      })
+      .join("");
+
+    list.querySelectorAll("[data-hero-move]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        flushContentFields();
+        const row = btn.closest("[data-slide-index]");
+        const i = Number(row.getAttribute("data-slide-index"));
+        const dir = Number(btn.getAttribute("data-hero-move"));
+        const arr = ensureHeroSlides();
+        const j = i + dir;
+        if (j < 0 || j >= arr.length) return;
+        const tmp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = tmp;
+        renderHeroSlidesEditor();
+      });
+    });
+
+    list.querySelectorAll("[data-hero-remove]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        flushContentFields();
+        const row = btn.closest("[data-slide-index]");
+        const i = Number(row.getAttribute("data-slide-index"));
+        ensureHeroSlides().splice(i, 1);
+        renderHeroSlidesEditor();
+      });
+    });
   }
 
   function renderContentTabs() {
@@ -439,6 +534,11 @@
     $("#favicon-url-input").value = favUrl;
     const preview = $("#logo-preview");
     if (preview) preview.src = window.CCFCContent.assetPath(logoUrl) || "";
+
+    const logoCard = $("#logo-card");
+    if (logoCard) logoCard.hidden = activeContentSection !== "brand";
+
+    renderHeroSlidesEditor();
   }
 
   function collectContentForm() {
@@ -450,6 +550,31 @@
     if (!window.CCFCContent) return;
     window.CCFCContent.clearCache();
     contentState = await window.CCFCContent.load({ bypassCache: true });
+
+    // Seed slideshow from defaults if missing in stored CMS (older saves)
+    const slides = window.CCFCContent.getByPath(contentState, "home.heroSlides");
+    if (!Array.isArray(slides) || !slides.length) {
+      try {
+        const depth = location.pathname.includes("/admin") ? "../" : "";
+        const res = await fetch(depth + "assets/data/site-content.default.json");
+        if (res.ok) {
+          const defaults = await res.json();
+          if (Array.isArray(defaults?.home?.heroSlides)) {
+            window.CCFCContent.setByPath(contentState, "home.heroSlides", defaults.home.heroSlides);
+          }
+          if (window.CCFCContent.getByPath(contentState, "home.heroSlideInterval") == null) {
+            window.CCFCContent.setByPath(
+              contentState,
+              "home.heroSlideInterval",
+              defaults?.home?.heroSlideInterval ?? 6500
+            );
+          }
+        }
+      } catch {
+        /* ignore */
+      }
+    }
+
     renderContentTabs();
     renderContentFields();
   }
@@ -507,6 +632,64 @@
     $("#favicon-url-input").value = url;
     $("#logo-preview").src = url;
     showMsg(contentMsg, "Logo lastet opp — husk å trykke Lagre innhold.");
+  });
+
+  async function uploadHeroSlide(file) {
+    const ext = file.name.split(".").pop() || "jpg";
+    const path = `hero/slide-${Date.now()}.${ext}`;
+    const { error: upErr } = await client.storage.from("media").upload(path, file, {
+      upsert: true,
+      contentType: file.type,
+    });
+    if (upErr) throw upErr;
+    const { data: pub } = client.storage.from("media").getPublicUrl(path);
+    if (!pub?.publicUrl) throw new Error("Fikk ikke public URL.");
+    return pub.publicUrl;
+  }
+
+  $("#hero-slide-upload-btn")?.addEventListener("click", async () => {
+    const fileInput = $("#hero-slide-file");
+    const file = fileInput?.files?.[0];
+    if (!file) {
+      showMsg(contentMsg, "Velg et bilde først.", true);
+      return;
+    }
+    if (!contentState) {
+      showMsg(contentMsg, "Innhold er ikke lastet ennå.", true);
+      return;
+    }
+    showMsg(contentMsg, "Laster opp slideshow-bilde…");
+    try {
+      flushContentFields();
+      const url = await uploadHeroSlide(file);
+      ensureHeroSlides().push({
+        url,
+        alt: "Coventry City i aksjon",
+      });
+      if (fileInput) fileInput.value = "";
+      renderHeroSlidesEditor();
+      showMsg(contentMsg, "Bilde lastet opp — husk å trykke Lagre innhold.");
+    } catch (err) {
+      showMsg(contentMsg, err.message || "Opplasting feilet.", true);
+    }
+  });
+
+  $("#hero-slide-add-url-btn")?.addEventListener("click", () => {
+    const input = $("#hero-slide-url-input");
+    const url = input?.value?.trim();
+    if (!url) {
+      showMsg(contentMsg, "Lim inn en bilde-URL først.", true);
+      return;
+    }
+    if (!contentState) {
+      showMsg(contentMsg, "Innhold er ikke lastet ennå.", true);
+      return;
+    }
+    flushContentFields();
+    ensureHeroSlides().push({ url, alt: "Coventry City i aksjon" });
+    if (input) input.value = "";
+    renderHeroSlidesEditor();
+    showMsg(contentMsg, "Bilde lagt til — husk å trykke Lagre innhold.");
   });
 
   function escapeAttr(s) {

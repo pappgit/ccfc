@@ -20,6 +20,25 @@
     "heroLine1": "Coventry City",
     "heroLine2": "Scandinavia",
     "heroLead": "Supporterklubben for Sky Blues i Norden — kamper, resultater og nyheter samlet under ett tak.",
+    "heroSlideInterval": 6500,
+    "heroSlides": [
+      {
+        "url": "assets/img/hero/slide-01.jpg",
+        "alt": "Coventry City i aksjon på Ricoh Arena"
+      },
+      {
+        "url": "assets/img/hero/slide-02.jpg",
+        "alt": "Coventry City i EFL Trophy-finalen"
+      },
+      {
+        "url": "assets/img/hero/slide-03.jpg",
+        "alt": "Sky Blues-spillere i cupfinale"
+      },
+      {
+        "url": "assets/img/hero/slide-04.jpg",
+        "alt": "Coventry-derby på stadion"
+      }
+    ],
     "ctaFixtures": "Se kamper",
     "ctaNews": "Les nyheter",
     "matchesTag": "Neste kamper",

@@ -47,8 +47,15 @@
     </header>
 
     <main>
-      <section class="hero" aria-label="Forside">
-        <div class="hero__visual" aria-hidden="true"></div>
+      <section class="hero" aria-label="Forside" data-hero-slideshow>
+        <div class="hero__visual" aria-hidden="true">
+          <div class="hero__slides" id="hero-slides">
+            <div class="hero__slide is-active" style="background-image: url('assets/img/hero/slide-01.jpg')"></div>
+            <div class="hero__slide" style="background-image: url('assets/img/hero/slide-02.jpg')"></div>
+            <div class="hero__slide" style="background-image: url('assets/img/hero/slide-03.jpg')"></div>
+            <div class="hero__slide" style="background-image: url('assets/img/hero/slide-04.jpg')"></div>
+          </div>
+        </div>
         <div class="hero__content">
           <h1 class="hero__brand">
             <span data-cms="home.heroLine1">Coventry City</span>
@@ -62,6 +69,7 @@
             <a class="btn btn--solid" href="kamper.html" data-cms="home.ctaFixtures">Se kamper</a>
             <a class="btn btn--ghost" href="nyheter.html" data-cms="home.ctaNews">Les nyheter</a>
           </div>
+          <div class="hero__dots" id="hero-dots" role="tablist" aria-label="Bytt forsidebilde"></div>
         </div>
       </section>
 
