@@ -397,12 +397,17 @@ p {
   text-transform: uppercase;
   max-width: 14ch;
   margin-bottom: 1rem;
+  color: var(--white);
+  text-shadow: 0 0.12em 0.55em rgba(4, 18, 26, 0.55);
   opacity: 0;
   animation: rise 0.9s var(--ease) 0.15s forwards;
 }
 
 .hero__brand span {
   display: block;
+}
+
+.hero__brand span:last-child {
   color: var(--sky-mist);
 }
 
