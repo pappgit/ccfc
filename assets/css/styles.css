@@ -374,8 +374,8 @@ p {
     Photos have almost no headroom; nudge + slight scale so heads sit
     clearly below the sticky header instead of flush against it.
   */
-  -webkit-transform: translate3d(0, 6%, 0) scale(1.12);
-  transform: translate3d(0, 6%, 0) scale(1.12);
+  -webkit-transform: translate3d(0, 10%, 0) scale(1.15);
+  transform: translate3d(0, 10%, 0) scale(1.15);
   transform-origin: center top;
 }
 
