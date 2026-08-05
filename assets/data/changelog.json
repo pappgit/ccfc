@@ -4,8 +4,8 @@
       "date": "2026-08-05",
       "title": "Slideshow viser spillernes hoder",
       "items": [
-        "Forsidebildene beskjæres fra toppen, så ansiktene ikke skjules under headeren",
-        "Lett zoom-effekt tar vare på toppen av bildet i stedet for midten"
+        "Forsidebildene beskjæres fra toppen, så ansiktene synes under headeren",
+        "Bildene er litt forskjøvet ned slik at hodene ikke kuttes mot menyen"
       ]
     },
     {
