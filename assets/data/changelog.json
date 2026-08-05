@@ -10,6 +10,15 @@
     },
     {
       "date": "2026-08-04",
+      "title": "Ryddigere design og admin-oversikt",
+      "items": [
+        "Nettsiden har mykere bakgrunn, tydeligere meny og finere seksjoner — samme farger og fonter",
+        "Admin åpner med en oversikt over innmeldinger, ønsker og nyheter",
+        "Menyen i admin er gruppert, og medlemslisten viser status på et blikk"
+      ]
+    },
+    {
+      "date": "2026-08-04",
       "title": "Slideshow synlig på Mac Safari",
       "items": [
         "Forsidebildene har eget høydeområde over tekstboksen, så de ikke skjules på desktop",

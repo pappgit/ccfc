@@ -1,9 +1,23 @@
-/* Coventry City Scandinavia — aligned with ccfc.co.uk tokens
-   Fonts: Montserrat / Montserrat SemiBold (CCFC primary/secondary)
-   Colors: CCFC primary scale (primary-500 #62b5e5, primary-600 #299adc) */
+/**
+ * Coventry City Scandinavia — offentlig nettsted
+ * ------------------------------------------------
+ * Farger/fonter følger CCFC-tokens (ccfc.co.uk):
+ *   primary-500 #62b5e5 · Montserrat / SemiBold
+ *
+ * Oppsett:
+ *   1. Tokens (:root)
+ *   2. Base / tipografi
+ *   3. Layout (.wrap, .section)
+ *   4. Navigasjon
+ *   5. Knapper
+ *   6. Hero (forside) + page-hero
+ *   7. Kamper, filtre, nyheter
+ *   8. Om oss / split, note, footer
+ *   9. Statistikk, medlemskap, utilities
+ */
 
 :root {
-  /* CCFC primary-* */
+  /* —— CCFC primary scale —— */
   --sky: #62b5e5; /* primary-500 */
   --sky-bright: #80c3ea; /* primary-400 */
   --sky-deep: #299adc; /* primary-600 */
@@ -17,6 +31,7 @@
   --line: rgba(9, 39, 57, 0.12);
   --line-strong: rgba(9, 39, 57, 0.22);
   --muted: rgba(9, 39, 57, 0.62);
+  --danger: #a33;
 
   /* CCFC: --primary-font MontserratSemiBold, --secondary-font Montserrat */
   --font-display: "Montserrat", system-ui, sans-serif;
@@ -25,6 +40,8 @@
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --nav-h: 4.25rem;
   --max: 72rem;
+  --radius-sm: 2px;
+  --shadow-soft: 0 12px 40px rgba(9, 39, 57, 0.08);
 }
 
 *,
@@ -39,12 +56,28 @@ html {
 
 body {
   margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   font-family: var(--font-body);
   font-size: 1.05rem;
   line-height: 1.6;
   color: var(--ink);
-  background: var(--paper);
+  /* Soft sky wash — keeps brand atmosphere without flat fill */
+  background:
+    radial-gradient(120% 80% at 100% -10%, rgba(98, 181, 229, 0.28), transparent 55%),
+    radial-gradient(90% 60% at -5% 40%, rgba(194, 226, 245, 0.55), transparent 50%),
+    linear-gradient(180deg, #e8f4fb 0%, var(--paper) 38%, #e4f2fa 100%);
   -webkit-font-smoothing: antialiased;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+:focus-visible {
+  outline: 2px solid var(--sky-deep);
+  outline-offset: 3px;
 }
 
 img {
@@ -85,11 +118,31 @@ p {
 
 .section {
   padding: clamp(3.5rem, 8vw, 6rem) 0;
+  position: relative;
+}
+
+/* Tighter follow-up section (e.g. news under matches) */
+.section--flush {
+  padding-top: 0;
+}
+
+/* Subtle band for secondary content blocks */
+.section--tint {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.55) 0%,
+    rgba(194, 226, 245, 0.28) 100%
+  );
+  border-block: 1px solid var(--line);
 }
 
 .section__head {
   max-width: 36rem;
   margin-bottom: clamp(1.75rem, 4vw, 2.75rem);
+}
+
+.section__head--spaced {
+  margin-top: 2rem;
 }
 
 .section__head h2 {
@@ -183,6 +236,7 @@ p {
 }
 
 .nav a {
+  position: relative;
   font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.05em;
@@ -193,9 +247,27 @@ p {
   transition: color 0.25s var(--ease);
 }
 
+.nav a::after {
+  content: "";
+  position: absolute;
+  left: 0.7rem;
+  right: 0.7rem;
+  bottom: 0.2rem;
+  height: 2px;
+  background: var(--sky);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.28s var(--ease);
+}
+
 .nav a:hover,
 .nav a[aria-current="page"] {
   color: var(--white);
+}
+
+.nav a[aria-current="page"]::after,
+.nav a:hover::after {
+  transform: scaleX(1);
 }
 
 .nav-toggle {
@@ -244,6 +316,10 @@ p {
 
   .nav a {
     padding: 0.9rem 1rem;
+  }
+
+  .nav a::after {
+    display: none;
   }
 }
 
@@ -530,6 +606,8 @@ p {
   .hero__lead,
   .hero .cta-row,
   .hero__dots,
+  .page-hero h1,
+  .page-hero p,
   .reveal {
     animation: none !important;
     opacity: 1 !important;
@@ -550,8 +628,10 @@ p {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(120deg, var(--sky-dark), var(--sky-deep) 45%, var(--sky));
-  opacity: 0.92;
+  background:
+    radial-gradient(80% 120% at 90% 10%, rgba(255, 255, 255, 0.18), transparent 50%),
+    linear-gradient(120deg, var(--sky-dark), var(--sky-deep) 45%, var(--sky));
+  opacity: 0.95;
 }
 
 .page-hero::after {
@@ -559,6 +639,7 @@ p {
   position: absolute;
   inset: 0;
   background: linear-gradient(180deg, transparent 20%, rgba(4, 18, 26, 0.55));
+  pointer-events: none;
 }
 
 .page-hero .wrap {
@@ -570,11 +651,13 @@ p {
   font-size: clamp(2.2rem, 6vw, 3.75rem);
   max-width: 12ch;
   margin-bottom: 0.65rem;
+  animation: rise 0.7s var(--ease) both;
 }
 
 .page-hero p {
   max-width: 34rem;
-  color: rgba(255, 255, 255, 0.88);
+  color: rgba(255, 255, 255, 0.9);
+  animation: rise 0.7s var(--ease) 0.12s both;
 }
 
 /* —— Match list —— */
@@ -589,8 +672,14 @@ p {
   grid-template-columns: 7.5rem 1fr auto;
   gap: 1rem 1.25rem;
   align-items: center;
-  padding: 1.15rem 0;
+  padding: 1.15rem 0.65rem;
+  margin-inline: -0.65rem;
   border-bottom: 1px solid var(--line);
+  transition: background 0.25s var(--ease);
+}
+
+.match:hover {
+  background: rgba(98, 181, 229, 0.08);
 }
 
 .match__when {
@@ -703,13 +792,18 @@ p {
   font-weight: 800;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  background: transparent;
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.55);
   border: 1px solid var(--line-strong);
   color: var(--ink);
   padding: 0.55rem 0.9rem;
   cursor: pointer;
   transition: background 0.2s var(--ease), border-color 0.2s var(--ease),
-    color 0.2s var(--ease);
+    color 0.2s var(--ease), transform 0.2s var(--ease);
+}
+
+.filter-btn:hover {
+  transform: translateY(-1px);
 }
 
 .filter-btn:hover,
@@ -731,15 +825,17 @@ p {
   display: grid;
   grid-template-columns: 6.5rem 1fr;
   gap: 1.25rem;
-  padding: 1.5rem 0;
+  padding: 1.5rem 0.65rem;
+  margin-inline: -0.65rem;
   border-bottom: 1px solid var(--line);
   text-decoration: none;
   color: inherit;
-  transition: color 0.2s var(--ease);
+  transition: color 0.2s var(--ease), background 0.25s var(--ease);
 }
 
 .news-item:hover {
   color: var(--sky-deep);
+  background: rgba(98, 181, 229, 0.07);
 }
 
 .news-item__date {
@@ -777,6 +873,22 @@ p {
 
 .article {
   max-width: 40rem;
+}
+
+.article--listed {
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.article--listed:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.article__title {
+  font-size: clamp(1.5rem, 4vw, 2.2rem);
+  margin-bottom: 1rem;
 }
 
 .article__meta {
@@ -833,10 +945,11 @@ p {
 .split__visual {
   min-height: 22rem;
   background:
-    linear-gradient(160deg, rgba(9, 39, 57, 0.2), rgba(9, 39, 57, 0.55)),
+    linear-gradient(160deg, rgba(9, 39, 57, 0.25), rgba(9, 39, 57, 0.55)),
     linear-gradient(135deg, var(--sky-dark), var(--sky-bright));
   position: relative;
   overflow: hidden;
+  box-shadow: var(--shadow-soft);
 }
 
 .split__visual::after {
@@ -876,6 +989,7 @@ p {
   color: rgba(255, 255, 255, 0.85);
   padding: 1.25rem 0;
   font-size: 0.9rem;
+  border-top: 3px solid var(--sky);
 }
 
 .note a {
@@ -884,10 +998,19 @@ p {
 
 /* —— Footer —— */
 .site-footer {
+  position: relative;
   background: var(--ink);
   color: rgba(255, 255, 255, 0.7);
   padding: 2.75rem 0 2rem;
   margin-top: auto;
+}
+
+.site-footer::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--sky-dark), var(--sky), var(--sky-mist));
 }
 
 .site-footer .wrap {
@@ -968,6 +1091,8 @@ p {
   text-transform: uppercase;
   color: var(--sky-deep);
   margin-bottom: 0.75rem;
+  padding-left: 0.65rem;
+  border-left: 3px solid var(--sky);
 }
 
 /* —— Season stats —— */
@@ -1063,7 +1188,7 @@ p {
 }
 
 .stat-table .res-L {
-  color: #a33;
+  color: var(--danger);
   font-weight: 800;
 }
 
@@ -1102,9 +1227,10 @@ p {
 }
 
 .member-form-card {
-  background: linear-gradient(160deg, rgba(255, 255, 255, 0.92), rgba(194, 226, 245, 0.45));
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.95), rgba(194, 226, 245, 0.4));
   border: 1px solid var(--line-strong);
-  padding: 1.35rem 1.4rem 1.5rem;
+  padding: 1.5rem 1.5rem 1.65rem;
+  box-shadow: var(--shadow-soft);
 }
 
 .member-form {
@@ -1177,7 +1303,7 @@ p {
 }
 
 .member-msg.is-error {
-  color: #a33;
+  color: var(--danger);
 }
 
 .member-msg.is-ok {
