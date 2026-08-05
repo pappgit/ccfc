@@ -377,6 +377,34 @@
         { path: "home.aboutP2", label: "Om-blokk · avsnitt 2", type: "textarea" },
         { path: "home.aboutCta", label: "Om-blokk · knapp", type: "text" },
         { path: "home.note", label: "Infostripe under forsiden", type: "textarea" },
+        {
+          path: "footer.title",
+          label: "Footer-tittel (nederst på alle sider)",
+          type: "text",
+        },
+        {
+          path: "footer.text",
+          label: "Footer-tekst (nederst på alle sider)",
+          type: "textarea",
+        },
+      ],
+    },
+    {
+      id: "footer",
+      label: "Footer",
+      fields: [
+        {
+          path: "footer.title",
+          label: "Tittel (f.eks. Coventry City Scandinavia)",
+          type: "text",
+        },
+        {
+          path: "footer.text",
+          label: "Tekst under tittel (vises på forsiden og de fleste sider)",
+          type: "textarea",
+        },
+        { path: "footer.tagline", label: "Tagline (f.eks. Play Up Sky Blues)", type: "text" },
+        { path: "footer.adminLabel", label: "Admin-lenke", type: "text" },
       ],
     },
     {
@@ -419,21 +447,11 @@
         { path: "about.p4", label: "Avsnitt 4", type: "textarea" },
         { path: "about.contactLabel", label: "Kontakt-knapp", type: "text" },
         { path: "about.contactEmail", label: "Kontakt-e-post", type: "text" },
-        { path: "about.footerText", label: "Footer-tekst (om-siden)", type: "text" },
-      ],
-    },
-    {
-      id: "footer",
-      label: "Footer",
-      fields: [
-        { path: "footer.title", label: "Tittel", type: "text" },
         {
-          path: "footer.text",
-          label: "Tekst under tittel",
-          type: "textarea",
+          path: "about.footerText",
+          label: "Egen footer-tekst kun på Om oss (ikke forsiden)",
+          type: "text",
         },
-        { path: "footer.tagline", label: "Tagline (f.eks. Play Up Sky Blues)", type: "text" },
-        { path: "footer.adminLabel", label: "Admin-lenke", type: "text" },
       ],
     },
   ];
@@ -579,9 +597,11 @@
         ? `<p style="color:var(--muted);margin-bottom:0.85rem;font-size:0.9rem">Endre menynavn og huk av hvilke sider som skal vises i menyen.</p>`
         : section.id === "sections"
           ? `<p style="color:var(--muted);margin-bottom:0.85rem;font-size:0.9rem">Slå av/på større blokker på nettsiden uten å slette innholdet.</p>`
-          : section.id === "footer"
-            ? `<p style="color:var(--muted);margin-bottom:0.85rem;font-size:0.9rem">Tittel og tekst vises nederst på alle sider. Tomme felt fylles automatisk med standardtekst.</p>`
-            : ""
+          : section.id === "home"
+            ? `<p style="color:var(--muted);margin-bottom:0.85rem;font-size:0.9rem">Hero, seksjoner og footer-teksten nederst på forsiden. Footer-feltene gjelder også de fleste andre sider — mer under fanen Footer.</p>`
+            : section.id === "footer"
+              ? `<p style="color:var(--muted);margin-bottom:0.85rem;font-size:0.9rem">Tittel og tekst vises nederst på forsiden og de fleste sider. Endre og trykk «Lagre innhold». Tomme felt fylles med standardtekst.</p>`
+              : ""
     }${section.fields
       .map((f) => {
         const raw = window.CCFCContent.getByPath(contentState, f.path);
@@ -691,6 +711,19 @@
               homeAbout: true,
               homeNote: true,
               footerAdmin: true,
+            }
+          );
+        }
+        const footer = window.CCFCContent.getByPath(contentState, "footer");
+        if (!footer || typeof footer !== "object") {
+          window.CCFCContent.setByPath(
+            contentState,
+            "footer",
+            defaults?.footer || {
+              title: "Coventry City Scandinavia",
+              text: "Sky Blues supporterklubb for Skandinavia.",
+              tagline: "Sky blue forever",
+              adminLabel: "Admin",
             }
           );
         }

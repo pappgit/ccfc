@@ -6,8 +6,17 @@
  * what visitors see (HTML fallbacks were previously "stuck" when CMS had "").
  */
 window.CCFCContent = (function () {
-  const CACHE_KEY = "ccfc_site_content_v2";
+  const CACHE_KEY = "ccfc_site_content_v3";
   let content = null;
+
+  /** Exact outdated CMS strings that should follow updated defaults. */
+  const STALE_REPLACEMENTS = [
+    {
+      path: "footer.text",
+      from: "Sky Blues supporterklubb for Skandinavia. Forum og medlemsinnlogging kommer i en senere fase.",
+      toPath: "footer.text",
+    },
+  ];
 
   function getByPath(obj, path) {
     return path.split(".").reduce((acc, key) => (acc == null ? undefined : acc[key]), obj);
@@ -46,6 +55,19 @@ window.CCFCContent = (function () {
       return defaults;
     }
     return remote;
+  }
+
+  /** Replace known stale CMS copies with current defaults (does not touch custom text). */
+  function migrateStaleContent(merged, defaults) {
+    if (!merged || !defaults) return merged;
+    for (const rule of STALE_REPLACEMENTS) {
+      const current = getByPath(merged, rule.path);
+      if (typeof current !== "string") continue;
+      if (current.trim() !== rule.from.trim()) continue;
+      const next = getByPath(defaults, rule.toPath);
+      if (typeof next === "string") setByPath(merged, rule.path, next);
+    }
+    return merged;
   }
 
   function assetPath(url) {
@@ -98,7 +120,7 @@ window.CCFCContent = (function () {
     try {
       const remote = await loadRemote();
       if (remote) {
-        content = mergeDefaults(defaults, remote);
+        content = migrateStaleContent(mergeDefaults(defaults, remote), defaults);
         sessionStorage.setItem(CACHE_KEY, JSON.stringify(content));
         return content;
       }
@@ -107,7 +129,7 @@ window.CCFCContent = (function () {
     }
 
     if (!content || bypassCache) content = defaults;
-    else content = mergeDefaults(defaults, content);
+    else content = migrateStaleContent(mergeDefaults(defaults, content), defaults);
     return content;
   }
 
@@ -184,6 +206,7 @@ window.CCFCContent = (function () {
   function clearCache() {
     sessionStorage.removeItem(CACHE_KEY);
     sessionStorage.removeItem("ccfc_site_content_v1");
+    sessionStorage.removeItem("ccfc_site_content_v2");
     content = null;
   }
 
@@ -194,6 +217,7 @@ window.CCFCContent = (function () {
     getByPath,
     setByPath,
     mergeDefaults,
+    migrateStaleContent,
     clearCache,
     assetPath,
     get: () => content,
