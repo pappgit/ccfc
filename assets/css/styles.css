@@ -1594,3 +1594,65 @@ p {
   color: var(--ink);
   border-color: var(--ink-soft);
 }
+
+/* —— Account / login —— */
+.account-layout {
+  max-width: 28rem;
+  margin-inline: auto;
+  display: grid;
+  gap: 1.25rem;
+}
+
+.account-privacy {
+  margin-top: 1.25rem;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.account-privacy a {
+  color: var(--sky-deep);
+  font-weight: 600;
+}
+
+.account-status-card {
+  background: linear-gradient(160deg, rgba(14, 165, 233, 0.08), transparent 55%), var(--white);
+  border: 1px solid var(--line-strong);
+  padding: clamp(1.25rem, 3vw, 1.6rem);
+}
+
+.account-status-card__email {
+  font-weight: 700;
+  font-size: 1.05rem;
+  margin: 0.35rem 0 0.25rem;
+  word-break: break-word;
+}
+
+.account-status-card__status {
+  color: var(--sky-deep);
+  font-weight: 600;
+  margin: 0 0 0.75rem;
+}
+
+.account-status-card__hint {
+  color: var(--muted);
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.account-logout-row {
+  margin-top: 0.25rem;
+}
+
+.privacy-copy {
+  max-width: 40rem;
+}
+
+.privacy-copy h2 {
+  margin-top: 1.75rem;
+}
+
+.privacy-updated {
+  margin-top: 2rem;
+  font-size: 0.9rem;
+  color: var(--muted);
+}

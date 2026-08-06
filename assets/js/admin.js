@@ -336,6 +336,22 @@
         { path: "nav.visible.members", label: "Vis Medlem i menyen", type: "check" },
         { path: "nav.about", label: "Om oss · tekst", type: "text" },
         { path: "nav.visible.about", label: "Vis Om oss i menyen", type: "check" },
+        { path: "nav.account", label: "Logg inn · tekst", type: "text" },
+        { path: "nav.visible.account", label: "Vis Logg inn i menyen", type: "check" },
+      ],
+    },
+    {
+      id: "accountPage",
+      label: "Innlogging",
+      fields: [
+        { path: "account.tag", label: "Tag", type: "text" },
+        { path: "account.loginTitle", label: "Login · tittel", type: "text" },
+        { path: "account.loginLead", label: "Login · ingress", type: "textarea" },
+        { path: "account.minSideTitle", label: "Min side · tittel", type: "text" },
+        { path: "account.minSideLead", label: "Min side · ingress", type: "textarea" },
+        { path: "account.loggedInHint", label: "Min side · statushint", type: "textarea" },
+        { path: "privacy.title", label: "Personvern · tittel", type: "text" },
+        { path: "privacy.lead", label: "Personvern · ingress", type: "textarea" },
       ],
     },
     {
@@ -359,7 +375,6 @@
         { path: "sections.homeMatches", label: "Forside: vis kampprogram", type: "check" },
         { path: "sections.homeNews", label: "Forside: vis nyheter", type: "check" },
         { path: "sections.homeNote", label: "Forside: vis infostripe", type: "check" },
-        { path: "sections.footerAdmin", label: "Footer: vis admin-lenke", type: "check" },
       ],
     },
     {
@@ -806,6 +821,16 @@
         if (window.CCFCContent.getByPath(contentState, "nav.visible.members") == null) {
           window.CCFCContent.setByPath(contentState, "nav.visible.members", true);
         }
+        if (window.CCFCContent.getByPath(contentState, "nav.account") == null) {
+          window.CCFCContent.setByPath(
+            contentState,
+            "nav.account",
+            defaults?.nav?.account || "Logg inn"
+          );
+        }
+        if (window.CCFCContent.getByPath(contentState, "nav.visible.account") == null) {
+          window.CCFCContent.setByPath(contentState, "nav.visible.account", true);
+        }
         if (window.CCFCContent.getByPath(contentState, "nav.rumors") == null) {
           window.CCFCContent.setByPath(
             contentState,
@@ -849,6 +874,31 @@
               p2: "Når vi har godkjent innmeldingen, får du en velkomstmail fra oss.",
               consentPrivacy: "Jeg godtar at klubben lagrer navn, e-post og mobil for medlemskapet.",
               consentMarketing: "Jeg ønsker e-post om arrangementer (valgfritt).",
+            }
+          );
+        }
+        if (!window.CCFCContent.getByPath(contentState, "account")) {
+          window.CCFCContent.setByPath(
+            contentState,
+            "account",
+            defaults?.account || {
+              tag: "Konto",
+              loginTitle: "Logg inn",
+              loginLead:
+                "For medlemmer med innloggingskonto. Har du ikke konto ennå, får du invitasjon fra oss.",
+              minSideTitle: "Min side",
+              minSideLead: "Du er innlogget. Her styrer du visningsnavn og passord.",
+              loggedInHint: "Du er innlogget. Flere medlemsfunksjoner kommer senere.",
+            }
+          );
+        }
+        if (!window.CCFCContent.getByPath(contentState, "privacy")) {
+          window.CCFCContent.setByPath(
+            contentState,
+            "privacy",
+            defaults?.privacy || {
+              title: "Personvern",
+              lead: "Kort oversikt over hvilke personopplysninger vi behandler, og hvorfor.",
             }
           );
         }
@@ -2052,6 +2102,13 @@
           actions.push(`<button type="button" class="btn btn--danger" data-member-cancel>Avvis / meld ut</button>`);
         } else if (st === "active") {
           actions.push(`<button type="button" class="btn btn--danger" data-member-cancel>Meld ut</button>`);
+          if (m.user_id) {
+            actions.push(`<span class="badge">Har innlogging</span>`);
+          } else {
+            actions.push(
+              `<button type="button" class="btn btn--ghost" data-member-invite>Opprett innloggingskonto</button>`
+            );
+          }
         }
         return `<article class="member-admin-item" data-id="${escapeAttr(m.id)}">
           <div>
@@ -2067,6 +2124,7 @@
               ${m.joined_at ? ` · Godkjent ${escapeHtml(formatDate(m.joined_at))}` : ""}
               ${m.cancelled_at ? ` · Utmeldt ${escapeHtml(formatDate(m.cancelled_at))}` : ""}
               ${m.source ? ` · ${escapeHtml(m.source)}` : ""}
+              ${m.user_id ? ` · koblet konto` : ""}
             </p>
           </div>
           <div class="row member-admin-actions">${actions.join("\n")}</div>
@@ -2116,7 +2174,86 @@
         }
       });
     });
+
+    host.querySelectorAll("[data-member-invite]").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const id = btn.closest("[data-id]")?.getAttribute("data-id");
+        const member = membersItems.find((m) => m.id === id);
+        if (!member?.email) return;
+        if (!confirm(`Sende innloggingsinvitasjon til ${member.email}?`)) return;
+        btn.disabled = true;
+        try {
+          await inviteLoginUser({
+            email: member.email,
+            display_name: member.full_name || "",
+            member_id: member.id,
+          });
+          showMsg(memberAdminMsg, "Invitasjon sendt (eller konto koblet hvis den fantes).");
+          await loadMembers();
+        } catch (err) {
+          showMsg(memberAdminMsg, err.message || "Kunne ikke invitere.", true);
+        } finally {
+          btn.disabled = false;
+        }
+      });
+    });
   }
+
+  async function inviteLoginUser({ email, display_name, member_id }) {
+    const { data: sessionData } = await client.auth.getSession();
+    const token = sessionData?.session?.access_token;
+    if (!token) throw new Error("Ikke innlogget som admin.");
+
+    const redirectTo = new URL("../min-side.html", window.location.href).href;
+    const res = await fetch(`${cfg.url}/functions/v1/invite-login-user`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: cfg.anonKey,
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        email,
+        display_name,
+        member_id: member_id || null,
+        redirect_to: redirectTo,
+      }),
+    });
+    const body = await res.json().catch(() => ({}));
+    if (!res.ok || body.ok === false) {
+      throw new Error(body.error || body.message || `Invitasjon feilet (${res.status})`);
+    }
+    return body;
+  }
+
+  const inviteLoginMsg = $("#invite-login-msg");
+  $("#invite-login-form")?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    const email = String(fd.get("email") || "").trim().toLowerCase();
+    const displayName = String(fd.get("display_name") || "").trim();
+    const btn = e.target.querySelector('button[type="submit"]');
+    if (btn) btn.disabled = true;
+    showMsg(inviteLoginMsg, "Sender invitasjon…");
+    try {
+      const result = await inviteLoginUser({
+        email,
+        display_name: displayName,
+        member_id: null,
+      });
+      e.target.reset();
+      showMsg(
+        inviteLoginMsg,
+        result.already
+          ? "Brukeren finnes allerede — profil oppdatert."
+          : "Invitasjon sendt. Brukeren får e-post for å sette passord."
+      );
+    } catch (err) {
+      showMsg(inviteLoginMsg, err.message || "Kunne ikke invitere.", true);
+    } finally {
+      if (btn) btn.disabled = false;
+    }
+  });
 
   async function loadMembers() {
     const host = $("#members-list");

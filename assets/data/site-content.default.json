@@ -17,6 +17,7 @@
     "rumors": "Ryktebørsen",
     "members": "Medlem",
     "about": "Om oss",
+    "account": "Logg inn",
     "visible": {
       "home": true,
       "fixtures": true,
@@ -24,7 +25,8 @@
       "news": true,
       "rumors": true,
       "members": true,
-      "about": true
+      "about": true,
+      "account": true
     },
     "custom": []
   },
@@ -96,10 +98,22 @@
     "p1": "Coventry City Scandinavia er for alle som følger The Sky Blues fra Norge, Sverige, Danmark og resten av regionen. Vi deler kamper, resultater og nyheter — og bygger fellesskap rundt laget.",
     "p2": "Nettsiden hostes på GitHub Pages: lav kostnad, enkel å vedlikeholde for en liten klubb. Kampdata planlegges oppdatert ukentlig (typisk mandag), med målscorere og statistikk etter fullførte kamper.",
     "p3": "Merkevare: Farger og uttrykk er inspirert av CCFC. Vi bruker foreløpig et eget CCS-merke, ikke offisiell klubblogo. Etter pitch avklarer vi med Coventry City hva som er greit å bruke.",
-    "p4": "Senere: Forum bak innlogging kommer når klubben har sagt ja til retningen — det krever tjenester utenfor GitHub Pages.",
+    "p4": "Du kan logge inn med medlemskonto når du har fått invitasjon. Forum og flere funksjoner kommer senere.",
     "contactLabel": "Kontakt oss",
     "contactEmail": "hello@example.com",
     "footerText": "Uoffisiell supporternettside · Pitch-utkast"
+  },
+  "account": {
+    "tag": "Konto",
+    "loginTitle": "Logg inn",
+    "loginLead": "For medlemmer med innloggingskonto. Har du ikke konto ennå, får du invitasjon fra oss.",
+    "minSideTitle": "Min side",
+    "minSideLead": "Du er innlogget. Her styrer du visningsnavn og passord.",
+    "loggedInHint": "Du er innlogget. Flere medlemsfunksjoner kommer senere."
+  },
+  "privacy": {
+    "title": "Personvern",
+    "lead": "Kort oversikt over hvilke personopplysninger vi behandler, og hvorfor."
   },
   "members": {
     "title": "Bli medlem",
@@ -108,12 +122,12 @@
     "heading": "Støtt Sky Blues i Norden",
     "p1": "Som medlem støtter du supporterklubben og blir en del av fellesskapet rundt The Sky Blues i Skandinavia.",
     "p2": "Når vi har godkjent innmeldingen, får du en velkomstmail fra oss.",
-    "consentPrivacy": "Jeg godtar at klubben lagrer navn, e-post og mobil for medlemskapet.",
+    "consentPrivacy": "Jeg godtar at klubben lagrer navn, e-post og mobil for medlemskapet (se personvernerklæringen).",
     "consentMarketing": "Jeg ønsker e-post om arrangementer (valgfritt)."
   },
   "footer": {
     "title": "Coventry City Scandinavia",
-    "text": "Sky Blues supporterklubb for Skandinavia. Forum og medlemsinnlogging kommer i en senere fase.",
+    "text": "Sky Blues supporterklubb for Skandinavia. Logg inn for medlemskonto.",
     "tagline": "Sky blue forever",
     "adminLabel": "Admin"
   }

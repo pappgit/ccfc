@@ -2,6 +2,16 @@
   "entries": [
     {
       "date": "2026-08-06",
+      "title": "Innlogging for medlemmer",
+      "items": [
+        "Ny Logg inn / Min side i menyen — e-post, passord og glemt passord",
+        "Du kan sette visningsnavn og se medlemsstatus når du er innlogget",
+        "Admin kan sende invitasjon til innloggingskonto under Medlemmer",
+        "Personvernerklæring beskriver hva som lagres for konto og medlemskap"
+      ]
+    },
+    {
+      "date": "2026-08-06",
       "title": "Nyheter først på forsiden",
       "items": [
         "Nyheter vises nå over kampprogrammet på forsiden",

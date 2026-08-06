@@ -3,15 +3,21 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Kamper — Coventry City Scandinavia</title>
-    <meta name="description" content="Kampprogram og resultater for Coventry City." />
+    <title>Personvern — Coventry City Scandinavia</title>
+    <meta
+      name="description"
+      content="Personvernerklæring for Coventry City Scandinavia — hva vi lagrer og hvorfor."
+    />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="assets/css/styles.css?v=20260806-login" />
     <link rel="icon" href="assets/img/logo.jpg" type="image/jpeg" />
   </head>
-  <body data-cms-title="fixtures.title">
+  <body data-cms-title="privacy.title">
     <header class="site-header">
       <div class="wrap">
         <a class="brand" href="index.html">
@@ -47,41 +53,67 @@
     <main>
       <header class="page-hero">
         <div class="wrap">
-          <h1 data-cms="fixtures.title">Kamper</h1>
-          <p data-cms="fixtures.lead">
-            Alle Coventry-kamper — liga og cup. Resultater får målscorere og statistikk når kampen er ferdig.
+          <h1 data-cms="privacy.title">Personvern</h1>
+          <p data-cms="privacy.lead">
+            Kort oversikt over hvilke personopplysninger vi behandler, og hvorfor.
           </p>
         </div>
       </header>
 
       <section class="section">
-        <div class="wrap">
-          <div class="filters" role="tablist" aria-label="Visning">
-            <a class="filter-btn" data-view="upcoming" href="kamper.html?view=upcoming">Kommende</a>
-            <a class="filter-btn" data-view="results" href="kamper.html?view=results">Resultater</a>
-            <a class="filter-btn" data-view="all" href="kamper.html?view=all">Alle</a>
-          </div>
-          <div class="filters" aria-label="Konkurranse">
-            <button type="button" class="filter-btn is-active" data-filter="all">Alle turneringer</button>
-            <button type="button" class="filter-btn" data-filter="league">Liga</button>
-            <button type="button" class="filter-btn" data-filter="cup">Cup</button>
-          </div>
-          <p class="tag" id="fixtures-updated" style="margin-bottom: 1rem"></p>
-          <div id="fixtures-root"></div>
+        <div class="wrap article privacy-copy">
+          <p class="tag">Coventry City Scandinavia</p>
+          <h2>Hvem er ansvarlig</h2>
+          <p>
+            Coventry City Scandinavia er behandlingsansvarlig for personopplysninger som samles inn via denne
+            nettsiden. Kontakt oss via e-postadressen på Om oss-siden.
+          </p>
+
+          <h2>Innloggingskonto</h2>
+          <p>
+            For innlogging lagrer vi <strong>e-postadresse</strong> (nødvendig for kontoen) og valgfritt
+            <strong>visningsnavn</strong>. Passord lagres ikke i klartekst — autentisering skjer via
+            <a href="https://supabase.com/" rel="noopener noreferrer" target="_blank">Supabase Auth</a>.
+          </p>
+          <p>
+            Kontoer opprettes ved invitasjon (ikke åpen selvregistrering). Du kan be oss slette kontoen
+            ved å kontakte oss.
+          </p>
+
+          <h2>Medlemsregister</h2>
+          <p>
+            Ved innmelding som medlem kan vi lagre navn, e-post, mobil og land for medlemskapet, i tråd med
+            samtykket du gir i skjemaet. Dette er et foreningsregister og er adskilt fra innloggingskontoen,
+            men kan kobles når du får innlogging.
+          </p>
+
+          <h2>Databehandler</h2>
+          <p>
+            Vi bruker Supabase (EU-region der prosjektet er satt opp) som databehandler for database, innlogging
+            og lagring. Det bør foreligge databehandleravtale med Supabase før behandling av reelle
+            medlemsdata i produksjon.
+          </p>
+
+          <h2>Dine rettigheter</h2>
+          <p>
+            Du kan be om innsyn, retting eller sletting av opplysninger vi har om deg. For innlogging kan du
+            også endre visningsnavn og passord under Min side.
+          </p>
+
+          <p class="privacy-updated">Sist oppdatert: 6. august 2026</p>
+          <p>
+            <a class="btn btn--sky" href="login.html">Til innlogging</a>
+            <a class="btn btn--ghost" href="om-oss.html">Om oss</a>
+          </p>
         </div>
       </section>
     </main>
-
-    <div class="note">
-      <div class="wrap" data-cms="fixtures.note">Premier League 2026/27 · Kickoff kan endres (TV)</div>
-    </div>
 
     <footer class="site-footer">
       <div class="wrap">
         <div class="footer-start">
           <strong data-cms="footer.title">Coventry City Scandinavia</strong>
           <div class="footer-meta" data-cms="footer.tagline">Sky blue forever</div>
-          <p data-cms="footer.text">Sky Blues supporterklubb for Skandinavia.</p>
         </div>
         <a class="footer-login" href="admin/" data-section="footerAdmin" data-cms="footer.adminLabel" hidden>Admin</a>
       </div>
@@ -89,7 +121,7 @@
 
     <script src="assets/js/vendor/supabase.js"></script>
     <script src="assets/js/supabase-config.js"></script>
-<script src="assets/js/content.js?v=20260806-login"></script>
+    <script src="assets/js/content.js?v=20260806-login"></script>
     <script src="assets/js/auth.js?v=20260806-login"></script>
     <script src="assets/js/main.js"></script>
   </body>

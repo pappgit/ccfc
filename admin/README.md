@@ -36,11 +36,16 @@ Plan og logg: [`docs/medlemshandtering/`](../docs/medlemshandtering/).
 
 ## Brukere
 
-Åpen registrering er **av**. Brukere opprettes i Supabase:
+Åpen registrering er **av**. Innloggingskontoer opprettes slik:
 
-1. Dashboard → **Authentication** → **Users** → **Add user**
-2. Sett e-post + passord (auto-confirm)
-3. Kjør SQL for admin-tilgang:
+**A — Admin-UI (anbefalt når edge function er deployet)**  
+Admin → Medlemmer → **Opprett innloggingskonto**, eller knappen på et aktivt medlem.
+
+**B — Supabase Dashboard**
+1. Dashboard → **Authentication** → **Users** → **Invite** / **Add user**
+2. Brukeren setter passord via e-post
+
+**Admin-tilgang** (etter at Auth-bruker finnes):
 
 ```sql
 insert into public.admins (user_id, email)
@@ -48,4 +53,7 @@ select id, email from auth.users where email = 'deg@example.com'
 on conflict (user_id) do update set email = excluded.email;
 ```
 
-Deretter logg inn på `/admin/` med samme e-post/passord.
+Offentlig innlogging: `/login.html` → `/min-side.html`  
+Admin: `/admin/` (krever rad i `admins`)
+
+**Migrering:** `supabase/migrations/20260806200000_profiles.sql` — se [`docs/innlogging/`](../docs/innlogging/).
