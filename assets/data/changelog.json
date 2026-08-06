@@ -2,6 +2,14 @@
   "entries": [
     {
       "date": "2026-08-06",
+      "title": "Ryddigere footer",
+      "items": [
+        "Tittel, slagord og Admin ligger på én linje",
+        "Teksten under footeren kommer på egen linje når den er fylt ut"
+      ]
+    },
+    {
+      "date": "2026-08-06",
       "title": "Om oss kun på egen side",
       "items": [
         "Om-blokken er fjernet fra forsiden",
