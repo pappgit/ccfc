@@ -2,6 +2,14 @@
   "entries": [
     {
       "date": "2026-08-06",
+      "title": "Forsideoppdatering synlig igjen",
+      "items": [
+        "Nyheter først og bildebeskjæring er nå publisert på nettsiden",
+        "Oppdater siden hvis du fortsatt ser gammel rekkefølge (hard refresh)"
+      ]
+    },
+    {
+      "date": "2026-08-06",
       "title": "Nyheter først på forsiden",
       "items": [
         "Nyheter vises nå over kampprogrammet på forsiden",
