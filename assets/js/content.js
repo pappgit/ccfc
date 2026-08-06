@@ -3,15 +3,15 @@
  * Applies to [data-cms], [data-cms-html], [data-cms-src], [data-cms-href].
  *
  * === Regler for alle CMS-tekstfelter ===
- * 1. Manglende verdi (null/undefined): bruk standard fra site-content.default.json
- * 2. Eksplisitt tom streng ("" / bare mellomrom): beholdes tom — feltet skjules på siden
+ * 1. Manglende nøkkel (ikke satt i databasen): bruk standard fra site-content.default.json
+ * 2. Eksplisitt tom streng "" eller null: beholdes tom — feltet skjules på siden
  * 3. Annen tekst: vises som lagret (admin trimmer ytterkanter ved lagring)
  * 4. Avkrysning (bool): lagret true/false brukes; mangler → standard
  * 5. Lister/objekter: lagret verdi brukes; mangler → standard
  * 6. data-nav / data-section: skjules også når tilknyttet CMS-tekst er tom
  */
 window.CCFCContent = (function () {
-  const CACHE_KEY = "ccfc_site_content_v4";
+  const CACHE_KEY = "ccfc_site_content_v5";
   let content = null;
 
   /** Elements that should not leave empty visual shells when CMS text is blank. */
@@ -32,6 +32,11 @@ window.CCFCContent = (function () {
     "LI",
   ]);
 
+  /** Section keys that should hide when a related CMS text path is blank. */
+  const SECTION_TEXT_PATHS = {
+    homeNote: "home.note",
+  };
+
   function getByPath(obj, path) {
     return path.split(".").reduce((acc, key) => (acc == null ? undefined : acc[key]), obj);
   }
@@ -40,15 +45,26 @@ window.CCFCContent = (function () {
     const parts = path.split(".");
     let cur = obj;
     for (let i = 0; i < parts.length - 1; i++) {
-      if (!cur[parts[i]] || typeof cur[parts[i]] !== "object") cur[parts[i]] = {};
-      cur = cur[parts[i]];
+      const key = parts[i];
+      if (!cur[key] || typeof cur[key] !== "object" || Array.isArray(cur[key])) {
+        cur[key] = {};
+      }
+      cur = cur[key];
     }
     cur[parts[parts.length - 1]] = value;
   }
 
+  function isPlainObject(val) {
+    return !!val && typeof val === "object" && !Array.isArray(val);
+  }
+
+  function cloneJson(val) {
+    return JSON.parse(JSON.stringify(val));
+  }
+
   /** True when a CMS string should be treated as intentionally empty. */
   function isBlankText(val) {
-    return typeof val === "string" && val.trim() === "";
+    return val == null || (typeof val === "string" && val.trim() === "");
   }
 
   /**
@@ -60,24 +76,41 @@ window.CCFCContent = (function () {
     return val.trim();
   }
 
-  /** Merge remote CMS over defaults. Empty strings stay empty; only missing keys use defaults. */
+  /**
+   * Merge remote CMS over defaults.
+   * - Missing key (undefined / not own property) → default
+   * - null or "" → intentional empty (do NOT restore default)
+   * - other values → use remote
+   */
   function mergeDefaults(defaults, remote) {
-    if (remote == null) return defaults;
+    // Only undefined means "not set". null is intentional clear for scalars.
+    if (remote === undefined) return cloneJson(defaults);
+
     if (Array.isArray(defaults)) {
-      return Array.isArray(remote) ? remote : defaults;
+      return Array.isArray(remote) ? cloneJson(remote) : cloneJson(defaults);
     }
-    if (defaults && typeof defaults === "object") {
-      if (!remote || typeof remote !== "object" || Array.isArray(remote)) {
-        return { ...defaults };
-      }
-      const out = { ...defaults };
+
+    if (isPlainObject(defaults)) {
+      if (!isPlainObject(remote)) return cloneJson(defaults);
+      const out = {};
       for (const key of Object.keys(defaults)) {
-        out[key] = mergeDefaults(defaults[key], remote[key]);
+        if (Object.prototype.hasOwnProperty.call(remote, key)) {
+          out[key] = mergeDefaults(defaults[key], remote[key]);
+        } else {
+          out[key] = cloneJson(defaults[key]);
+        }
       }
       for (const key of Object.keys(remote)) {
-        if (!(key in out)) out[key] = remote[key];
+        if (!Object.prototype.hasOwnProperty.call(out, key)) {
+          out[key] = cloneJson(remote[key]);
+        }
       }
       return out;
+    }
+
+    // Scalar leaf (string, number, boolean, null)
+    if (remote === null) {
+      return typeof defaults === "string" ? "" : remote;
     }
     return remote;
   }
@@ -131,7 +164,7 @@ window.CCFCContent = (function () {
 
     try {
       const remote = await loadRemote();
-      if (remote) {
+      if (remote && typeof remote === "object") {
         content = mergeDefaults(defaults, remote);
         sessionStorage.setItem(CACHE_KEY, JSON.stringify(content));
         return content;
@@ -140,7 +173,7 @@ window.CCFCContent = (function () {
       /* ignore */
     }
 
-    if (!content || bypassCache) content = defaults;
+    if (!content || bypassCache) content = cloneJson(defaults);
     else content = mergeDefaults(defaults, content);
     return content;
   }
@@ -157,9 +190,7 @@ window.CCFCContent = (function () {
   function isCmsTextBlank(el) {
     const path = cmsPathOn(el);
     if (!path || !content) return false;
-    const val = getByPath(content, path);
-    if (val == null) return false;
-    return isBlankText(String(val));
+    return isBlankText(getByPath(content, path));
   }
 
   function apply(root = document) {
@@ -168,8 +199,8 @@ window.CCFCContent = (function () {
     root.querySelectorAll("[data-cms]").forEach((el) => {
       const path = el.getAttribute("data-cms");
       const val = getByPath(content, path);
-      if (val == null) return;
-      const text = String(val);
+      if (val === undefined) return;
+      const text = val == null ? "" : String(val);
       el.textContent = text;
       applyCmsVisibility(el, isBlankText(text));
     });
@@ -177,8 +208,8 @@ window.CCFCContent = (function () {
     root.querySelectorAll("[data-cms-html]").forEach((el) => {
       const path = el.getAttribute("data-cms-html");
       const val = getByPath(content, path);
-      if (val == null) return;
-      const html = String(val);
+      if (val === undefined) return;
+      const html = val == null ? "" : String(val);
       el.innerHTML = html;
       applyCmsVisibility(el, isBlankText(html));
     });
@@ -186,15 +217,15 @@ window.CCFCContent = (function () {
     root.querySelectorAll("[data-cms-src]").forEach((el) => {
       const path = el.getAttribute("data-cms-src");
       const val = getByPath(content, path);
-      if (val == null || isBlankText(String(val))) return;
+      if (val === undefined || isBlankText(val)) return;
       el.setAttribute("src", assetPath(String(val)));
     });
 
     root.querySelectorAll("[data-cms-href]").forEach((el) => {
       const path = el.getAttribute("data-cms-href");
       const val = getByPath(content, path);
-      if (val == null) return;
-      if (isBlankText(String(val))) {
+      if (val === undefined) return;
+      if (isBlankText(val)) {
         el.removeAttribute("href");
         return;
       }
@@ -207,20 +238,19 @@ window.CCFCContent = (function () {
     const pageTitlePath = document.body?.getAttribute("data-cms-title");
     if (pageTitlePath) {
       const pt = getByPath(content, pageTitlePath);
-      if (pt && !isBlankText(String(pt))) document.title = `${pt} — ${brandName}`;
+      if (pt && !isBlankText(pt)) document.title = `${pt} — ${brandName}`;
     } else if (document.body?.hasAttribute("data-cms-home-title")) {
       const title = getByPath(content, "meta.siteTitle");
-      if (title && !isBlankText(String(title))) document.title = title;
+      if (title && !isBlankText(title)) document.title = title;
       const desc = getByPath(content, "meta.siteDescription");
       const meta = document.querySelector('meta[name="description"]');
-      if (desc && !isBlankText(String(desc)) && meta) meta.setAttribute("content", desc);
+      if (desc && !isBlankText(desc) && meta) meta.setAttribute("content", desc);
     }
 
     const fav = getByPath(content, "brand.faviconUrl");
     const icon = document.querySelector('link[rel="icon"]');
-    if (fav && !isBlankText(String(fav)) && icon) icon.setAttribute("href", assetPath(fav));
+    if (fav && !isBlankText(fav) && icon) icon.setAttribute("href", assetPath(fav));
 
-    // Visibility toggles must respect empty CMS labels on the same element
     root.querySelectorAll("[data-nav]").forEach((el) => {
       const key = el.getAttribute("data-nav");
       const visible = getByPath(content, `nav.visible.${key}`);
@@ -230,7 +260,9 @@ window.CCFCContent = (function () {
     root.querySelectorAll("[data-section]").forEach((el) => {
       const key = el.getAttribute("data-section");
       const visible = getByPath(content, `sections.${key}`);
-      el.hidden = visible === false || isCmsTextBlank(el);
+      const linkedPath = SECTION_TEXT_PATHS[key];
+      const linkedBlank = linkedPath ? isBlankText(getByPath(content, linkedPath)) : false;
+      el.hidden = visible === false || isCmsTextBlank(el) || linkedBlank;
     });
   }
 
@@ -246,6 +278,7 @@ window.CCFCContent = (function () {
     sessionStorage.removeItem("ccfc_site_content_v1");
     sessionStorage.removeItem("ccfc_site_content_v2");
     sessionStorage.removeItem("ccfc_site_content_v3");
+    sessionStorage.removeItem("ccfc_site_content_v4");
     content = null;
   }
 
@@ -260,6 +293,7 @@ window.CCFCContent = (function () {
     normalizeCmsString,
     clearCache,
     assetPath,
+    cloneJson,
     get: () => content,
   };
 })();

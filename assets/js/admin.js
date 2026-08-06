@@ -458,28 +458,31 @@
 
   /** Shared rules for every CMS text/textarea field (see CCFCContent). */
   const CMS_TEXT_RULES_HELP =
-    "Tomme felt lagres som tomme og skjules på nettsiden. Felt som mangler i databasen får standardtekst. Mellomrom ytterst fjernes ved lagring.";
+    "La feltet stå helt tomt for å skjule teksten på nettsiden. Det lagres som tomt og fylles ikke med standardtekst igjen. Felt som aldri er lagret får standardtekst.";
 
   function flushContentFields() {
     if (!contentState) return;
     const form = $("#content-form");
-    form
-      ?.querySelectorAll("#content-fields [name], #logo-url-input, #favicon-url-input, #hero-interval-input")
-      .forEach((el) => {
-        if (!el.name) return;
-        let val;
-        if (el.type === "checkbox") {
-          val = el.checked;
-        } else if (el.name === "home.heroSlideInterval") {
-          val = Number(el.value) || 6500;
-        } else if (el.type === "number") {
-          val = el.value === "" ? null : Number(el.value);
-        } else {
-          // All text / textarea / url fields: trim; whitespace-only → ""
-          val = window.CCFCContent.normalizeCmsString(el.value);
-        }
-        window.CCFCContent.setByPath(contentState, el.name, val);
-      });
+    const nodes = form
+      ? form.querySelectorAll(
+          "#content-fields [name], #logo-url-input, #favicon-url-input, #hero-interval-input"
+        )
+      : [];
+    nodes.forEach((el) => {
+      if (!el.name) return;
+      let val;
+      if (el.type === "checkbox") {
+        val = el.checked;
+      } else if (el.name === "home.heroSlideInterval") {
+        val = Number(el.value) || 6500;
+      } else if (el.type === "number") {
+        val = el.value === "" ? null : Number(el.value);
+      } else {
+        // Text / textarea: trim; whitespace-only → "" (intentional empty)
+        val = window.CCFCContent.normalizeCmsString(String(el.value ?? ""));
+      }
+      window.CCFCContent.setByPath(contentState, el.name, val);
+    });
 
     // Persist slide URL/alt edits from the list
     const slides = ensureHeroSlides();
@@ -612,9 +615,9 @@
         // Show exact stored value (including intentional empty)
         const val = raw == null ? "" : String(raw);
         if (f.type === "textarea") {
-          return `<label>${f.label}<textarea name="${f.path}" rows="3">${escapeHtml(val)}</textarea></label>`;
+          return `<label>${escapeHtml(f.label)}<textarea name="${f.path}" rows="3" autocomplete="off">${escapeHtml(val)}</textarea></label>`;
         }
-        return `<label>${f.label}<input type="text" name="${f.path}" value="${escapeAttr(val)}" /></label>`;
+        return `<label>${escapeHtml(f.label)}<input type="text" name="${f.path}" value="${escapeAttr(val)}" autocomplete="off" /></label>`;
       })
       .join("")}</div>`;
 
@@ -633,7 +636,10 @@
 
   function collectContentForm() {
     flushContentFields();
-    return contentState;
+    // Snapshot so nested empty strings ("") are definitely what we upsert
+    return window.CCFCContent.cloneJson
+      ? window.CCFCContent.cloneJson(contentState)
+      : JSON.parse(JSON.stringify(contentState));
   }
 
   async function loadContentEditor() {
@@ -752,16 +758,22 @@
     e.preventDefault();
     const value = collectContentForm();
     const { data: sessionData } = await client.auth.getSession();
-    const { error } = await client.from("site_settings").upsert({
-      key: "site",
-      value,
-      updated_by: sessionData.session?.user?.id || null,
-    });
+    const { error } = await client.from("site_settings").upsert(
+      {
+        key: "site",
+        value,
+        updated_by: sessionData.session?.user?.id || null,
+      },
+      { onConflict: "key" }
+    );
     if (error) showMsg(contentMsg, error.message, true);
     else {
       contentState = value;
       window.CCFCContent.clearCache();
-      showMsg(contentMsg, "Innhold lagret. Oppdater forsiden for å se endringene.");
+      showMsg(
+        contentMsg,
+        "Innhold lagret. Tomme felt forblir tomme (ikke standardtekst). Oppdater forsiden for å se endringene."
+      );
     }
   });
 

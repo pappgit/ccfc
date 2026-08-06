@@ -2,6 +2,15 @@
   "entries": [
     {
       "date": "2026-08-06",
+      "title": "Tomme tekstfelt blir værende tomme",
+      "items": [
+        "Når du sletter teksten i et innholdsfelt og lagrer, kommer ikke standardteksten tilbake",
+        "Tomme felt skjules på nettsiden (f.eks. infostripen under forsiden)",
+        "Felt som aldri er lagret får fortsatt standardtekst"
+      ]
+    },
+    {
+      "date": "2026-08-06",
       "title": "Ryktebørsen er live",
       "items": [
         "Ny meny: Ryktebørsen med overgangsrykter og spekulasjon",
