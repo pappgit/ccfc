@@ -341,6 +341,50 @@
   margin-top: 1rem;
 }
 
+.nav-custom-admin {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  margin-top: 0.5rem;
+}
+
+.nav-custom-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.85rem;
+  align-items: start;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.nav-custom-row__fields {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.nav-custom-row__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.nav-custom-row__actions .btn {
+  min-width: 4.5rem;
+  padding: 0.4rem 0.55rem;
+  font-size: 0.75rem;
+}
+
+@media (max-width: 640px) {
+  .nav-custom-row {
+    grid-template-columns: 1fr;
+  }
+
+  .nav-custom-row__actions {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
+
 .hero-slide-row {
   display: grid;
   grid-template-columns: 5.5rem 1fr auto;

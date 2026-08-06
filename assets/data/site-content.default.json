@@ -25,7 +25,8 @@
       "rumors": true,
       "members": true,
       "about": true
-    }
+    },
+    "custom": []
   },
   "sections": {
     "homeMatches": true,

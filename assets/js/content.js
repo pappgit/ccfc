@@ -37,6 +37,28 @@ window.CCFCContent = (function () {
     homeNote: "home.note",
   };
 
+  function isExternalHref(href) {
+    return /^https?:\/\//i.test(href || "") || String(href || "").startsWith("//");
+  }
+
+  function normalizeNavHref(href) {
+    const raw = String(href || "").trim();
+    if (!raw) return "";
+    if (/^(https?:|mailto:|tel:|\/\/)/i.test(raw) || raw.startsWith("/") || raw.startsWith("#")) {
+      return raw;
+    }
+    // Local pages / paths without a domain
+    if (/\.(html?|php|aspx?)([?#]|$)/i.test(raw) || !raw.includes(".")) {
+      return raw;
+    }
+    // Bare domain (shop.ccfc.co.uk/…, www.example.com) → https
+    const host = raw.split("/")[0].split("?")[0];
+    if (/^[a-z0-9.-]+\.[a-z]{2,}$/i.test(host)) {
+      return "https://" + raw;
+    }
+    return raw;
+  }
+
   function getByPath(obj, path) {
     return path.split(".").reduce((acc, key) => (acc == null ? undefined : acc[key]), obj);
   }
@@ -264,6 +286,36 @@ window.CCFCContent = (function () {
       const linkedBlank = linkedPath ? isBlankText(getByPath(content, linkedPath)) : false;
       el.hidden = visible === false || isCmsTextBlank(el) || linkedBlank;
     });
+
+    renderCustomNav(root);
+  }
+
+  function renderCustomNav(root = document) {
+    const nav = root.querySelector("#site-nav") || root.querySelector("nav.nav");
+    if (!nav || !content) return;
+
+    nav.querySelectorAll("[data-nav-custom]").forEach((el) => el.remove());
+
+    const items = getByPath(content, "nav.custom");
+    if (!Array.isArray(items) || !items.length) return;
+
+    items.forEach((item, index) => {
+      if (!item || item.visible === false) return;
+      const label = String(item.label || "").trim();
+      const href = normalizeNavHref(item.href);
+      if (!label || !href) return;
+
+      const a = document.createElement("a");
+      a.textContent = label;
+      a.href = href;
+      a.setAttribute("data-nav-custom", item.id || String(index));
+      if (isExternalHref(href)) {
+        a.target = "_blank";
+        a.rel = "noopener noreferrer";
+        a.classList.add("nav__external");
+      }
+      nav.appendChild(a);
+    });
   }
 
   async function init() {
@@ -294,6 +346,8 @@ window.CCFCContent = (function () {
     clearCache,
     assetPath,
     cloneJson,
+    isExternalHref,
+    normalizeNavHref,
     get: () => content,
   };
 })();
