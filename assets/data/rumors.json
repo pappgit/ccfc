@@ -49,10 +49,20 @@
     },
     {
       "name": "skysports.com",
-      "url": "https://www.skysports.com/football/live-blog/11710/13541482/coventry-transfers-latest-news-rumours-and-gossip-live-updates-goals-and-highlights"
+      "url": "https://www.skysports.com/rss/11095"
     }
   ],
   "posts": [
+    {
+      "id": "13-coventry-city-stars-make-their-true-feelings-about-carl-r",
+      "date": "2026-08-06",
+      "title": "13 Coventry City stars make their true feelings about Carl Rushworth clear as he rejoins squad",
+      "summary": "Carl Rushworth has signed for Coventry City from Brighton and Hove Albion following a successful loan",
+      "source_name": "Coventry Telegraph",
+      "source_url": "https://www.coventrytelegraph.net/sport/football/football-news/carl-rushworth-coventry-city-return-34413267",
+      "tag": "rykte",
+      "auto": true
+    },
     {
       "id": "coventry-city-transfer-news-live-mudryk-latest-deal-agreed-u",
       "date": "2026-08-06",
@@ -87,7 +97,7 @@
       "id": "coventry-city",
       "date": "2026-08-06",
       "title": "Coventry City",
-      "summary": "Sky Blues fan Richard Chamberlain reacts to the latest signing.",
+      "summary": "Sky Blues fan Richard Chamberlain reacts to the news about the possible signing.",
       "source_name": "BBC Coventry",
       "source_url": "https://www.bbc.co.uk/sounds/play/p0p2yxpt?at_medium=RSS&at_campaign=rss",
       "tag": "rykte",
@@ -124,7 +134,7 @@
       "auto": true
     },
     {
-      "id": "coventry-city-28",
+      "id": "coventry-city-29",
       "date": "2026-08-05",
       "title": "Coventry City",
       "summary": "Coventry City fans celebrate the official signing of goalkeeper Carl Rushworth.",
@@ -234,7 +244,7 @@
       "auto": true
     },
     {
-      "id": "coventry-city-29",
+      "id": "coventry-city-30",
       "date": "2026-08-04",
       "title": "Coventry City",
       "summary": "Reaction to the announcement of Carl Rushworth signing a permanent deal.",
@@ -328,7 +338,7 @@
       "date": "2026-07-30",
       "title": "'Bring him home' - Frank Lampard sent transfer message by Coventry City fans",
       "summary": "Gustavo Hamer left the Sky Blues in 2023 to join then-Premier League side Sheffield United - he has been linked with a return",
-      "source_name": "Coventry Telegraph",
+      "source_name": "CoventryLive News",
       "source_url": "https://www.coventrytelegraph.net/sport/football/transfer-news/coventry-city-hamer-transfer-return-34378400",
       "tag": "rykte",
       "auto": true
