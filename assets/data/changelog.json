@@ -2,6 +2,15 @@
   "entries": [
     {
       "date": "2026-08-06",
+      "title": "Nyheter først på forsiden",
+      "items": [
+        "Nyheter vises nå over kampprogrammet på forsiden",
+        "Kampene ligger rett under nyhetsseksjonen",
+        "Hovedknappen i hero peker først til nyheter"
+      ]
+    },
+    {
+      "date": "2026-08-06",
       "title": "Nyhetsbilder viser toppen av bildet",
       "items": [
         "Bilder i nyhetslisten på forsiden beskjæres fra toppen, så hoder ikke kuttes bort"

@@ -76,14 +76,25 @@
             nyheter samlet under ett tak.
           </p>
           <div class="cta-row">
-            <a class="btn btn--solid" href="kamper.html" data-nav="fixtures" data-cms="home.ctaFixtures">Se kamper</a>
-            <a class="btn btn--ghost" href="nyheter.html" data-nav="news" data-cms="home.ctaNews">Les nyheter</a>
+            <a class="btn btn--solid" href="nyheter.html" data-nav="news" data-cms="home.ctaNews">Les nyheter</a>
+            <a class="btn btn--ghost" href="kamper.html" data-nav="fixtures" data-cms="home.ctaFixtures">Se kamper</a>
           </div>
           <div class="hero__dots" id="hero-dots" role="tablist" aria-label="Bytt forsidebilde"></div>
         </div>
       </section>
 
-      <section class="section" data-section="homeMatches">
+      <section class="section" data-section="homeNews">
+        <div class="wrap">
+          <div class="section__head reveal">
+            <p class="tag" data-cms="home.newsTag">Fra klubben</p>
+            <h2 data-cms="home.newsTitle">Nyheter</h2>
+            <p data-cms="home.newsLead">Oppdateringer for skandinaviske supportere.</p>
+          </div>
+          <div id="home-news"></div>
+        </div>
+      </section>
+
+      <section class="section" style="padding-top: 0" data-section="homeMatches">
         <div class="wrap">
           <div class="section__head reveal">
             <p class="tag" data-cms="home.matchesTag">Neste kamper</p>
@@ -97,17 +108,6 @@
           <div class="cta-row">
             <a class="btn btn--sky" href="kamper.html" data-nav="fixtures" data-cms="home.matchesAll">Alle kamper</a>
           </div>
-        </div>
-      </section>
-
-      <section class="section" style="padding-top: 0" data-section="homeNews">
-        <div class="wrap">
-          <div class="section__head reveal">
-            <p class="tag" data-cms="home.newsTag">Fra klubben</p>
-            <h2 data-cms="home.newsTitle">Nyheter</h2>
-            <p data-cms="home.newsLead">Oppdateringer for skandinaviske supportere.</p>
-          </div>
-          <div id="home-news"></div>
         </div>
       </section>
     </main>
