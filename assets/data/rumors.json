@@ -28,21 +28,31 @@
       "url": "https://www.coventrytelegraph.net/sport/football/rss.xml"
     },
     {
+      "name": "CoventryLive News",
+      "url": "https://www.coventrytelegraph.net/sport/football/football-news/rss.xml"
+    },
+    {
       "name": "Guardian Transfer",
       "url": "https://www.theguardian.com/football/transfer-window/rss"
+    },
+    {
+      "name": "Guardian Football",
+      "url": "https://www.theguardian.com/football/rss"
+    },
+    {
+      "name": "BBC Coventry",
+      "url": "https://feeds.bbci.co.uk/sport/football/teams/coventry-city/rss.xml"
+    },
+    {
+      "name": "BBC Football",
+      "url": "https://feeds.bbci.co.uk/sport/football/rss.xml"
+    },
+    {
+      "name": "Sky Sports Football",
+      "url": "https://www.skysports.com/rss/11095"
     }
   ],
   "posts": [
-    {
-      "id": "coventry-city-transfer-news-25-7m-deal-agreed-mykhailo-mudry",
-      "date": "2026-08-06",
-      "title": "Coventry City transfer news: £25.7m deal agreed, Mykhailo Mudryk updates, Gustavo Hamer latest",
-      "summary": "All the latest Coventry City transfer news and rumours with updates on Mykhailo Mudryk, Gustavo Hamer, Tim Iroegbunam and much more",
-      "source_name": "Coventry Telegraph",
-      "source_url": "https://www.coventrytelegraph.net/sport/football/transfer-news/coventry-city-transfer-news-live-34405991",
-      "tag": "rykte",
-      "auto": true
-    },
     {
       "id": "coventry-city-transfer-news-live-mudryk-latest-deal-agreed-u",
       "date": "2026-08-06",
@@ -54,12 +64,32 @@
       "auto": true
     },
     {
+      "id": "coventry-city-transfer-news-25-7m-deal-agreed-mykhailo-mudry",
+      "date": "2026-08-06",
+      "title": "Coventry City transfer news: £25.7m deal agreed, Mykhailo Mudryk updates, Gustavo Hamer latest",
+      "summary": "All the latest Coventry City transfer news and rumours with updates on Mykhailo Mudryk, Gustavo Hamer, Tim Iroegbunam and much more",
+      "source_name": "Coventry Telegraph",
+      "source_url": "https://www.coventrytelegraph.net/sport/football/transfer-news/coventry-city-transfer-news-live-34405991",
+      "tag": "rykte",
+      "auto": true
+    },
+    {
       "id": "it-still-hurts-coventry-city-s-one-time-record-transfer-s-bi",
       "date": "2026-08-06",
       "title": "'It still hurts' - Coventry City's one-time record transfer's biggest disappointment and how club can beat the drop",
       "summary": "Coventry City feature from CoventryLive as former goalkeeper Chris Kirkland reflects on the pain of being relegated in 2001 and how he couldn't be happier for the Sky Blues being back in the Premier League",
       "source_name": "Coventry Telegraph",
       "source_url": "https://www.coventrytelegraph.net/sport/football/football-news/it-still-hurts-coventry-citys-34268212",
+      "tag": "rykte",
+      "auto": true
+    },
+    {
+      "id": "coventry-city",
+      "date": "2026-08-06",
+      "title": "Coventry City",
+      "summary": "Sky Blues fan Richard Chamberlain reacts to the latest signing.",
+      "source_name": "BBC Coventry",
+      "source_url": "https://www.bbc.co.uk/sounds/play/p0p2yxpt?at_medium=RSS&at_campaign=rss",
       "tag": "rykte",
       "auto": true
     },
@@ -90,6 +120,16 @@
       "summary": "Promoted side closing on £23m deal with Nordsjælland Palace target USA’s Zavier Gozo, hold firm on Wharton Coventry are set to break their transfer record for the fourth time in this window after agreeing a £23m fee with Danish side Nordsj…",
       "source_name": "Guardian Transfer",
       "source_url": "https://www.theguardian.com/football/2026/aug/05/crystal-palace-ready-to-swoop-for-us-star-zavier-gozo-and-stand-firm-on-wharton",
+      "tag": "rykte",
+      "auto": true
+    },
+    {
+      "id": "coventry-city-28",
+      "date": "2026-08-05",
+      "title": "Coventry City",
+      "summary": "Coventry City fans celebrate the official signing of goalkeeper Carl Rushworth.",
+      "source_name": "BBC Coventry",
+      "source_url": "https://www.bbc.co.uk/sounds/play/p0p2qwmc?at_medium=RSS&at_campaign=rss",
       "tag": "rykte",
       "auto": true
     },
@@ -194,6 +234,16 @@
       "auto": true
     },
     {
+      "id": "coventry-city-29",
+      "date": "2026-08-04",
+      "title": "Coventry City",
+      "summary": "Reaction to the announcement of Carl Rushworth signing a permanent deal.",
+      "source_name": "BBC Coventry",
+      "source_url": "https://www.bbc.co.uk/sounds/play/p0p2l59r?at_medium=RSS&at_campaign=rss",
+      "tag": "rykte",
+      "auto": true
+    },
+    {
       "id": "coventry-city-transfer-notebook-as-everton-midfielder-and-fe",
       "date": "2026-08-03",
       "title": "Coventry City transfer notebook as Everton midfielder and Fenerbahce striker linked amid Markelo exit latest",
@@ -280,6 +330,16 @@
       "summary": "Gustavo Hamer left the Sky Blues in 2023 to join then-Premier League side Sheffield United - he has been linked with a return",
       "source_name": "Coventry Telegraph",
       "source_url": "https://www.coventrytelegraph.net/sport/football/transfer-news/coventry-city-hamer-transfer-return-34378400",
+      "tag": "rykte",
+      "auto": true
+    },
+    {
+      "id": "coventry-city-hold-positive-talks-of-sensational-gus-hamer-r",
+      "date": "2026-07-30",
+      "title": "Coventry City hold 'positive talks' of sensational Gus Hamer return as transfer detail emerges",
+      "summary": "Gustavo Hamer left the Sky Blues in 2023 to join then-Premier League side Sheffield United",
+      "source_name": "CoventryLive News",
+      "source_url": "https://www.coventrytelegraph.net/sport/football/transfer-news/coventry-city-hamer-transfer-return-34376422",
       "tag": "rykte",
       "auto": true
     }
