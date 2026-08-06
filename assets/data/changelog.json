@@ -2,10 +2,11 @@
   "entries": [
     {
       "date": "2026-08-06",
-      "title": "Footer-tekst kan tømmes",
+      "title": "Tekstfelt i admin følger samme regler",
       "items": [
-        "Du kan slette teksten under footertittelen uten at den kommer tilbake etter lagring",
-        "Tomme tekstfelt i admin beholder tom verdi på nettsiden"
+        "Tomme tekstfelt lagres som tomme og skjules på nettsiden — de fylles ikke automatisk igjen",
+        "Felt som mangler i databasen får fortsatt standardtekst",
+        "Gjelder alle innholdsfaner (forside, footer, om oss, meny m.m.)"
       ]
     },
     {

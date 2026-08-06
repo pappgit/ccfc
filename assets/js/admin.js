@@ -442,6 +442,10 @@
   let activeContentSection = "brand";
   const contentMsg = $("#content-msg");
 
+  /** Shared rules for every CMS text/textarea field (see CCFCContent). */
+  const CMS_TEXT_RULES_HELP =
+    "Tomme felt lagres som tomme og skjules på nettsiden. Felt som mangler i databasen får standardtekst. Mellomrom ytterst fjernes ved lagring.";
+
   function flushContentFields() {
     if (!contentState) return;
     const form = $("#content-form");
@@ -454,8 +458,11 @@
           val = el.checked;
         } else if (el.name === "home.heroSlideInterval") {
           val = Number(el.value) || 6500;
+        } else if (el.type === "number") {
+          val = el.value === "" ? null : Number(el.value);
         } else {
-          val = el.value;
+          // All text / textarea / url fields: trim; whitespace-only → ""
+          val = window.CCFCContent.normalizeCmsString(el.value);
         }
         window.CCFCContent.setByPath(contentState, el.name, val);
       });
@@ -574,22 +581,22 @@
     const host = $("#content-fields");
     if (!section || !host || !contentState) return;
 
-    host.innerHTML = `<div class="admin-card"><h2>${section.label}</h2>${
+    const sectionHint =
       section.id === "nav"
-        ? `<p style="color:var(--muted);margin-bottom:0.85rem;font-size:0.9rem">Endre menynavn og huk av hvilke sider som skal vises i menyen.</p>`
+        ? "Endre menynavn og huk av hvilke sider som skal vises i menyen. Tom menytekst skjuler lenken."
         : section.id === "sections"
-          ? `<p style="color:var(--muted);margin-bottom:0.85rem;font-size:0.9rem">Slå av/på større blokker på nettsiden uten å slette innholdet.</p>`
-          : section.id === "footer"
-            ? `<p style="color:var(--muted);margin-bottom:0.85rem;font-size:0.9rem">Tittel og tekst vises nederst på alle sider. La et felt stå tomt for å skjule den teksten.</p>`
-            : ""
-    }${section.fields
+          ? "Slå av/på større blokker på nettsiden uten å slette innholdet."
+          : CMS_TEXT_RULES_HELP;
+
+    host.innerHTML = `<div class="admin-card"><h2>${section.label}</h2><p style="color:var(--muted);margin-bottom:0.85rem;font-size:0.9rem">${sectionHint}</p>${section.fields
       .map((f) => {
         const raw = window.CCFCContent.getByPath(contentState, f.path);
         if (f.type === "check") {
           const on = raw !== false;
           return `<label class="check"><input type="checkbox" name="${f.path}" ${on ? "checked" : ""} /> ${escapeHtml(f.label)}</label>`;
         }
-        const val = raw ?? "";
+        // Show exact stored value (including intentional empty)
+        const val = raw == null ? "" : String(raw);
         if (f.type === "textarea") {
           return `<label>${f.label}<textarea name="${f.path}" rows="3">${escapeHtml(val)}</textarea></label>`;
         }
