@@ -1,0 +1,32 @@
+# Publiser nettsiden til gh-pages-branchen.
+# Omgår den innebygde pages-build-deployment-køen som kan henge.
+#
+# Etter første grønne kjøring: Settings → Pages → Branch: gh-pages / (root)
+name: Deploy site
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: deploy-site
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Publish to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .
+          force_orphan: true
+          # Behold CNAME og .nojekyll; hopp over intern/repo-only materiale
+          exclude_assets: ".github,.gitignore,AGENTS.md,README.md,docs,scripts,supabase"

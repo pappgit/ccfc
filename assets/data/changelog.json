@@ -2,6 +2,14 @@
   "entries": [
     {
       "date": "2026-08-06",
+      "title": "Mer stabil publisering av nettsiden",
+      "items": [
+        "Nettsiden publiseres nå via en egen Actions-jobb til gh-pages",
+        "Unngår at feilede GitHub Pages-deploys blokkerer nye oppdateringer"
+      ]
+    },
+    {
+      "date": "2026-08-06",
       "title": "Nyheter først på forsiden",
       "items": [
         "Nyheter vises nå over kampprogrammet på forsiden",
