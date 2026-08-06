@@ -49,6 +49,7 @@
   const newsMsg = $("#news-msg");
   const rumorMsg = $("#rumor-msg");
   const rumorKeywordsMsg = $("#rumor-keywords-msg");
+  const rumorSourcesMsg = $("#rumor-sources-msg");
 
   function showMsg(el, text, isError) {
     if (!el) return;
@@ -231,6 +232,7 @@
         loadNews(),
         loadRumors(),
         loadRumorKeywords(),
+        loadRumorSources(),
         loadChangelog(),
         loadFeedback(),
         loadMembers(),
@@ -1230,12 +1232,59 @@
 
   const DEFAULT_RUMOR_KEYWORDS = ["Coventry", "Sky Blues", "CCFC", "CBS Arena"];
 
+  const DEFAULT_RUMOR_SOURCES = [
+    {
+      name: "Coventry Telegraph",
+      url: "https://www.coventrytelegraph.net/sport/football/rss.xml",
+    },
+    {
+      name: "Guardian Transfer",
+      url: "https://www.theguardian.com/football/transfer-window/rss",
+    },
+  ];
+
   function parseKeywordLines(text) {
     return String(text || "")
       .split(/[\n,]+/)
       .map((k) => k.trim())
       .filter(Boolean)
       .filter((k, i, arr) => arr.findIndex((x) => x.toLowerCase() === k.toLowerCase()) === i);
+  }
+
+  function parseSourceLines(text) {
+    const lines = String(text || "")
+      .split("\n")
+      .map((l) => l.trim())
+      .filter(Boolean);
+    const sources = [];
+    for (const line of lines) {
+      const parts = line.split("|").map((p) => p.trim());
+      let name = "";
+      let url = "";
+      if (parts.length >= 2) {
+        name = parts[0];
+        url = parts.slice(1).join("|").trim();
+      } else {
+        url = parts[0];
+      }
+      try {
+        const u = new URL(url);
+        if (u.protocol !== "http:" && u.protocol !== "https:") continue;
+        if (!name) {
+          name = u.hostname.replace(/^www\./, "");
+        }
+        sources.push({ name, url: u.href });
+      } catch {
+        /* skip invalid */
+      }
+    }
+    return sources.filter(
+      (s, i, arr) => arr.findIndex((x) => x.url === s.url) === i
+    );
+  }
+
+  function formatSourceLines(sources) {
+    return (sources || []).map((s) => `${s.name} | ${s.url}`).join("\n");
   }
 
   async function loadRumorKeywords() {
@@ -1253,6 +1302,21 @@
     }
   }
 
+  async function loadRumorSources() {
+    const el = $("#rumor-sources");
+    if (!el) return;
+    try {
+      const remote = await loadSetting("rumor_sources");
+      const sources = Array.isArray(remote?.sources) && remote.sources.length
+        ? remote.sources
+        : DEFAULT_RUMOR_SOURCES;
+      el.value = formatSourceLines(sources);
+    } catch (err) {
+      el.value = formatSourceLines(DEFAULT_RUMOR_SOURCES);
+      showMsg(rumorSourcesMsg, err.message || "Kunne ikke hente kilder.", true);
+    }
+  }
+
   $("#rumor-keywords-form")?.addEventListener("submit", async (e) => {
     e.preventDefault();
     const keywords = parseKeywordLines($("#rumor-keywords")?.value);
@@ -1266,6 +1330,22 @@
       showMsg(rumorKeywordsMsg, `Lagret ${keywords.length} søkeord.`);
     } catch (err) {
       showMsg(rumorKeywordsMsg, err.message || "Kunne ikke lagre søkeord.", true);
+    }
+  });
+
+  $("#rumor-sources-form")?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const sources = parseSourceLines($("#rumor-sources")?.value);
+    if (!sources.length) {
+      showMsg(rumorSourcesMsg, "Legg inn minst én gyldig RSS-URL.", true);
+      return;
+    }
+    try {
+      await saveSetting("rumor_sources", { sources });
+      $("#rumor-sources").value = formatSourceLines(sources);
+      showMsg(rumorSourcesMsg, `Lagret ${sources.length} kilder.`);
+    } catch (err) {
+      showMsg(rumorSourcesMsg, err.message || "Kunne ikke lagre kilder.", true);
     }
   });
 

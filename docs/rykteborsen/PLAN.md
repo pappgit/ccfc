@@ -2,7 +2,7 @@
 
 Meny og side som samler overgangsrykter styrt av **søkeord admin legger inn**, med fokus på **lovlig kildebruk** og enkel drift på GitHub Pages + eksisterende stack.
 
-**Status:** Fase 0 implementert (meny + manuell kuratering + søkeord i admin). Fase 1–2 ikke startet.  
+**Status:** Fase 0 + Fase 1 (RSS via søkeord/kilder i admin) implementert. Fase 2 ikke startet.  
 **Scope:** Kun treff som matcher admin-definerte søkeord (standard: Coventry-relatert).
 
 ## Mål
@@ -129,18 +129,14 @@ flowchart TB
 
 **Drift:** Kjør migrasjonen i Supabase før admin-CRUD virker. Uten tabell faller forsiden tilbake til tom `rumors.json`.
 
-### Fase 1 — Automatisk Coventry-RSS (anbefalt neste)
+### Fase 1 — Automatisk RSS via søkeord/kilder ✅
 
-1. Script `scripts/update-rumors.mjs` (node, som fixtures)
-2. GitHub Action (oftere i transfervindu)
-3. **Primærkilde:** Coventry Telegraph football RSS
-4. **Supplement:** Guardian transfer-window RSS + BBC Coventry-team RSS
-5. Hard **søkeord-filter** fra admin (`rumor_keywords`) på alle treff
-6. Lagre kun: `title`, `summary` (trimmet), `source`, `url`, `publishedAt`, `tag`
-7. Dedup på URL; hopp over non-transfer hvis ønskelig (nøkkelord: transfer, rumour, sign, deal, loan)
-8. Disclaimer + attribusjon (BBC: «From BBC Sport»)
-
-**Sky/BBC generelle feeds** uten treff på admin-søkeord skal ikke inn.
+1. Script `scripts/update-rumors.mjs`
+2. GitHub Action `.github/workflows/update-rumors.yml`
+3. Admin: søkeord + RSS-kilder (`rumor_keywords`, `rumor_sources`)
+4. Filter: admin-søkeord + transfer-kontekstord
+5. Skriver `assets/data/rumors.json`
+6. Frontend: overskrift som lenke ut + manuelle Supabase-rykter mergjet inn
 
 ### Fase 2 — Strukturert «børs» (valgfritt)
 

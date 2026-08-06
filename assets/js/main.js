@@ -277,6 +277,36 @@
   }
 
   async function loadRumorPosts() {
+    const byUrl = new Map();
+
+    const addPosts = (posts) => {
+      for (const p of posts || []) {
+        const key = String(p.source_url || p.id || "").trim().toLowerCase();
+        if (!key) continue;
+        if (!byUrl.has(key)) byUrl.set(key, p);
+      }
+    };
+
+    // Auto-hentede (RSS → rumors.json)
+    try {
+      const data = await loadJSON("assets/data/rumors.json");
+      addPosts(
+        (data.posts || []).map((p) => ({
+          id: p.id,
+          date: p.date,
+          title: p.title,
+          summary: p.summary || "",
+          source_name: p.source_name || "",
+          source_url: p.source_url || "",
+          tag: p.tag || "rykte",
+          auto: true,
+        }))
+      );
+    } catch {
+      /* ignore */
+    }
+
+    // Manuelle (Supabase) — overstyrer auto ved samme URL
     try {
       if (window.supabase && window.CCFC_SUPABASE) {
         const client = window.supabase.createClient(
@@ -289,22 +319,27 @@
           .eq("published", true)
           .order("published_at", { ascending: false });
         if (!error && data?.length) {
-          return data.map((p) => ({
-            id: p.slug,
-            date: (p.published_at || "").slice(0, 10),
-            title: p.title,
-            summary: p.summary,
-            source_name: p.source_name || "",
-            source_url: p.source_url || "",
-            tag: p.tag || "rykte",
-          }));
+          addPosts(
+            data.map((p) => ({
+              id: p.slug,
+              date: (p.published_at || "").slice(0, 10),
+              title: p.title,
+              summary: p.summary,
+              source_name: p.source_name || "",
+              source_url: p.source_url || "",
+              tag: p.tag || "rykte",
+              auto: false,
+            }))
+          );
         }
       }
     } catch {
-      /* fall through */
+      /* ignore */
     }
-    const data = await loadJSON("assets/data/rumors.json");
-    return data.posts || [];
+
+    return Array.from(byUrl.values()).sort((a, b) =>
+      String(b.date || "").localeCompare(String(a.date || ""))
+    );
   }
 
   async function renderRumorsPage() {
@@ -326,18 +361,23 @@
             tag === "rykte" ? "" : ` rumor-item__tag--${tag}`;
           const href = safeHttpUrl(p.source_url);
           const sourceName = escapeText(p.source_name || "Kilde");
-          const sourceHtml = href
-            ? `<a href="${escapeText(href)}" target="_blank" rel="noopener noreferrer">Les hos ${sourceName}</a>`
+          const title = escapeText(p.title);
+          const titleHtml = href
+            ? `<h2 class="rumor-item__title"><a href="${escapeText(href)}" target="_blank" rel="noopener noreferrer">${title}</a></h2>`
+            : `<h2 class="rumor-item__title">${title}</h2>`;
+          const summary = escapeText(p.summary || "");
+          const meta = href
+            ? `<div class="rumor-item__meta"><span>${sourceName}</span> · <a href="${escapeText(href)}" target="_blank" rel="noopener noreferrer">Les saken</a></div>`
             : sourceName
-              ? `Kilde: ${sourceName}`
+              ? `<div class="rumor-item__meta">${sourceName}</div>`
               : "";
           return `<article class="rumor-item" id="${escapeText(p.id)}">
             <div class="rumor-item__date">${d.day}. ${d.month} ${d.year}</div>
             <div>
               <div class="rumor-item__tag${tagClass}">${tagLabel}</div>
-              <h2>${escapeText(p.title)}</h2>
-              <p class="rumor-item__summary">${escapeText(p.summary)}</p>
-              ${sourceHtml ? `<div class="rumor-item__meta">${sourceHtml}</div>` : ""}
+              ${titleHtml}
+              ${summary ? `<p class="rumor-item__summary">${summary}</p>` : ""}
+              ${meta}
             </div>
           </article>`;
         })

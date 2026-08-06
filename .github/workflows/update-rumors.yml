@@ -1,0 +1,39 @@
+# Oppdater Ryktebørsen fra RSS (søkeord + kilder fra admin)
+name: Update rumors
+
+on:
+  schedule:
+    # Fire ganger daglig i transfervindu-sesongen; manuell kjøring når som helst
+    - cron: "15 7,11,15,19 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Fetch rumors from RSS
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: node scripts/update-rumors.mjs
+
+      - name: Commit updated rumors
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/data/rumors.json
+          if git diff --staged --quiet; then
+            echo "Ingen endringer i rumors.json"
+          else
+            git commit -m "chore: update Ryktebørsen from RSS"
+            git push
+          fi

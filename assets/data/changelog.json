@@ -2,6 +2,15 @@
   "entries": [
     {
       "date": "2026-08-06",
+      "title": "Ryktebørsen henter Coventry-rykter automatisk",
+      "items": [
+        "Admin setter søkeord og RSS-kilder under Ryktebørsen",
+        "Siden viser overskrift du kan klikke for å lese saken hos kilden",
+        "Oppdateres jevnlig via GitHub Actions"
+      ]
+    },
+    {
+      "date": "2026-08-06",
       "title": "Søkeord for Ryktebørsen",
       "items": [
         "Admin kan legge inn søkeord som styrer hvilke rykter som hentes inn",
