@@ -5,7 +5,8 @@
       "title": "Ryddigere footer",
       "items": [
         "Tittel, slagord og Admin ligger på én linje",
-        "Teksten under footeren kommer på egen linje når den er fylt ut"
+        "Teksten under footeren kommer på egen linje når den er fylt ut",
+        "På mobil forkortes tittelen, og slagordet skjules på små skjermer"
       ]
     },
     {
