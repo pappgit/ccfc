@@ -2,10 +2,10 @@
   "entries": [
     {
       "date": "2026-08-06",
-      "title": "Forsideoppdatering synlig igjen",
+      "title": "Mer stabil publisering av nettsiden",
       "items": [
-        "Nyheter først og bildebeskjæring er nå publisert på nettsiden",
-        "Oppdater siden hvis du fortsatt ser gammel rekkefølge (hard refresh)"
+        "Nettsiden publiseres nå via en egen Actions-jobb til gh-pages",
+        "Unngår at feilede GitHub Pages-deploys blokkerer nye oppdateringer"
       ]
     },
     {
