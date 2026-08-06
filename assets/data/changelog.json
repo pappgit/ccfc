@@ -1,6 +1,15 @@
 {
   "entries": [
     {
+      "date": "2026-08-06",
+      "title": "Egne knapper i toppmenyen",
+      "items": [
+        "Admin → Innhold → Meny: legg til egne menyvalg",
+        "Lenke til eksterne sider (f.eks. klubbshop) åpnes i ny fane",
+        "Endre rekkefølge, skjul eller fjern egne knapper når du vil"
+      ]
+    },
+    {
       "date": "2026-08-05",
       "title": "Slideshow viser spillernes hoder",
       "items": [

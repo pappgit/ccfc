@@ -473,6 +473,30 @@
         if (altInput) slides[i].alt = altInput.value.trim();
       });
     window.CCFCContent.setByPath(contentState, "home.heroSlides", slides.filter((s) => s.url));
+
+    // Persist custom nav link edits
+    const customNav = ensureCustomNav();
+    $("#nav-custom-list")
+      ?.querySelectorAll("[data-nav-index]")
+      .forEach((row) => {
+        const i = Number(row.getAttribute("data-nav-index"));
+        if (!customNav[i]) return;
+        const labelInput = row.querySelector('[data-field="label"]');
+        const hrefInput = row.querySelector('[data-field="href"]');
+        const visibleInput = row.querySelector('[data-field="visible"]');
+        if (labelInput) customNav[i].label = labelInput.value.trim();
+        if (hrefInput) {
+          customNav[i].href = window.CCFCContent.normalizeNavHref
+            ? window.CCFCContent.normalizeNavHref(hrefInput.value)
+            : hrefInput.value.trim();
+        }
+        if (visibleInput) customNav[i].visible = visibleInput.checked;
+      });
+    window.CCFCContent.setByPath(
+      contentState,
+      "nav.custom",
+      customNav.filter((item) => item && (item.label || item.href))
+    );
   }
 
   function ensureHeroSlides() {
@@ -482,6 +506,97 @@
       window.CCFCContent.setByPath(contentState, "home.heroSlides", slides);
     }
     return slides;
+  }
+
+  function ensureCustomNav() {
+    let items = window.CCFCContent.getByPath(contentState, "nav.custom");
+    if (!Array.isArray(items)) {
+      items = [];
+      window.CCFCContent.setByPath(contentState, "nav.custom", items);
+    }
+    return items;
+  }
+
+  function renderNavCustomEditor() {
+    const card = $("#nav-custom-card");
+    const list = $("#nav-custom-list");
+    if (!card || !list || !contentState) return;
+
+    const show = activeContentSection === "nav";
+    card.hidden = !show;
+    if (!show) return;
+
+    const items = ensureCustomNav();
+    if (!items.length) {
+      list.innerHTML = `<p class="empty-state" style="margin:0.5rem 0">Ingen egne menyvalg ennå. Legg til f.eks. «Shop» med lenke til klubbens nettbutikk.</p>`;
+      return;
+    }
+
+    list.innerHTML = items
+      .map((item, i) => {
+        const label = item.label || "";
+        const href = item.href || "";
+        const visible = item.visible !== false;
+        const external =
+          window.CCFCContent.isExternalHref && window.CCFCContent.isExternalHref(href);
+        return `<div class="nav-custom-row" data-nav-index="${i}">
+          <div class="nav-custom-row__fields">
+            <label>Tekst på knappen
+              <input type="text" data-field="label" value="${escapeAttr(label)}" placeholder="f.eks. Shop" />
+            </label>
+            <label>Lenke (URL)
+              <input type="text" data-field="href" inputmode="url" autocomplete="off" value="${escapeAttr(href)}" placeholder="https://www.ccfc.co.uk/shop eller om-oss.html" />
+            </label>
+            <label class="check"><input type="checkbox" data-field="visible" ${visible ? "checked" : ""} /> Vis i menyen</label>
+            <p class="field-hint">${
+              external
+                ? "Ekstern lenke — åpnes i ny fane."
+                : href
+                  ? "Intern lenke på nettsiden."
+                  : "Lim inn https://… for ekstern side (ny fane), eller filnavn for intern side."
+            }</p>
+          </div>
+          <div class="nav-custom-row__actions">
+            <button type="button" class="btn btn--solid" data-nav-move="-1" ${i === 0 ? "disabled" : ""} title="Flytt opp">↑</button>
+            <button type="button" class="btn btn--solid" data-nav-move="1" ${i === items.length - 1 ? "disabled" : ""} title="Flytt ned">↓</button>
+            <button type="button" class="btn btn--danger" data-nav-remove title="Fjern">Fjern</button>
+          </div>
+        </div>`;
+      })
+      .join("");
+
+    list.querySelectorAll("[data-nav-move]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        flushContentFields();
+        const row = btn.closest("[data-nav-index]");
+        const i = Number(row.getAttribute("data-nav-index"));
+        const dir = Number(btn.getAttribute("data-nav-move"));
+        const arr = ensureCustomNav();
+        const j = i + dir;
+        if (j < 0 || j >= arr.length) return;
+        const tmp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = tmp;
+        renderNavCustomEditor();
+      });
+    });
+
+    list.querySelectorAll("[data-nav-remove]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        flushContentFields();
+        const row = btn.closest("[data-nav-index]");
+        const i = Number(row.getAttribute("data-nav-index"));
+        ensureCustomNav().splice(i, 1);
+        renderNavCustomEditor();
+      });
+    });
+
+    list.querySelectorAll('[data-field="href"]').forEach((input) => {
+      input.addEventListener("change", () => {
+        flushContentFields();
+        renderNavCustomEditor();
+      });
+    });
   }
 
   function renderHeroSlidesEditor() {
@@ -576,7 +691,7 @@
 
     host.innerHTML = `<div class="admin-card"><h2>${section.label}</h2>${
       section.id === "nav"
-        ? `<p style="color:var(--muted);margin-bottom:0.85rem;font-size:0.9rem">Endre menynavn og huk av hvilke sider som skal vises i menyen.</p>`
+        ? `<p style="color:var(--muted);margin-bottom:0.85rem;font-size:0.9rem">Endre menynavn og huk av hvilke faste sider som skal vises. Egne knapper (f.eks. klubbshop) legges til i boksen under.</p>`
         : section.id === "sections"
           ? `<p style="color:var(--muted);margin-bottom:0.85rem;font-size:0.9rem">Slå av/på større blokker på nettsiden uten å slette innholdet.</p>`
           : section.id === "footer"
@@ -608,6 +723,7 @@
     if (logoCard) logoCard.hidden = activeContentSection !== "brand";
 
     renderHeroSlidesEditor();
+    renderNavCustomEditor();
   }
 
   function collectContentForm() {
@@ -663,6 +779,13 @@
         }
         if (window.CCFCContent.getByPath(contentState, "nav.visible.members") == null) {
           window.CCFCContent.setByPath(contentState, "nav.visible.members", true);
+        }
+        if (!Array.isArray(window.CCFCContent.getByPath(contentState, "nav.custom"))) {
+          window.CCFCContent.setByPath(
+            contentState,
+            "nav.custom",
+            Array.isArray(defaults?.nav?.custom) ? defaults.nav.custom : []
+          );
         }
         if (!window.CCFCContent.getByPath(contentState, "members")) {
           window.CCFCContent.setByPath(
@@ -814,6 +937,22 @@
     if (input) input.value = "";
     renderHeroSlidesEditor();
     showMsg(contentMsg, "Bilde lagt til — husk å trykke Lagre innhold.");
+  });
+
+  $("#nav-custom-add")?.addEventListener("click", () => {
+    if (!contentState) {
+      showMsg(contentMsg, "Innhold er ikke lastet ennå.", true);
+      return;
+    }
+    flushContentFields();
+    ensureCustomNav().push({
+      id: `nav-${Date.now().toString(36)}`,
+      label: "",
+      href: "",
+      visible: true,
+    });
+    renderNavCustomEditor();
+    showMsg(contentMsg, "Nytt menyvalg lagt til — fyll inn tekst og lenke, deretter Lagre innhold.");
   });
 
   function escapeAttr(s) {

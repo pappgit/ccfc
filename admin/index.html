@@ -11,8 +11,8 @@
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="../assets/css/styles.css" />
-    <link rel="stylesheet" href="../assets/css/admin.css?v=20260804-news-img" />
+    <link rel="stylesheet" href="../assets/css/styles.css?v=20260806-nav" />
+    <link rel="stylesheet" href="../assets/css/admin.css?v=20260806-nav" />
     <link rel="icon" href="../assets/img/logo.jpg" type="image/jpeg" />
   </head>
   <body>
@@ -118,6 +118,18 @@
                   <input type="text" id="hero-slide-url-input" inputmode="url" autocomplete="off" placeholder="assets/img/… eller https://…" />
                 </label>
                 <button class="btn btn--solid" type="button" id="hero-slide-add-url-btn">Legg til URL</button>
+              </div>
+            </div>
+
+            <div class="admin-card" id="nav-custom-card" hidden>
+              <h2>Egne menyvalg</h2>
+              <p style="color: var(--muted); margin-bottom: 0.75rem; font-size: 0.9rem">
+                Legg til knapper i toppmenyen. Bruk full URL (https://…) for eksterne sider som klubbshop —
+                de åpnes i ny fane. Interne sider: f.eks. <code>om-oss.html</code>.
+              </p>
+              <div id="nav-custom-list" class="nav-custom-admin"></div>
+              <div class="row" style="margin-top: 1rem">
+                <button class="btn btn--solid" type="button" id="nav-custom-add">Legg til menyvalg</button>
               </div>
             </div>
 
@@ -530,7 +542,7 @@
 
     <script src="../assets/js/vendor/supabase.js?v=2.112.0"></script>
     <script src="../assets/js/supabase-config.js"></script>
-    <script src="../assets/js/content.js"></script>
-    <script src="../assets/js/admin.js?v=20260804-news-img"></script>
+    <script src="../assets/js/content.js?v=20260806-nav"></script>
+    <script src="../assets/js/admin.js?v=20260806-nav"></script>
   </body>
 </html>
