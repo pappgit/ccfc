@@ -1,6 +1,15 @@
 {
   "entries": [
     {
+      "date": "2026-08-06",
+      "title": "Ryktebørsen er live",
+      "items": [
+        "Ny meny: Ryktebørsen med overgangsrykter og spekulasjon",
+        "Hver sak viser kort tekst, kilde og lenke til originalen",
+        "Admin kan legge inn, merke som rykte/bekreftet/avvist og publisere"
+      ]
+    },
+    {
       "date": "2026-08-05",
       "title": "Slideshow viser spillernes hoder",
       "items": [

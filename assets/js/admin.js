@@ -47,6 +47,7 @@
   const loginMsg = $("#login-msg");
   const apiMsg = $("#api-msg");
   const newsMsg = $("#news-msg");
+  const rumorMsg = $("#rumor-msg");
 
   function showMsg(el, text, isError) {
     if (!el) return;
@@ -227,6 +228,7 @@
         loadContentEditor(),
         loadApiSettings(),
         loadNews(),
+        loadRumors(),
         loadChangelog(),
         loadFeedback(),
         loadMembers(),
@@ -324,6 +326,8 @@
         { path: "nav.visible.stats", label: "Vis Statistikk i menyen", type: "check" },
         { path: "nav.news", label: "Nyheter · tekst", type: "text" },
         { path: "nav.visible.news", label: "Vis Nyheter i menyen", type: "check" },
+        { path: "nav.rumors", label: "Ryktebørsen · tekst", type: "text" },
+        { path: "nav.visible.rumors", label: "Vis Ryktebørsen i menyen", type: "check" },
         { path: "nav.members", label: "Medlem · tekst", type: "text" },
         { path: "nav.visible.members", label: "Vis Medlem i menyen", type: "check" },
         { path: "nav.about", label: "Om oss · tekst", type: "text" },
@@ -403,6 +407,16 @@
       fields: [
         { path: "newsPage.title", label: "Tittel", type: "text" },
         { path: "newsPage.lead", label: "Ingress", type: "textarea" },
+      ],
+    },
+    {
+      id: "rumorsPage",
+      label: "Ryktebørsen-side",
+      fields: [
+        { path: "rumorsPage.title", label: "Tittel", type: "text" },
+        { path: "rumorsPage.lead", label: "Ingress", type: "textarea" },
+        { path: "rumorsPage.disclaimer", label: "Disclaimer", type: "textarea" },
+        { path: "rumorsPage.empty", label: "Tom liste · tekst", type: "text" },
       ],
     },
     {
@@ -649,6 +663,7 @@
               fixtures: true,
               stats: true,
               news: true,
+              rumors: true,
               members: true,
               about: true,
             }
@@ -663,6 +678,29 @@
         }
         if (window.CCFCContent.getByPath(contentState, "nav.visible.members") == null) {
           window.CCFCContent.setByPath(contentState, "nav.visible.members", true);
+        }
+        if (window.CCFCContent.getByPath(contentState, "nav.rumors") == null) {
+          window.CCFCContent.setByPath(
+            contentState,
+            "nav.rumors",
+            defaults?.nav?.rumors || "Ryktebørsen"
+          );
+        }
+        if (window.CCFCContent.getByPath(contentState, "nav.visible.rumors") == null) {
+          window.CCFCContent.setByPath(contentState, "nav.visible.rumors", true);
+        }
+        if (!window.CCFCContent.getByPath(contentState, "rumorsPage")) {
+          window.CCFCContent.setByPath(
+            contentState,
+            "rumorsPage",
+            defaults?.rumorsPage || {
+              title: "Ryktebørsen",
+              lead: "Overgangsrykter og spekulasjon — alltid med kilde og lenke til originalen.",
+              disclaimer:
+                "Rykter er spekulasjon, ikke bekreftede nyheter. Vi publiserer korte utdrag med kildehenvisning og lenke til originalen — ikke fullartikler.",
+              empty: "Ingen rykter publisert ennå. Kom tilbake i transfervinduet.",
+            }
+          );
         }
         if (!window.CCFCContent.getByPath(contentState, "members")) {
           window.CCFCContent.setByPath(
@@ -1159,6 +1197,190 @@
       showMsg(newsMsg, "Lagret.");
       resetNewsForm();
       await loadNews();
+    }
+  });
+
+  /* —— Ryktebørsen —— */
+  const RUMOR_TAG_LABELS = {
+    rykte: "Rykte",
+    bekreftet: "Bekreftet",
+    avvist: "Avvist",
+  };
+
+  async function deleteRumorById(id) {
+    if (!id) return false;
+    if (!confirm("Slette dette ryktet? Dette kan ikke angres.")) return false;
+    const { error: delErr } = await client.from("rumor_posts").delete().eq("id", id);
+    if (delErr) {
+      showMsg(rumorMsg, delErr.message, true);
+      return false;
+    }
+    showMsg(rumorMsg, "Rykte slettet.");
+    resetRumorForm();
+    await loadRumors();
+    return true;
+  }
+
+  async function loadRumors() {
+    const list = $("#rumor-list");
+    if (!list) return;
+    const { data, error } = await client
+      .from("rumor_posts")
+      .select("*")
+      .order("published_at", { ascending: false, nullsFirst: false })
+      .order("created_at", { ascending: false });
+    if (error) {
+      list.innerHTML = `<p class="admin-msg is-error">${escapeHtml(error.message)}</p>
+        <p class="empty-state">Kjør migrasjonen <code>20260806120000_rumor_posts.sql</code> i Supabase hvis tabellen mangler.</p>`;
+      return;
+    }
+    if (!data?.length) {
+      list.innerHTML = `<p class="empty-state">Ingen rykter ennå.</p>`;
+      return;
+    }
+    list.innerHTML = data
+      .map((p) => {
+        const tagLabel = RUMOR_TAG_LABELS[p.tag] || p.tag || "Rykte";
+        const badges = [
+          p.published
+            ? `<span class="badge">Publisert</span>`
+            : `<span class="badge badge--draft">Utkast</span>`,
+          `<span class="badge">${escapeHtml(tagLabel)}</span>`,
+        ].join("");
+        return `<article class="news-admin-item" data-id="${p.id}">
+          <div class="news-admin-item__main">
+            <div>
+              <h3>${escapeHtml(p.title)}</h3>
+              <p>${badges}${escapeHtml(p.summary || "")}</p>
+              <p style="margin-top:0.35rem">${escapeHtml(p.source_name || "")}</p>
+            </div>
+          </div>
+          <div class="row">
+            <button type="button" class="btn btn--solid" data-edit-rumor="${p.id}">Rediger</button>
+            <button type="button" class="btn btn--danger" data-delete-rumor="${p.id}">Slett</button>
+          </div>
+        </article>`;
+      })
+      .join("");
+
+    list.querySelectorAll("[data-edit-rumor]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const post = data.find((p) => p.id === btn.dataset.editRumor);
+        if (post) fillRumorForm(post);
+      });
+    });
+    list.querySelectorAll("[data-delete-rumor]").forEach((btn) => {
+      btn.addEventListener("click", () => deleteRumorById(btn.dataset.deleteRumor));
+    });
+  }
+
+  function fillRumorForm(post) {
+    $("#rumor-form-title").textContent = "Rediger rykte";
+    $("#rumor-post-id").value = post.id || "";
+    $("#rumor-title").value = post.title || "";
+    $("#rumor-slug").value = post.slug || slugify(post.title || "");
+    $("#rumor-summary").value = post.summary || "";
+    $("#rumor-source-name").value = post.source_name || "";
+    $("#rumor-source-url").value = post.source_url || "";
+    $("#rumor-tag").value = RUMOR_TAG_LABELS[post.tag] ? post.tag : "rykte";
+    $("#rumor-published").checked = !!post.published;
+    const delBtn = $("#rumor-delete");
+    if (delBtn) delBtn.hidden = false;
+    const saveBtn = $("#rumor-save-btn");
+    if (saveBtn) saveBtn.textContent = "Oppdater rykte";
+    $("#rumor-title").focus();
+    $("#rumor-form")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function resetRumorForm() {
+    const form = $("#rumor-form");
+    form?.reset();
+    $("#rumor-form-title").textContent = "Legg til rykte";
+    $("#rumor-post-id").value = "";
+    $("#rumor-slug").value = "";
+    $("#rumor-published").checked = true;
+    $("#rumor-tag").value = "rykte";
+    const delBtn = $("#rumor-delete");
+    if (delBtn) delBtn.hidden = true;
+    const saveBtn = $("#rumor-save-btn");
+    if (saveBtn) saveBtn.textContent = "Lagre rykte";
+  }
+
+  function syncRumorSlugFromTitle() {
+    const title = $("#rumor-title")?.value || "";
+    const slugEl = $("#rumor-slug");
+    if (!slugEl) return;
+    if ($("#rumor-post-id")?.value) return;
+    slugEl.value = slugify(title);
+  }
+
+  $("#rumor-reset")?.addEventListener("click", resetRumorForm);
+  $("#rumor-new-btn")?.addEventListener("click", () => {
+    resetRumorForm();
+    showMsg(rumorMsg, "");
+    $("#rumor-title")?.focus();
+    $("#rumor-form")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+  $("#rumor-delete")?.addEventListener("click", async () => {
+    const id = $("#rumor-post-id")?.value;
+    if (id) await deleteRumorById(id);
+  });
+  $("#rumor-title")?.addEventListener("input", syncRumorSlugFromTitle);
+
+  $("#rumor-form")?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    const id = String(fd.get("post_id") || "").trim();
+    let slug = String(fd.get("slug") || "").trim() || slugify(String(fd.get("title") || ""));
+    if (!slug) slug = `rykte-${Date.now()}`;
+    $("#rumor-slug").value = slug;
+
+    const tagRaw = String(fd.get("tag") || "rykte");
+    const tag = RUMOR_TAG_LABELS[tagRaw] ? tagRaw : "rykte";
+    const sourceUrl = String(fd.get("source_url") || "").trim();
+    try {
+      const u = new URL(sourceUrl);
+      if (u.protocol !== "http:" && u.protocol !== "https:") {
+        showMsg(rumorMsg, "Lenken må starte med http:// eller https://", true);
+        return;
+      }
+    } catch {
+      showMsg(rumorMsg, "Ugyldig lenke til original.", true);
+      return;
+    }
+
+    const published = !!fd.get("published");
+    const { data: sessionData } = await client.auth.getSession();
+    const payload = {
+      slug,
+      title: String(fd.get("title") || "").trim(),
+      summary: String(fd.get("summary") || "").trim(),
+      source_name: String(fd.get("source_name") || "").trim(),
+      source_url: sourceUrl,
+      tag,
+      published,
+      published_at: published ? new Date().toISOString() : null,
+      author_id: sessionData.session?.user?.id || null,
+    };
+
+    let error;
+    if (id) {
+      ({ error } = await client.from("rumor_posts").update(payload).eq("id", id));
+    } else {
+      let attempt = slug;
+      for (let n = 2; n < 50; n++) {
+        ({ error } = await client.from("rumor_posts").insert({ ...payload, slug: attempt }));
+        if (!error) break;
+        if (!/duplicate|unique|already exists/i.test(error.message || "")) break;
+        attempt = `${slug}-${n}`;
+      }
+    }
+
+    if (error) showMsg(rumorMsg, error.message, true);
+    else {
+      showMsg(rumorMsg, "Lagret.");
+      resetRumorForm();
+      await loadRumors();
     }
   });
 

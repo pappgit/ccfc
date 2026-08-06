@@ -3,18 +3,18 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Meld deg ut — Coventry City Scandinavia</title>
-    <meta name="robots" content="noindex" />
+    <title>Ryktebørsen — Coventry City Scandinavia</title>
+    <meta
+      name="description"
+      content="Overgangsrykter og sladder om Coventry City — kuratert med kilde og lenke til originalen."
+    />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="assets/css/styles.css" />
     <link rel="icon" href="assets/img/logo.jpg" type="image/jpeg" />
   </head>
-  <body>
+  <body data-cms-title="rumorsPage.title">
     <header class="site-header">
       <div class="wrap">
         <a class="brand" href="index.html">
@@ -42,28 +42,20 @@
     <main>
       <header class="page-hero">
         <div class="wrap">
-          <h1>Meld deg ut</h1>
-          <p>Bekreft at du vil avslutte medlemskapet i Coventry City Scandinavia.</p>
+          <h1 data-cms="rumorsPage.title">Ryktebørsen</h1>
+          <p data-cms="rumorsPage.lead">
+            Overgangsrykter og spekulasjon — alltid med kilde og lenke til originalen.
+          </p>
         </div>
       </header>
 
       <section class="section">
-        <div class="wrap" style="max-width: 32rem">
-          <div class="member-form-card" id="unsubscribe-panel">
-            <p id="unsubscribe-lead" class="member-lead">
-              Laster utmeldingslenke…
-            </p>
-            <form id="unsubscribe-form" class="member-form" hidden>
-              <p>
-                Når du bekrefter, settes medlemskapet til utmeldt. Du kan melde deg inn på nytt senere.
-              </p>
-              <div class="cta-row">
-                <button class="btn btn--sky" type="submit" id="unsubscribe-submit">Bekreft utmelding</button>
-                <a class="btn btn--ghost" href="index.html">Avbryt</a>
-              </div>
-            </form>
-            <p class="member-msg" id="unsubscribe-msg" hidden></p>
-          </div>
+        <div class="wrap">
+          <p class="rumors-disclaimer" data-cms="rumorsPage.disclaimer">
+            Rykter er spekulasjon, ikke bekreftede nyheter. Vi publiserer korte utdrag med kildehenvisning
+            og lenke til originalen — ikke fullartikler.
+          </p>
+          <div id="rumors-root"></div>
         </div>
       </section>
     </main>
@@ -75,6 +67,7 @@
           <p data-cms="footer.text">Sky Blues supporterklubb for Skandinavia.</p>
         </div>
         <div class="footer-meta" data-cms="footer.tagline">Sky blue forever</div>
+        <a class="footer-login" href="admin/" data-section="footerAdmin" data-cms="footer.adminLabel">Admin</a>
       </div>
     </footer>
 
@@ -82,6 +75,5 @@
     <script src="assets/js/supabase-config.js"></script>
     <script src="assets/js/content.js"></script>
     <script src="assets/js/main.js"></script>
-    <script src="assets/js/members.js"></script>
   </body>
 </html>

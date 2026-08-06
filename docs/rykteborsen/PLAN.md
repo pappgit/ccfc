@@ -2,7 +2,7 @@
 
 Meny og side som samler overgangsrykter og sladder relevant for Coventry City / Championship / Premier League, med fokus på **lovlig kildebruk** og enkel drift på GitHub Pages + eksisterende stack.
 
-**Status:** Plan (ikke implementert)
+**Status:** Fase 0 implementert (meny + manuell kuratering). Fase 1–2 ikke startet.
 
 ## Mål
 
@@ -100,16 +100,16 @@ flowchart TB
 
 ### Anbefalt faseinndeling
 
-### Fase 0 — Meny + manuell ryktebørs (lavest risiko)
+### Fase 0 — Meny + manuell ryktebørs ✅
 
 1. `rykteborsen.html` (mal etter `nyheter.html`)
 2. Nav-lenke på **alle** HTML-sider + `nav.rumors` / `nav.visible.rumors` i CMS
 3. Admin-felter for sidetekst i `admin.js` `CONTENT_SECTIONS`
-4. Data: `assets/data/rumors.json` **eller** Supabase-tabell `rumor_posts` (som `news_posts`)
-5. Admin kan legge inn ryktetekst + kilde-URL + kilde-navn + tag
-6. Oppdater `changelog.json`
+4. Data: `assets/data/rumors.json` fallback + Supabase `rumor_posts` (`20260806120000_rumor_posts.sql`)
+5. Admin-panel «Ryktebørsen»: tittel, korttekst, kilde, URL, tag, publisert
+6. Oppdatert `changelog.json`
 
-**Leveranseverdi:** Fungerer med en gang; ingen juridisk gråsone.
+**Drift:** Kjør migrasjonen i Supabase før admin-CRUD virker. Uten tabell faller forsiden tilbake til tom `rumors.json`.
 
 ### Fase 1 — Automatisk RSS-aggregat (Coventry-fokus)
 

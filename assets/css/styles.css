@@ -807,6 +807,97 @@ p {
   margin-top: 1rem;
 }
 
+/* —— Ryktebørsen —— */
+.rumors-disclaimer {
+  max-width: 40rem;
+  margin: 0 0 2rem;
+  padding: 0.85rem 0 0.85rem 1rem;
+  border-left: 3px solid var(--sky);
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
+.rumor-list {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--line-strong);
+}
+
+.rumor-item {
+  display: grid;
+  grid-template-columns: 6.5rem 1fr;
+  gap: 1.25rem;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.rumor-item__date {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding-top: 0.35rem;
+}
+
+.rumor-item__tag {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.45rem;
+  color: var(--sky-deep);
+}
+
+.rumor-item__tag--bekreftet {
+  color: #1a6b3c;
+}
+
+.rumor-item__tag--avvist {
+  color: #8a3a2a;
+}
+
+.rumor-item h2 {
+  font-size: clamp(1.15rem, 2.5vw, 1.45rem);
+  margin: 0 0 0.45rem;
+}
+
+.rumor-item__summary {
+  color: var(--muted);
+  margin: 0 0 0.85rem;
+  max-width: 38rem;
+  line-height: 1.55;
+}
+
+.rumor-item__meta {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.rumor-item__meta a {
+  color: var(--sky-deep);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.rumor-item__meta a:hover {
+  color: var(--ink);
+}
+
+@media (max-width: 560px) {
+  .rumor-item {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+  }
+
+  .rumor-item__date {
+    padding-top: 0;
+  }
+}
+
 @media (max-width: 640px) {
   .news-item {
     grid-template-columns: 1fr;

@@ -250,6 +250,103 @@
     }
   }
 
+  const RUMOR_TAG_LABELS = {
+    rykte: "Rykte",
+    bekreftet: "Bekreftet",
+    avvist: "Avvist",
+  };
+
+  function escapeText(s) {
+    return String(s || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function safeHttpUrl(url) {
+    const raw = String(url || "").trim();
+    if (!raw) return "";
+    try {
+      const u = new URL(raw, location.origin);
+      if (u.protocol === "http:" || u.protocol === "https:") return u.href;
+    } catch {
+      /* ignore */
+    }
+    return "";
+  }
+
+  async function loadRumorPosts() {
+    try {
+      if (window.supabase && window.CCFC_SUPABASE) {
+        const client = window.supabase.createClient(
+          window.CCFC_SUPABASE.url,
+          window.CCFC_SUPABASE.anonKey
+        );
+        const { data, error } = await client
+          .from("rumor_posts")
+          .select("slug,title,summary,source_name,source_url,tag,published_at")
+          .eq("published", true)
+          .order("published_at", { ascending: false });
+        if (!error && data?.length) {
+          return data.map((p) => ({
+            id: p.slug,
+            date: (p.published_at || "").slice(0, 10),
+            title: p.title,
+            summary: p.summary,
+            source_name: p.source_name || "",
+            source_url: p.source_url || "",
+            tag: p.tag || "rykte",
+          }));
+        }
+      }
+    } catch {
+      /* fall through */
+    }
+    const data = await loadJSON("assets/data/rumors.json");
+    return data.posts || [];
+  }
+
+  async function renderRumorsPage() {
+    const el = $("#rumors-root");
+    if (!el) return;
+    try {
+      const posts = await loadRumorPosts();
+      if (!posts.length) {
+        el.innerHTML = `<p class="empty-state">Ingen rykter publisert ennå. Kom tilbake i transfervinduet.</p>`;
+        return;
+      }
+
+      el.innerHTML = `<div class="rumor-list">${posts
+        .map((p) => {
+          const d = formatDate(p.date || "2026-01-01");
+          const tag = RUMOR_TAG_LABELS[p.tag] ? p.tag : "rykte";
+          const tagLabel = RUMOR_TAG_LABELS[tag];
+          const tagClass =
+            tag === "rykte" ? "" : ` rumor-item__tag--${tag}`;
+          const href = safeHttpUrl(p.source_url);
+          const sourceName = escapeText(p.source_name || "Kilde");
+          const sourceHtml = href
+            ? `<a href="${escapeText(href)}" target="_blank" rel="noopener noreferrer">Les hos ${sourceName}</a>`
+            : sourceName
+              ? `Kilde: ${sourceName}`
+              : "";
+          return `<article class="rumor-item" id="${escapeText(p.id)}">
+            <div class="rumor-item__date">${d.day}. ${d.month} ${d.year}</div>
+            <div>
+              <div class="rumor-item__tag${tagClass}">${tagLabel}</div>
+              <h2>${escapeText(p.title)}</h2>
+              <p class="rumor-item__summary">${escapeText(p.summary)}</p>
+              ${sourceHtml ? `<div class="rumor-item__meta">${sourceHtml}</div>` : ""}
+            </div>
+          </article>`;
+        })
+        .join("")}</div>`;
+    } catch {
+      el.innerHTML = `<p class="empty-state">Kunne ikke laste ryktebørsen.</p>`;
+    }
+  }
+
   async function renderFixturesPage() {
     const el = $("#fixtures-root");
     if (!el) return;
@@ -611,6 +708,7 @@
   renderHomeNews();
   renderFixturesPage();
   renderNewsPage();
+  renderRumorsPage();
   renderStatsPage();
 
   // Wire up markup slides immediately; CMS may replace them when ready

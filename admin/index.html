@@ -49,6 +49,7 @@
         <nav class="admin-nav" aria-label="Admin">
           <button type="button" data-panel="content" class="is-active">Innhold</button>
           <button type="button" data-panel="news">Nyheter</button>
+          <button type="button" data-panel="rumors">Ryktebørsen</button>
           <button type="button" data-panel="members">Medlemmer</button>
           <button type="button" data-panel="feedback">Ønsker</button>
           <button type="button" data-panel="changelog">Endringslogg</button>
@@ -359,6 +360,81 @@
           <div class="news-admin-list" id="news-list"></div>
         </section>
 
+        <section class="admin-panel" id="panel-rumors">
+          <h1>Ryktebørsen</h1>
+          <p class="lead">
+            Legg inn korte rykter med kilde og lenke til originalen. Ikke lim inn fullartikler —
+            kun egen korttekst og deep link. Merk som rykte, bekreftet eller avvist.
+          </p>
+
+          <div class="admin-card">
+            <div class="row" style="justify-content: space-between; align-items: center; margin-bottom: 0.75rem">
+              <h2 id="rumor-form-title" style="margin: 0">Legg til rykte</h2>
+              <button class="btn btn--solid" type="button" id="rumor-new-btn">Nytt rykte</button>
+            </div>
+            <form id="rumor-form" class="admin-form">
+              <input type="hidden" name="post_id" id="rumor-post-id" value="" />
+              <input type="hidden" name="slug" id="rumor-slug" value="" />
+              <label>
+                Tittel
+                <input type="text" name="title" id="rumor-title" required maxlength="200" />
+              </label>
+              <label>
+                Kort tekst (1–3 setninger)
+                <textarea name="summary" id="rumor-summary" rows="3" required maxlength="600"></textarea>
+              </label>
+              <label>
+                Kildenavn
+                <input
+                  type="text"
+                  name="source_name"
+                  id="rumor-source-name"
+                  required
+                  maxlength="120"
+                  placeholder="f.eks. BBC Sport"
+                />
+              </label>
+              <label>
+                Lenke til original
+                <input
+                  type="url"
+                  name="source_url"
+                  id="rumor-source-url"
+                  required
+                  inputmode="url"
+                  autocomplete="off"
+                  placeholder="https://…"
+                />
+              </label>
+              <label>
+                Merke
+                <select name="tag" id="rumor-tag">
+                  <option value="rykte">Rykte</option>
+                  <option value="bekreftet">Bekreftet</option>
+                  <option value="avvist">Avvist</option>
+                </select>
+              </label>
+              <div class="row">
+                <label class="check">
+                  <input type="checkbox" name="published" id="rumor-published" checked />
+                  Publisert
+                </label>
+              </div>
+              <div class="row">
+                <button class="btn btn--sky" type="submit" id="rumor-save-btn">Lagre rykte</button>
+                <button class="btn btn--solid" type="button" id="rumor-reset">Avbryt / nullstill</button>
+                <button class="btn btn--danger" type="button" id="rumor-delete" hidden>
+                  Slett rykte
+                </button>
+              </div>
+              <p class="admin-msg" id="rumor-msg" hidden></p>
+            </form>
+          </div>
+
+          <h2 style="margin: 1.5rem 0 0.75rem; font-size: 1.15rem">Alle rykter</h2>
+          <div class="news-admin-list" id="rumor-list"></div>
+        </section>
+
         <section class="admin-panel" id="panel-members">
           <h1>Medlemmer</h1>
           <p class="lead">
@@ -531,6 +607,6 @@
     <script src="../assets/js/vendor/supabase.js?v=2.112.0"></script>
     <script src="../assets/js/supabase-config.js"></script>
     <script src="../assets/js/content.js"></script>
-    <script src="../assets/js/admin.js?v=20260804-news-img"></script>
+    <script src="../assets/js/admin.js?v=20260806-rumors"></script>
   </body>
 </html>

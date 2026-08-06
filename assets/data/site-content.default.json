@@ -14,6 +14,7 @@
     "fixtures": "Kamper",
     "stats": "Statistikk",
     "news": "Nyheter",
+    "rumors": "Ryktebørsen",
     "members": "Medlem",
     "about": "Om oss",
     "visible": {
@@ -21,6 +22,7 @@
       "fixtures": true,
       "stats": true,
       "news": true,
+      "rumors": true,
       "members": true,
       "about": true
     }
@@ -85,6 +87,13 @@
     "title": "Nyheter",
     "lead": "Info om samlinger, reiser og sesongen — skrevet for skandinaviske Sky Blues."
   },
+  "rumorsPage": {
+    "title": "Ryktebørsen",
+    "lead": "Overgangsrykter og spekulasjon — alltid med kilde og lenke til originalen.",
+    "disclaimer": "Rykter er spekulasjon, ikke bekreftede nyheter. Vi publiserer korte utdrag med kildehenvisning og lenke til originalen — ikke fullartikler.",
+    "empty": "Ingen rykter publisert ennå. Kom tilbake i transfervinduet."
+  },
+
   "about": {
     "title": "Om oss",
     "lead": "Supporterklubben for Coventry City-fans i Skandinavia.",
