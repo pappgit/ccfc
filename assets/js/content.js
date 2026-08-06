@@ -2,12 +2,35 @@
  * Loads editable site content from Supabase (key: site) with local default fallback.
  * Applies to [data-cms], [data-cms-html], [data-cms-src], [data-cms-href].
  *
- * Empty strings in the database fall back to defaults so admin fields match
- * what visitors see (HTML fallbacks were previously "stuck" when CMS had "").
+ * === Regler for alle CMS-tekstfelter ===
+ * 1. Manglende verdi (null/undefined): bruk standard fra site-content.default.json
+ * 2. Eksplisitt tom streng ("" / bare mellomrom): beholdes tom — feltet skjules på siden
+ * 3. Annen tekst: vises som lagret (admin trimmer ytterkanter ved lagring)
+ * 4. Avkrysning (bool): lagret true/false brukes; mangler → standard
+ * 5. Lister/objekter: lagret verdi brukes; mangler → standard
+ * 6. data-nav / data-section: skjules også når tilknyttet CMS-tekst er tom
  */
 window.CCFCContent = (function () {
-  const CACHE_KEY = "ccfc_site_content_v2";
+  const CACHE_KEY = "ccfc_site_content_v4";
   let content = null;
+
+  /** Elements that should not leave empty visual shells when CMS text is blank. */
+  const HIDE_WHEN_BLANK = new Set([
+    "P",
+    "DIV",
+    "SPAN",
+    "STRONG",
+    "A",
+    "H1",
+    "H2",
+    "H3",
+    "H4",
+    "H5",
+    "H6",
+    "BUTTON",
+    "LABEL",
+    "LI",
+  ]);
 
   function getByPath(obj, path) {
     return path.split(".").reduce((acc, key) => (acc == null ? undefined : acc[key]), obj);
@@ -23,7 +46,21 @@ window.CCFCContent = (function () {
     cur[parts[parts.length - 1]] = value;
   }
 
-  /** Merge remote CMS over defaults; blank strings fall back to default text. */
+  /** True when a CMS string should be treated as intentionally empty. */
+  function isBlankText(val) {
+    return typeof val === "string" && val.trim() === "";
+  }
+
+  /**
+   * Normalize text from admin inputs before save.
+   * Whitespace-only becomes ""; other strings are trim()'ed.
+   */
+  function normalizeCmsString(val) {
+    if (typeof val !== "string") return val;
+    return val.trim();
+  }
+
+  /** Merge remote CMS over defaults. Empty strings stay empty; only missing keys use defaults. */
   function mergeDefaults(defaults, remote) {
     if (remote == null) return defaults;
     if (Array.isArray(defaults)) {
@@ -41,9 +78,6 @@ window.CCFCContent = (function () {
         if (!(key in out)) out[key] = remote[key];
       }
       return out;
-    }
-    if (typeof remote === "string" && remote.trim() === "" && typeof defaults === "string") {
-      return defaults;
     }
     return remote;
   }
@@ -111,6 +145,23 @@ window.CCFCContent = (function () {
     return content;
   }
 
+  function applyCmsVisibility(el, blank) {
+    if (!HIDE_WHEN_BLANK.has(el.tagName)) return;
+    el.hidden = blank;
+  }
+
+  function cmsPathOn(el) {
+    return el.getAttribute("data-cms") || el.getAttribute("data-cms-html");
+  }
+
+  function isCmsTextBlank(el) {
+    const path = cmsPathOn(el);
+    if (!path || !content) return false;
+    const val = getByPath(content, path);
+    if (val == null) return false;
+    return isBlankText(String(val));
+  }
+
   function apply(root = document) {
     if (!content) return;
 
@@ -118,28 +169,36 @@ window.CCFCContent = (function () {
       const path = el.getAttribute("data-cms");
       const val = getByPath(content, path);
       if (val == null) return;
-      el.textContent = String(val);
+      const text = String(val);
+      el.textContent = text;
+      applyCmsVisibility(el, isBlankText(text));
     });
 
     root.querySelectorAll("[data-cms-html]").forEach((el) => {
       const path = el.getAttribute("data-cms-html");
       const val = getByPath(content, path);
       if (val == null) return;
-      el.innerHTML = String(val);
+      const html = String(val);
+      el.innerHTML = html;
+      applyCmsVisibility(el, isBlankText(html));
     });
 
     root.querySelectorAll("[data-cms-src]").forEach((el) => {
       const path = el.getAttribute("data-cms-src");
       const val = getByPath(content, path);
-      if (!val) return;
+      if (val == null || isBlankText(String(val))) return;
       el.setAttribute("src", assetPath(String(val)));
     });
 
     root.querySelectorAll("[data-cms-href]").forEach((el) => {
       const path = el.getAttribute("data-cms-href");
       const val = getByPath(content, path);
-      if (!val) return;
-      let v = String(val);
+      if (val == null) return;
+      if (isBlankText(String(val))) {
+        el.removeAttribute("href");
+        return;
+      }
+      let v = String(val).trim();
       if (el.hasAttribute("data-cms-mailto") && !v.startsWith("mailto:")) v = "mailto:" + v;
       el.setAttribute("href", v);
     });
@@ -148,29 +207,30 @@ window.CCFCContent = (function () {
     const pageTitlePath = document.body?.getAttribute("data-cms-title");
     if (pageTitlePath) {
       const pt = getByPath(content, pageTitlePath);
-      if (pt) document.title = `${pt} — ${brandName}`;
+      if (pt && !isBlankText(String(pt))) document.title = `${pt} — ${brandName}`;
     } else if (document.body?.hasAttribute("data-cms-home-title")) {
       const title = getByPath(content, "meta.siteTitle");
-      if (title) document.title = title;
+      if (title && !isBlankText(String(title))) document.title = title;
       const desc = getByPath(content, "meta.siteDescription");
       const meta = document.querySelector('meta[name="description"]');
-      if (desc && meta) meta.setAttribute("content", desc);
+      if (desc && !isBlankText(String(desc)) && meta) meta.setAttribute("content", desc);
     }
 
     const fav = getByPath(content, "brand.faviconUrl");
     const icon = document.querySelector('link[rel="icon"]');
-    if (fav && icon) icon.setAttribute("href", assetPath(fav));
+    if (fav && !isBlankText(String(fav)) && icon) icon.setAttribute("href", assetPath(fav));
 
+    // Visibility toggles must respect empty CMS labels on the same element
     root.querySelectorAll("[data-nav]").forEach((el) => {
       const key = el.getAttribute("data-nav");
       const visible = getByPath(content, `nav.visible.${key}`);
-      el.hidden = visible === false;
+      el.hidden = visible === false || isCmsTextBlank(el);
     });
 
     root.querySelectorAll("[data-section]").forEach((el) => {
       const key = el.getAttribute("data-section");
       const visible = getByPath(content, `sections.${key}`);
-      el.hidden = visible === false;
+      el.hidden = visible === false || isCmsTextBlank(el);
     });
   }
 
@@ -184,6 +244,8 @@ window.CCFCContent = (function () {
   function clearCache() {
     sessionStorage.removeItem(CACHE_KEY);
     sessionStorage.removeItem("ccfc_site_content_v1");
+    sessionStorage.removeItem("ccfc_site_content_v2");
+    sessionStorage.removeItem("ccfc_site_content_v3");
     content = null;
   }
 
@@ -194,6 +256,8 @@ window.CCFCContent = (function () {
     getByPath,
     setByPath,
     mergeDefaults,
+    isBlankText,
+    normalizeCmsString,
     clearCache,
     assetPath,
     get: () => content,
