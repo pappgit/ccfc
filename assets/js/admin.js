@@ -842,11 +842,11 @@
             "members",
             defaults?.members || {
               title: "Bli medlem",
-              lead: "Bli en del av Coventry City Scandinavia.",
+              lead: "Bli en del av Coventry City Scandinavia. Fyll inn skjemaet — vi godkjenner innmeldingen manuelt.",
               tag: "Medlemskap",
-              heading: "Sky Blues i Norden",
-              p1: "",
-              p2: "",
+              heading: "Støtt Sky Blues i Norden",
+              p1: "Som medlem støtter du supporterklubben og blir en del av fellesskapet rundt The Sky Blues i Skandinavia.",
+              p2: "Når vi har godkjent innmeldingen, får du en velkomstmail fra oss.",
               consentPrivacy: "Jeg godtar at klubben lagrer navn, e-post og mobil for medlemskapet.",
               consentMarketing: "Jeg ønsker e-post om arrangementer (valgfritt).",
             }

@@ -107,6 +107,15 @@
     },
     {
       "date": "2026-08-04",
+      "title": "Ryddigere medlemside",
+      "items": [
+        "Klarere oppsett med fordeler og innmeldingsskjema side om side",
+        "Tekst oppdatert til manuell godkjenning av innmelding",
+        "Samme polish på utmeldingssiden"
+      ]
+    },
+    {
+      "date": "2026-08-04",
       "title": "Medlemskap: godkjenning og HTML-e-post",
       "items": [
         "Innmelding går til godkjenning før medlemskap aktiveres",
