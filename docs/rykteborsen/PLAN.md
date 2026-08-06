@@ -1,15 +1,15 @@
 # Ryktebørsen — plan
 
-Meny og side som samler **kun Coventry City-overgangsrykter** (innkommende, utgående og bekreftede), med fokus på **lovlig kildebruk** og enkel drift på GitHub Pages + eksisterende stack.
+Meny og side som samler overgangsrykter styrt av **søkeord admin legger inn**, med fokus på **lovlig kildebruk** og enkel drift på GitHub Pages + eksisterende stack.
 
-**Status:** Fase 0 implementert (meny + manuell kuratering). Fase 1–2 ikke startet.  
-**Scope:** Kun Coventry / Sky Blues — ingen generell PL-gossip.
+**Status:** Fase 0 + Fase 1 (RSS via søkeord/kilder i admin) implementert. Fase 2 ikke startet.  
+**Scope:** Kun treff som matcher admin-definerte søkeord (standard: Coventry-relatert).
 
 ## Mål
 
 - Ny meny: **Ryktebørsen** (`rykteborsen.html`)
-- Vise **kun Coventry-relaterte** rykter med kilde, tidspunkt og lenke til originalen
-- Hard filter: tittel/beskrivelse/kategori må treffe Coventry (se under)
+- Vise rykter som treffer **admin-styrte søkeord**, med kilde, tidspunkt og lenke til originalen
+- Soft filter via søkeord (ikke hardkodet kun til ett lag — men default er Coventry)
 - Unngå ulovlig scraping / republisering av fullartikler
 - Passe inn i eksisterende mønster (statisk HTML + JS, CMS-tekster, changelog)
 
@@ -25,15 +25,16 @@ Meny og side som samler **kun Coventry City-overgangsrykter** (innkommende, utg�
 
 **Praksis for oss:** Vis **overskrift + 1–2 setninger (fra feed) + kilde + lenke**. Aldri full artikkeltekst. Alltid `rel="noopener"` og tydelig «Les hos [kilde]».
 
-## Coventry-filter (obligatorisk)
+## Søkeord-filter (obligatorisk for auto-henting)
 
-Alle automatiske treff **må** treffe minst ett av:
+Admin styrer listen under **Admin → Ryktebørsen → Søkeord** (lagres i Supabase `site_settings` / `rumor_keywords`).
 
-- Nøkkelord i tittel/beskrivelse: `Coventry`, `Sky Blues`, `CCFC`, `CBS Arena`
-- Kategori/tag fra kilden: f.eks. Guardian `Coventry City`
-- (Senere) spillernavn fra en Coventry-watchlist (tropp + ryktede targets)
+- Standard ved første last: `Coventry`, `Sky Blues`, `CCFC`, `CBS Arena`
+- Ett ord/uttrykk per linje
+- Automatiske treff **må** treffe minst ett søkeord i tittel eller beskrivelse (case-insensitive)
+- Ingen treff → ikke vis
 
-Ingen treff → ikke vis. Generell BBC-/Sky-gossip uten Coventry-nevnelse skal **ikke** inn.
+Manuelle rykter (fase 0) legges inn uavhengig, men bør følge samme scope.
 
 ## Anbefalte kilder (kun Coventry)
 
@@ -123,22 +124,19 @@ flowchart TB
 3. Admin-felter for sidetekst i `admin.js` `CONTENT_SECTIONS`
 4. Data: `assets/data/rumors.json` fallback + Supabase `rumor_posts` (`20260806120000_rumor_posts.sql`)
 5. Admin-panel «Ryktebørsen»: tittel, korttekst, kilde, URL, tag, publisert
-6. Oppdatert `changelog.json`
+6. **Søkeord-felt** i admin (lagres i `site_settings.rumor_keywords`)
+7. Oppdatert `changelog.json`
 
 **Drift:** Kjør migrasjonen i Supabase før admin-CRUD virker. Uten tabell faller forsiden tilbake til tom `rumors.json`.
 
-### Fase 1 — Automatisk Coventry-RSS (anbefalt neste)
+### Fase 1 — Automatisk RSS via søkeord/kilder ✅
 
-1. Script `scripts/update-rumors.mjs` (node, som fixtures)
-2. GitHub Action (oftere i transfervindu)
-3. **Primærkilde:** Coventry Telegraph football RSS
-4. **Supplement:** Guardian transfer-window RSS + BBC Coventry-team RSS
-5. Hard **Coventry-filter** på alle treff (se over)
-6. Lagre kun: `title`, `summary` (trimmet), `source`, `url`, `publishedAt`, `tag`
-7. Dedup på URL; hopp over non-transfer hvis ønskelig (nøkkelord: transfer, rumour, sign, deal, loan)
-8. Disclaimer + attribusjon (BBC: «From BBC Sport»)
-
-**Sky/BBC generelle feeds** er lav prioritet — for lite Coventry-signal uten filterstøy.
+1. Script `scripts/update-rumors.mjs`
+2. GitHub Action `.github/workflows/update-rumors.yml`
+3. Admin: søkeord + RSS-kilder (`rumor_keywords`, `rumor_sources`)
+4. Filter: admin-søkeord + transfer-kontekstord
+5. Skriver `assets/data/rumors.json`
+6. Frontend: overskrift som lenke ut + manuelle Supabase-rykter mergjet inn
 
 ### Fase 2 — Strukturert «børs» (valgfritt)
 
@@ -188,6 +186,6 @@ flowchart TB
 
 ## Anbefalt neste steg
 
-1. **Fase 0 (ferdig):** Admin legger kun inn Coventry-rykter manuelt.  
-2. **Fase 1:** Start med **Coventry Telegraph RSS** + hard Coventry-filter på Guardian transfer-feed.  
-3. Sky/BBC generell gossip: dropp eller streng filter — for lite Coventry-signal.
+1. **Fase 0 (ferdig):** Manuell ryktebørs + **søkeord i admin**.  
+2. **Fase 1:** RSS-henting som filtrerer på admin-søkeordene (start med Coventry Telegraph).  
+3. Sky/BBC generell gossip: bare treff som matcher søkeordene.

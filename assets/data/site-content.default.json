@@ -83,11 +83,10 @@
   },
   "rumorsPage": {
     "title": "Ryktebørsen",
-    "lead": "Overgangsrykter og spekulasjon — alltid med kilde og lenke til originalen.",
+    "lead": "Overskrifter om Coventry-overganger — klikk for å lese saken hos kilden.",
     "disclaimer": "Rykter er spekulasjon, ikke bekreftede nyheter. Vi publiserer korte utdrag med kildehenvisning og lenke til originalen — ikke fullartikler.",
     "empty": "Ingen rykter publisert ennå. Kom tilbake i transfervinduet."
   },
-
   "about": {
     "title": "Om oss",
     "lead": "Supporterklubben for Coventry City-fans i Skandinavia.",

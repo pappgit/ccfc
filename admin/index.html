@@ -365,9 +365,57 @@
         <section class="admin-panel" id="panel-rumors">
           <h1>Ryktebørsen</h1>
           <p class="lead">
-            Legg inn korte rykter med kilde og lenke til originalen. Ikke lim inn fullartikler —
-            kun egen korttekst og deep link. Merk som rykte, bekreftet eller avvist.
+            Styrt av søkeord og RSS-kilder under: automatisk henting plukker treff,
+            og du kan også legge inn rykter manuelt. Visning = overskrift + lenke ut.
           </p>
+
+          <div class="admin-card">
+            <h2 style="margin: 0 0 0.5rem">Søkeord</h2>
+            <p style="color: var(--muted); margin-bottom: 0.85rem; font-size: 0.9rem">
+              Ett søkeord eller uttrykk per linje. Automatisk henting tar kun med saker som
+              treffer minst ett ord (i tittel eller tekst). Eksempel: Coventry, Sky Blues.
+            </p>
+            <form id="rumor-keywords-form" class="admin-form">
+              <label>
+                Søkeord for Ryktebørsen
+                <textarea
+                  name="keywords"
+                  id="rumor-keywords"
+                  rows="6"
+                  placeholder="Coventry&#10;Sky Blues&#10;CCFC"
+                  spellcheck="false"
+                ></textarea>
+              </label>
+              <div class="row">
+                <button class="btn btn--sky" type="submit" id="rumor-keywords-save">Lagre søkeord</button>
+              </div>
+              <p class="admin-msg" id="rumor-keywords-msg" hidden></p>
+            </form>
+          </div>
+
+          <div class="admin-card">
+            <h2 style="margin: 0 0 0.5rem">Nyhetskilder (RSS)</h2>
+            <p style="color: var(--muted); margin-bottom: 0.85rem; font-size: 0.9rem">
+              Én kilde per linje: <code>Navn | https://…/rss.xml</code>.
+              Vi henter kun overskrift + kort tekst + lenke (ikke fullartikler).
+            </p>
+            <form id="rumor-sources-form" class="admin-form">
+              <label>
+                RSS-kilder
+                <textarea
+                  name="sources"
+                  id="rumor-sources"
+                  rows="6"
+                  placeholder="Coventry Telegraph | https://www.coventrytelegraph.net/sport/football/rss.xml&#10;Guardian Transfer | https://www.theguardian.com/football/transfer-window/rss"
+                  spellcheck="false"
+                ></textarea>
+              </label>
+              <div class="row">
+                <button class="btn btn--sky" type="submit" id="rumor-sources-save">Lagre kilder</button>
+              </div>
+              <p class="admin-msg" id="rumor-sources-msg" hidden></p>
+            </form>
+          </div>
 
           <div class="admin-card">
             <div class="row" style="justify-content: space-between; align-items: center; margin-bottom: 0.75rem">
@@ -609,6 +657,6 @@
     <script src="../assets/js/vendor/supabase.js?v=2.112.0"></script>
     <script src="../assets/js/supabase-config.js"></script>
     <script src="../assets/js/content.js?v=20260806-empty-cms"></script>
-    <script src="../assets/js/admin.js?v=20260806-about-page"></script>
+    <script src="../assets/js/admin.js?v=20260806-rumor-about"></script>
   </body>
 </html>

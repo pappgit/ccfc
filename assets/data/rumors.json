@@ -1,4 +1,287 @@
 {
   "updated": "2026-08-06",
-  "posts": []
+  "keywords": [
+    "Coventry",
+    "Sky Blues",
+    "CCFC",
+    "CBS Arena"
+  ],
+  "context_terms": [
+    "transfer",
+    "rumour",
+    "rumor",
+    "gossip",
+    "sign",
+    "signing",
+    "deal",
+    "loan",
+    "bid",
+    "linked",
+    "target",
+    "move",
+    "join",
+    "agreed"
+  ],
+  "sources": [
+    {
+      "name": "Coventry Telegraph",
+      "url": "https://www.coventrytelegraph.net/sport/football/rss.xml"
+    },
+    {
+      "name": "Guardian Transfer",
+      "url": "https://www.theguardian.com/football/transfer-window/rss"
+    }
+  ],
+  "posts": [
+    {
+      "id": "coventry-city-transfer-news-25-7m-deal-agreed-mykhailo-mudry",
+      "date": "2026-08-06",
+      "title": "Coventry City transfer news: £25.7m deal agreed, Mykhailo Mudryk updates, Gustavo Hamer latest",
+      "summary": "All the latest Coventry City transfer news and rumours with updates on Mykhailo Mudryk, Gustavo Hamer, Tim Iroegbunam and much more",
+      "source_name": "Coventry Telegraph",
+      "source_url": "https://www.coventrytelegraph.net/sport/football/transfer-news/coventry-city-transfer-news-live-34405991",
+      "tag": "rykte",
+      "auto": true
+    },
+    {
+      "id": "coventry-city-transfer-news-live-mudryk-latest-deal-agreed-u",
+      "date": "2026-08-06",
+      "title": "Coventry City transfer news LIVE: Mudryk latest, deal 'agreed', urgency needed with £30m striker",
+      "summary": "All the latest Coventry City transfer news and rumours with updates on Mykhailo Mudryk, Caleb Yirenkyim, Liam Delap, Gustavo Hamer, Tim Iroegbunam and much more",
+      "source_name": "Coventry Telegraph",
+      "source_url": "https://www.coventrytelegraph.net/sport/football/transfer-news/coventry-city-transfer-news-live-34412528",
+      "tag": "rykte",
+      "auto": true
+    },
+    {
+      "id": "it-still-hurts-coventry-city-s-one-time-record-transfer-s-bi",
+      "date": "2026-08-06",
+      "title": "'It still hurts' - Coventry City's one-time record transfer's biggest disappointment and how club can beat the drop",
+      "summary": "Coventry City feature from CoventryLive as former goalkeeper Chris Kirkland reflects on the pain of being relegated in 2001 and how he couldn't be happier for the Sky Blues being back in the Premier League",
+      "source_name": "Coventry Telegraph",
+      "source_url": "https://www.coventrytelegraph.net/sport/football/football-news/it-still-hurts-coventry-citys-34268212",
+      "tag": "rykte",
+      "auto": true
+    },
+    {
+      "id": "coventry-city-break-club-record-transfer-again-as-agreement-",
+      "date": "2026-08-05",
+      "title": "Coventry City break club-record transfer again as 'agreement reached' for World Cup star",
+      "summary": "Coventry City are set to break their own transfer record for the fourth time this summer just one day after signing Carl Rushworth",
+      "source_name": "Coventry Telegraph",
+      "source_url": "https://www.coventrytelegraph.net/sport/football/transfer-news/coventry-city-transfer-caleb-yirenkyi-34407371",
+      "tag": "rykte",
+      "auto": true
+    },
+    {
+      "id": "xabi-alonso-reveals-mykhailo-mudryk-stance-amid-coventry-cit",
+      "date": "2026-08-05",
+      "title": "Xabi Alonso reveals Mykhailo Mudryk stance amid Coventry City transfer claim",
+      "summary": "Frank Lampard is said to be interested in signing Mudryk from Chelsea",
+      "source_name": "Coventry Telegraph",
+      "source_url": "https://www.coventrytelegraph.net/sport/football/transfer-news/xabi-alonso-reveals-mykhailo-mudryk-34406925",
+      "tag": "rykte",
+      "auto": true
+    },
+    {
+      "id": "transfer-roundup-coventry-to-make-yirenkyi-record-signing-pa",
+      "date": "2026-08-05",
+      "title": "Transfer roundup: Coventry to make Yirenkyi record signing, Palace swoop for Gozo",
+      "summary": "Promoted side closing on £23m deal with Nordsjælland Palace target USA’s Zavier Gozo, hold firm on Wharton Coventry are set to break their transfer record for the fourth time in this window after agreeing a £23m fee with Danish side Nordsj…",
+      "source_name": "Guardian Transfer",
+      "source_url": "https://www.theguardian.com/football/2026/aug/05/crystal-palace-ready-to-swoop-for-us-star-zavier-gozo-and-stand-firm-on-wharton",
+      "tag": "rykte",
+      "auto": true
+    },
+    {
+      "id": "sheffield-united-braced-for-second-bid-for-gus-hamer-as-ball",
+      "date": "2026-08-04",
+      "title": "Sheffield United braced for second bid for Gus Hamer as ball in Coventry City's court",
+      "summary": "Coventry City transfer news from CoventryLive as the Sky Blues have opening bid for former favourite turned down",
+      "source_name": "Coventry Telegraph",
+      "source_url": "https://www.coventrytelegraph.net/sport/football/transfer-news/coventry-transfers-gustavo-hamer-sheffield-34404103",
+      "tag": "rykte",
+      "auto": true
+    },
+    {
+      "id": "coventry-city-discover-mykhailo-mudryk-fate-as-chelsea-pick-",
+      "date": "2026-08-04",
+      "title": "Coventry City discover Mykhailo Mudryk fate as Chelsea 'pick club to strike deal with'",
+      "summary": "Coventry City are claimed to be one of several clubs that have approached Chelsea regarding a deal for Mykhailo Mudryk, who is now free to play football again",
+      "source_name": "Coventry Telegraph",
+      "source_url": "https://www.coventrytelegraph.net/sport/football/transfer-news/mykhailo-mudryk-chelsea-coventry-transfer-34403774",
+      "tag": "rykte",
+      "auto": true
+    },
+    {
+      "id": "proud-brighton-make-carl-rushworth-admission-in-parting-mess",
+      "date": "2026-08-04",
+      "title": "'Proud' Brighton make Carl Rushworth admission in parting message",
+      "summary": "Coventry City transfer news from CoventryLive as Brighton's sporting director explains Carl Rushworth decision",
+      "source_name": "Coventry Telegraph",
+      "source_url": "https://www.coventrytelegraph.net/sport/football/football-news/coventry-city-transfers-carl-rushworth-34403010",
+      "tag": "rykte",
+      "auto": true
+    },
+    {
+      "id": "coventry-city-s-worst-kept-secret-but-best-statement-of-tran",
+      "date": "2026-08-04",
+      "title": "Coventry City's worst-kept secret but best statement of transfer intent",
+      "summary": "Coventry City comment from CoventryLive as Sky Blues reporter Andy Turner reflects on the end of a summer transfer saga and what it means for the football club",
+      "source_name": "Coventry Telegraph",
+      "source_url": "https://www.coventrytelegraph.net/sport/football/football-news/coventry-city-carl-rushworth-deal-34384776",
+      "tag": "rykte",
+      "auto": true
+    },
+    {
+      "id": "coventry-city-confirm-carl-rushworth-deal-as-frank-lampard-f",
+      "date": "2026-08-04",
+      "title": "Coventry City confirm Carl Rushworth deal as Frank Lampard finally gets his man",
+      "summary": "Coventry City transfer news from CoventryLive as the Sky Blues formally announce the signing of goalkeeper Carl Rushworth",
+      "source_name": "Coventry Telegraph",
+      "source_url": "https://www.coventrytelegraph.net/sport/football/transfer-news/coventry-city-confirm-carl-rushworth-34385114",
+      "tag": "rykte",
+      "auto": true
+    },
+    {
+      "id": "carl-rushworth-on-emotions-of-finally-joining-coventry-city-",
+      "date": "2026-08-04",
+      "title": "Carl Rushworth on emotions of finally joining Coventry City, finding a club he calls home and love from the fans",
+      "summary": "Coventry City transfer news from CoventryLive as Carl Rushworth opens up on the emotions of finally becoming a permanent Sky Blues player",
+      "source_name": "Coventry Telegraph",
+      "source_url": "https://www.coventrytelegraph.net/sport/football/transfer-news/coventry-city-transfers-carl-rushworth-34401049",
+      "tag": "rykte",
+      "auto": true
+    },
+    {
+      "id": "i-played-with-mykhailo-mudryk-coventry-city-could-be-getting",
+      "date": "2026-08-04",
+      "title": "I played with Mykhailo Mudryk – Coventry City could be getting star with world class potential",
+      "summary": "Frank Lampard is reportedly interested in signing Mykhailo Mudryk from his former club Chelsea",
+      "source_name": "Coventry Telegraph",
+      "source_url": "https://www.coventrytelegraph.net/sport/football/football-news/coventry-city-mykhailo-mudryk-transfer-34399800",
+      "tag": "rykte",
+      "auto": true
+    },
+    {
+      "id": "coventry-city-transfers-every-deal-done-so-far-rated",
+      "date": "2026-08-04",
+      "title": "Coventry City transfers: Every deal done so far rated",
+      "summary": "Coventry City's business so far in review as Frank Lampard heads into the final few weeks of the summer transfer window",
+      "source_name": "Coventry Telegraph",
+      "source_url": "https://www.coventrytelegraph.net/sport/football/transfer-news/coventry-city-transfers-every-deal-34397610",
+      "tag": "rykte",
+      "auto": true
+    },
+    {
+      "id": "frank-lampard-hails-huge-signing-as-coventry-seal-record-22-",
+      "date": "2026-08-04",
+      "title": "Frank Lampard hails ‘huge’ signing as Coventry seal record £22.5m Rushworth deal",
+      "summary": "The 25-year-old excelled during promotion campaign Brighton goalkeeper completes permanent switch Coventry have completed the club-record £22.5m signing of goalkeeper Carl Rushworth from Brighton as Frank Lampard’s side continue to prepare…",
+      "source_name": "Guardian Transfer",
+      "source_url": "https://www.theguardian.com/football/2026/aug/04/frank-lampard-coventry-brighton-carl-rushworth-transfer-roundup",
+      "tag": "rykte",
+      "auto": true
+    },
+    {
+      "id": "football-transfer-rumours-chelsea-s-mudryk-to-reunite-with-l",
+      "date": "2026-08-04",
+      "title": "Football transfer rumours: Chelsea’s Mudryk to reunite with Lampard at Coventry?",
+      "summary": "Today’s rumours broke you once, made you strong Cody Gakpo ’s performances went south last season and now his entire personage might follow, with Tottenham Hotspur reportedly preparing an offer in the region of £70m to bring him to north L…",
+      "source_name": "Guardian Transfer",
+      "source_url": "https://www.theguardian.com/football/2026/aug/04/football-transfer-rumour-mill-chelsea-mykhailo-mudryk-lampard-coventry",
+      "tag": "rykte",
+      "auto": true
+    },
+    {
+      "id": "coventry-city-transfer-notebook-as-everton-midfielder-and-fe",
+      "date": "2026-08-03",
+      "title": "Coventry City transfer notebook as Everton midfielder and Fenerbahce striker linked amid Markelo exit latest",
+      "summary": "Coventry City transfer news from CoventryLive as we bring you a round-up of the latest speculation, rumours and gossip",
+      "source_name": "Coventry Telegraph",
+      "source_url": "https://www.coventrytelegraph.net/sport/football/transfer-news/coventry-city-transfer-notebook-everton-34396170",
+      "tag": "rykte",
+      "auto": true
+    },
+    {
+      "id": "coventry-city-express-interest-in-chelsea-star-mykhailo-mudr",
+      "date": "2026-08-03",
+      "title": "Coventry City 'express interest' in Chelsea star Mykhailo Mudryk after successful drugs ban appeal",
+      "summary": "Coventry City transfer news from CoventryLive as Frank Lampard is linked with forgotten Chelsea star who is free to play again after drugs ban",
+      "source_name": "Coventry Telegraph",
+      "source_url": "https://www.coventrytelegraph.net/sport/football/transfer-news/coventry-transfers-chelsea-mykhailo-mudryk-34395604",
+      "tag": "rykte",
+      "auto": true
+    },
+    {
+      "id": "coventry-city-sign-son-of-one-of-frank-lampard-s-former-engl",
+      "date": "2026-08-03",
+      "title": "Coventry City sign son of one of Frank Lampard's former England teammates",
+      "summary": "Coventry City transfer news from CoventryLive as the Sky Blues boost the club's Under-21s squad with a number of new faces including the son of former Premier League goalkeeper John Ruddy",
+      "source_name": "Coventry Telegraph",
+      "source_url": "https://www.coventrytelegraph.net/sport/football/transfer-news/coventry-city-sign-son-one-34394311",
+      "tag": "rykte",
+      "auto": true
+    },
+    {
+      "id": "gus-hamer-to-coventry-city-transfer-latest-chris-wilder-make",
+      "date": "2026-08-02",
+      "title": "Gus Hamer to Coventry City transfer latest: Chris Wilder makes guarded admission",
+      "summary": "Sheffield United manager addresses Gus Hamer Coventry return talk",
+      "source_name": "Coventry Telegraph",
+      "source_url": "https://www.coventrytelegraph.net/sport/football/transfer-news/gus-hamer-transfer-coventry-sheffield-34390989",
+      "tag": "rykte",
+      "auto": true
+    },
+    {
+      "id": "what-frank-lampard-thinks-of-high-level-gustavo-hamer-after-",
+      "date": "2026-08-01",
+      "title": "What Frank Lampard thinks of 'high level' Gustavo Hamer after he studied him for a week",
+      "summary": "Coventry City news from CoventryLive as we take a look at what Frank Lampard thinks of Sky Blues reported transfer target Gustavo Hamer",
+      "source_name": "Coventry Telegraph",
+      "source_url": "https://www.coventrytelegraph.net/sport/football/football-news/frank-lampard-gustavo-hamer-transfer-34388644",
+      "tag": "rykte",
+      "auto": true
+    },
+    {
+      "id": "gus-hamer-open-to-coventry-city-return-as-favourite-faces-sh",
+      "date": "2026-08-01",
+      "title": "Gus Hamer ‘open’ to Coventry City return as favourite faces Sheffield United fans",
+      "summary": "Coventry City transfer news from CoventryLive as Hamer addresses Sheffield United fans in Germany",
+      "source_name": "Coventry Telegraph",
+      "source_url": "https://www.coventrytelegraph.net/sport/football/transfer-news/coventry-city-gustavo-hamer-sheffield-34388239",
+      "tag": "rykte",
+      "auto": true
+    },
+    {
+      "id": "frank-lampard-s-dream-next-coventry-city-transfer-after-22-5",
+      "date": "2026-08-01",
+      "title": "Frank Lampard's dream next Coventry City transfer after £22.5m deal as England star joins",
+      "summary": "Sky Blues boss Frank Lampard could be reunited with a player he gave his big break to",
+      "source_name": "Coventry Telegraph",
+      "source_url": "https://www.coventrytelegraph.net/sport/football/transfer-news/coventry-city-transfer-news-tomori-34378163",
+      "tag": "rykte",
+      "auto": true
+    },
+    {
+      "id": "coventry-city-transfer-notebook-hamer-latest-sorba-thomas-in",
+      "date": "2026-07-31",
+      "title": "Coventry City transfer notebook: Hamer latest, Sorba Thomas 'interest' and Swansea 'double swoop'",
+      "summary": "Coventry City transfer news from CoventryLive as we take a look at the latest reports and speculation linking the Sky Blues with various targets",
+      "source_name": "Coventry Telegraph",
+      "source_url": "https://www.coventrytelegraph.net/sport/football/transfer-news/coventry-city-transfer-notebook-hamer-34381452",
+      "tag": "rykte",
+      "auto": true
+    },
+    {
+      "id": "bring-him-home-frank-lampard-sent-transfer-message-by-covent",
+      "date": "2026-07-30",
+      "title": "'Bring him home' - Frank Lampard sent transfer message by Coventry City fans",
+      "summary": "Gustavo Hamer left the Sky Blues in 2023 to join then-Premier League side Sheffield United - he has been linked with a return",
+      "source_name": "Coventry Telegraph",
+      "source_url": "https://www.coventrytelegraph.net/sport/football/transfer-news/coventry-city-hamer-transfer-return-34378400",
+      "tag": "rykte",
+      "auto": true
+    }
+  ]
 }
