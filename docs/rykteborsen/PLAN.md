@@ -1,14 +1,15 @@
 # Ryktebørsen — plan
 
-Meny og side som samler overgangsrykter og sladder relevant for Coventry City / Championship / Premier League, med fokus på **lovlig kildebruk** og enkel drift på GitHub Pages + eksisterende stack.
+Meny og side som samler **kun Coventry City-overgangsrykter** (innkommende, utgående og bekreftede), med fokus på **lovlig kildebruk** og enkel drift på GitHub Pages + eksisterende stack.
 
-**Status:** Fase 0 implementert (meny + manuell kuratering). Fase 1–2 ikke startet.
+**Status:** Fase 0 implementert (meny + manuell kuratering). Fase 1–2 ikke startet.  
+**Scope:** Kun Coventry / Sky Blues — ingen generell PL-gossip.
 
 ## Mål
 
 - Ny meny: **Ryktebørsen** (`rykteborsen.html`)
-- Vise rykter med tydelig kilde, tidspunkt og lenke til originalen
-- Filtrere/prioritere Coventry-relaterte treff, men tillate bredere Championship/PL-rykter
+- Vise **kun Coventry-relaterte** rykter med kilde, tidspunkt og lenke til originalen
+- Hard filter: tittel/beskrivelse/kategori må treffe Coventry (se under)
 - Unngå ulovlig scraping / republisering av fullartikler
 - Passe inn i eksisterende mønster (statisk HTML + JS, CMS-tekster, changelog)
 
@@ -24,17 +25,32 @@ Meny og side som samler overgangsrykter og sladder relevant for Coventry City / 
 
 **Praksis for oss:** Vis **overskrift + 1–2 setninger (fra feed) + kilde + lenke**. Aldri full artikkeltekst. Alltid `rel="noopener"` og tydelig «Les hos [kilde]».
 
-## Anbefalte kilder (lovlige nok til aggregering)
+## Coventry-filter (obligatorisk)
 
-### A. Gratis / lav risiko (fase 1)
+Alle automatiske treff **må** treffe minst ett av:
 
-| Kilde | Hva | Hvorfor OK | Merknad |
-| --- | --- | --- | --- |
-| **BBC Sport** (football RSS) | Generelle fotballnyheter; gossip-artikler dukker ofte opp som egne poster | BBC publiserer RSS og tillater headline + sammendrag + lenke med attribusjon («From BBC Sport»), uten BBC-logo | Feed: `https://feeds.bbci.co.uk/sport/football/rss.xml`. Filtrer på «gossip» / «transfer» / «Coventry» i tittel/beskrivelse |
-| **BBC Football Gossip** (side) | Daglig rundtur av rykter | Best brukt via RSS-treff / manuell kuratering — **ikke** scrape hele spalten | Lenk til dagens gossip-artikkel; eventuelt admin-utdrag |
-| **The Guardian Football** RSS | Mer pålitelige overgangsreportasjer | Offentlig RSS, lenke + kort utdrag | Mindre «sladder», mer journalistikk — bra for troverdighet |
-| **Sky Blues Trust / supporterkanaler** (hvis RSS) | Lokal vinkel | Ofte åpne feeds fra fan-sider | Sjekk ToS per kilde før aktivering |
-| **ccfc.co.uk** (offisiell klubb) | Bekreftede overganger / klubbuttalelser | Offisiell kilde; lenk heller enn å speile | Skille «rykte» vs «bekreftet» i UI |
+- Nøkkelord i tittel/beskrivelse: `Coventry`, `Sky Blues`, `CCFC`, `CBS Arena`
+- Kategori/tag fra kilden: f.eks. Guardian `Coventry City`
+- (Senere) spillernavn fra en Coventry-watchlist (tropp + ryktede targets)
+
+Ingen treff → ikke vis. Generell BBC-/Sky-gossip uten Coventry-nevnelse skal **ikke** inn.
+
+## Anbefalte kilder (kun Coventry)
+
+### A. Gratis / lav risiko (fase 1) — prioritert rekkefølge
+
+| Prioritet | Kilde | URL | Hvorfor | Merknad |
+| --- | --- | --- | --- | --- |
+| **1** | **Coventry Telegraph / CoventryLive** Football RSS | `https://www.coventrytelegraph.net/sport/football/rss.xml` | Allerede Coventry-fokus; mye transfer-LIVE og rykter | Beste gratis kilde for oss. Bruk kun tittel + kort beskrivelse + lenke |
+| **1b** | CoventryLive Football News RSS | `https://www.coventrytelegraph.net/sport/football/football-news/rss.xml` | Samme familie, litt smalere | Filtrer på transfer/rumour/sign/deal i tittel |
+| **2** | **Guardian Transfer window** RSS | `https://www.theguardian.com/football/transfer-window/rss` | Offentlig RSS; hadde Coventry-treff i test | Filtrer på Coventry-nøkkelord / kategori |
+| **3** | Guardian Football RSS | `https://www.theguardian.com/football/rss` | Offentlig RSS | Samme Coventry-filter |
+| **4** | **BBC Coventry City** team-feed | `https://feeds.bbci.co.uk/sport/football/teams/coventry-city/rss.xml` | Offisiell BBC team-feed + RSS-lisens | I praksis ofte podkast/features — lite rykter; behold som supplement |
+| **5** | BBC Sport Football RSS | `https://feeds.bbci.co.uk/sport/football/rss.xml` | Lovlig RSS med attribusjon | **Kun** treff med Coventry-filter (generell feed har ofte 0 Coventry-hits) |
+| **6** | Sky Sports Football RSS | `https://www.skysports.com/rss/11095` | Fungerer teknisk; transfer-innslag finnes | **Kun** Coventry-filter; uklare RSS-vilkår → bare tittel + lenke |
+| — | **ccfc.co.uk** | (lenke manuelt / senere) | Bekreftede overganger | Merk som `Bekreftet` i UI |
+
+**Ikke bruk generelle Sky-/BBC-gossip-feeder uten Coventry-filter** — de gir nesten bare PL-sladder om andre klubber.
 
 ### B. Betalte API-er (fase 2, valgfritt)
 
@@ -111,17 +127,18 @@ flowchart TB
 
 **Drift:** Kjør migrasjonen i Supabase før admin-CRUD virker. Uten tabell faller forsiden tilbake til tom `rumors.json`.
 
-### Fase 1 — Automatisk RSS-aggregat (Coventry-fokus)
+### Fase 1 — Automatisk Coventry-RSS (anbefalt neste)
 
 1. Script `scripts/update-rumors.mjs` (node, som fixtures)
-2. GitHub Action (f.eks. 2–4 ganger daglig i transfervindu, ellers daglig)
-3. Hent BBC Football RSS (+ evt. Guardian)
-4. Filtrer treff: `Coventry`, `Sky Blues`, kjente spillernavn fra en enkel watchlist, eller «gossip»/«transfer»
-5. Lagre kun: `title`, `summary` (trimmet), `source`, `url`, `publishedAt`, `tags`
-6. Dedup på URL
-7. Vis disclaimer: «Aggregerte overskrifter med lenke til original. Vi republiserer ikke artikler.»
+2. GitHub Action (oftere i transfervindu)
+3. **Primærkilde:** Coventry Telegraph football RSS
+4. **Supplement:** Guardian transfer-window RSS + BBC Coventry-team RSS
+5. Hard **Coventry-filter** på alle treff (se over)
+6. Lagre kun: `title`, `summary` (trimmet), `source`, `url`, `publishedAt`, `tag`
+7. Dedup på URL; hopp over non-transfer hvis ønskelig (nøkkelord: transfer, rumour, sign, deal, loan)
+8. Disclaimer + attribusjon (BBC: «From BBC Sport»)
 
-**Lisens-krav i UI:** «From BBC Sport» der BBC er kilde; ingen BBC-logo.
+**Sky/BBC generelle feeds** er lav prioritet — for lite Coventry-signal uten filterstøy.
 
 ### Fase 2 — Strukturert «børs» (valgfritt)
 
@@ -171,4 +188,6 @@ flowchart TB
 
 ## Anbefalt neste steg
 
-Godkjenn **Fase 0** (meny + manuell/admin-kuratert ryktebørs). Deretter **Fase 1** med BBC (+ evt. Guardian) RSS filtrert på Coventry/overganger.
+1. **Fase 0 (ferdig):** Admin legger kun inn Coventry-rykter manuelt.  
+2. **Fase 1:** Start med **Coventry Telegraph RSS** + hard Coventry-filter på Guardian transfer-feed.  
+3. Sky/BBC generell gossip: dropp eller streng filter — for lite Coventry-signal.
