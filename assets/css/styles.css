@@ -1058,6 +1058,52 @@ p {
   color: rgba(255, 255, 255, 0.45);
 }
 
+@media (max-width: 720px) {
+  .site-footer {
+    padding: 0.85rem 0;
+  }
+
+  .site-footer .wrap {
+    flex-wrap: nowrap;
+    gap: 0.75rem;
+  }
+
+  .footer-start {
+    flex: 1;
+    min-width: 0;
+    flex-wrap: nowrap;
+    gap: 0.65rem;
+  }
+
+  .site-footer strong {
+    font-size: 0.78rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+  }
+
+  .footer-meta {
+    flex-shrink: 1;
+    min-width: 0;
+    font-size: 0.68rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .site-footer p,
+  .footer-text {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-meta {
+    display: none;
+  }
+}
+
 /* —— Utility —— */
 .reveal {
   opacity: 0;
