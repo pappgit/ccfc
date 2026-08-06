@@ -2,6 +2,13 @@
   "entries": [
     {
       "date": "2026-08-06",
+      "title": "Nyhetsbilder viser toppen av bildet",
+      "items": [
+        "Bilder i nyhetslisten på forsiden beskjæres fra toppen, så hoder ikke kuttes bort"
+      ]
+    },
+    {
+      "date": "2026-08-06",
       "title": "Ryktebørsen oppdateres oftere",
       "items": [
         "Automatisk henting av rykter kjører hver time fra kl. 08 til 16 (UTC)",

@@ -832,6 +832,7 @@ p {
   height: auto;
   margin-top: 0.85rem;
   object-fit: cover;
+  object-position: center top;
   aspect-ratio: 16 / 9;
 }
 
