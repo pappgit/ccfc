@@ -2,11 +2,11 @@
  * Loads editable site content from Supabase (key: site) with local default fallback.
  * Applies to [data-cms], [data-cms-html], [data-cms-src], [data-cms-href].
  *
- * Empty strings in the database fall back to defaults so admin fields match
- * what visitors see (HTML fallbacks were previously "stuck" when CMS had "").
+ * Missing keys fall back to defaults. Explicit empty strings are kept empty so
+ * admins can clear text (e.g. footer text under the title).
  */
 window.CCFCContent = (function () {
-  const CACHE_KEY = "ccfc_site_content_v2";
+  const CACHE_KEY = "ccfc_site_content_v3";
   let content = null;
 
   function getByPath(obj, path) {
@@ -23,7 +23,7 @@ window.CCFCContent = (function () {
     cur[parts[parts.length - 1]] = value;
   }
 
-  /** Merge remote CMS over defaults; blank strings fall back to default text. */
+  /** Merge remote CMS over defaults; missing keys use defaults, "" stays "". */
   function mergeDefaults(defaults, remote) {
     if (remote == null) return defaults;
     if (Array.isArray(defaults)) {
@@ -41,9 +41,6 @@ window.CCFCContent = (function () {
         if (!(key in out)) out[key] = remote[key];
       }
       return out;
-    }
-    if (typeof remote === "string" && remote.trim() === "" && typeof defaults === "string") {
-      return defaults;
     }
     return remote;
   }
@@ -118,14 +115,23 @@ window.CCFCContent = (function () {
       const path = el.getAttribute("data-cms");
       const val = getByPath(content, path);
       if (val == null) return;
-      el.textContent = String(val);
+      const text = String(val);
+      el.textContent = text;
+      // Intentional empty CMS text should not leave blank block spacing
+      if (el.tagName === "P" || el.tagName === "DIV" || el.tagName === "SPAN") {
+        el.hidden = text.trim() === "";
+      }
     });
 
     root.querySelectorAll("[data-cms-html]").forEach((el) => {
       const path = el.getAttribute("data-cms-html");
       const val = getByPath(content, path);
       if (val == null) return;
-      el.innerHTML = String(val);
+      const html = String(val);
+      el.innerHTML = html;
+      if (el.tagName === "P" || el.tagName === "DIV" || el.tagName === "SPAN") {
+        el.hidden = html.trim() === "";
+      }
     });
 
     root.querySelectorAll("[data-cms-src]").forEach((el) => {
@@ -184,6 +190,7 @@ window.CCFCContent = (function () {
   function clearCache() {
     sessionStorage.removeItem(CACHE_KEY);
     sessionStorage.removeItem("ccfc_site_content_v1");
+    sessionStorage.removeItem("ccfc_site_content_v2");
     content = null;
   }
 

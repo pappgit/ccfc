@@ -1,6 +1,14 @@
 {
   "entries": [
     {
+      "date": "2026-08-06",
+      "title": "Footer-tekst kan tømmes",
+      "items": [
+        "Du kan slette teksten under footertittelen uten at den kommer tilbake etter lagring",
+        "Tomme tekstfelt i admin beholder tom verdi på nettsiden"
+      ]
+    },
+    {
       "date": "2026-08-05",
       "title": "Slideshow viser spillernes hoder",
       "items": [

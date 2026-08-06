@@ -580,7 +580,7 @@
         : section.id === "sections"
           ? `<p style="color:var(--muted);margin-bottom:0.85rem;font-size:0.9rem">Slå av/på større blokker på nettsiden uten å slette innholdet.</p>`
           : section.id === "footer"
-            ? `<p style="color:var(--muted);margin-bottom:0.85rem;font-size:0.9rem">Tittel og tekst vises nederst på alle sider. Tomme felt fylles automatisk med standardtekst.</p>`
+            ? `<p style="color:var(--muted);margin-bottom:0.85rem;font-size:0.9rem">Tittel og tekst vises nederst på alle sider. La et felt stå tomt for å skjule den teksten.</p>`
             : ""
     }${section.fields
       .map((f) => {
