@@ -1,4 +1,6 @@
-# Innlogging (medlemskonto)
+# Innlogging (medlemskonto) — PARKERT
+
+> **Status 2026-08-06:** Ut satt. Se [`LOGG.md`](./LOGG.md) for filinventar og hvordan hente tilbake commit `83ff03e`.
 
 Enkel e-post/passord-innlogging for ~200 brukere. Minimal persondata.
 
@@ -11,7 +13,7 @@ Enkel e-post/passord-innlogging for ~200 brukere. Minimal persondata.
 | `public.members.user_id` | Valgfri kobling til foreningsregister |
 | `public.admins` | Uendret — kun admin-tilgang |
 
-## Flyt
+## Flyt (når gjenopptatt)
 
 1. Admin inviterer (Admin → Medlemmer, eller Supabase Dashboard → Auth → Users)
 2. Bruker setter passord via e-postlenke
@@ -19,10 +21,8 @@ Enkel e-post/passord-innlogging for ~200 brukere. Minimal persondata.
 
 ## Migrering / deploy
 
-1. Kjør `supabase/migrations/20260806200000_profiles.sql` i SQL Editor
-2. Deploy edge function: `supabase functions deploy invite-login-user`
-3. Under Authentication → URL Configuration: legg til redirect-URL-er for `login.html` og `min-side.html` (inkl. glemt-passord)
+Se [`KJOR-MIGRERING.md`](./KJOR-MIGRERING.md) og full filiste i [`LOGG.md`](./LOGG.md).
 
 ## Personvern
 
-Kontosiden lagrer e-post (Auth) og valgfritt visningsnavn. Se `/personvern.html`.
+Kontosiden lagrer e-post (Auth) og valgfritt visningsnavn. Personvernside var `/personvern.html` i parkert implementasjon.

@@ -14,7 +14,7 @@
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="assets/css/styles.css?v=20260806-login" />
+    <link rel="stylesheet" href="assets/css/styles.css?v=20260806-nav" />
     <link rel="icon" href="assets/img/logo.jpg" type="image/jpeg" />
   </head>
   <body data-cms-title="members.title">
@@ -38,14 +38,6 @@
           <a href="rykteborsen.html" data-nav="rumors" data-cms="nav.rumors">Ryktebørsen</a>
           <a href="medlem.html" data-nav="members" data-cms="nav.members" aria-current="page">Medlem</a>
           <a href="om-oss.html" data-nav="about" data-cms="nav.about">Om oss</a>
-          <a
-            href="login.html"
-            data-nav="account"
-            data-cms="nav.account"
-            data-href-guest="login.html"
-            data-href-authed="min-side.html"
-            >Logg inn</a
-          >
         </nav>
       </div>
     </header>
@@ -131,7 +123,7 @@
                 <label class="member-check">
                   <input type="checkbox" name="consent_privacy" required />
                   <span data-cms="members.consentPrivacy"
-                    >Jeg godtar at klubben lagrer navn, e-post og mobil for medlemskapet (se personvernerklæringen).</span
+                    >Jeg godtar at klubben lagrer navn, e-post og mobil for medlemskapet.</span
                   >
                 </label>
                 <label class="member-check">
@@ -141,9 +133,6 @@
                   >
                 </label>
               </div>
-              <p class="account-privacy" style="margin-top: 0.5rem">
-                <a href="personvern.html">Personvernerklæring</a>
-              </p>
               <div class="cta-row">
                 <button class="btn btn--sky" type="submit" id="member-join-submit">Send innmelding</button>
               </div>
@@ -161,14 +150,13 @@
           <div class="footer-meta" data-cms="footer.tagline">Sky blue forever</div>
           <p data-cms="footer.text">Sky Blues supporterklubb for Skandinavia.</p>
         </div>
-        <a class="footer-login" href="admin/" data-section="footerAdmin" data-cms="footer.adminLabel" hidden>Admin</a>
+        <a class="footer-login" href="admin/" data-section="footerAdmin" data-cms="footer.adminLabel">Admin</a>
       </div>
     </footer>
 
     <script src="assets/js/vendor/supabase.js"></script>
     <script src="assets/js/supabase-config.js"></script>
-<script src="assets/js/content.js?v=20260806-login"></script>
-    <script src="assets/js/auth.js?v=20260806-login"></script>
+<script src="assets/js/content.js?v=20260806-nav-merge"></script>
     <script src="assets/js/main.js"></script>
     <script src="assets/js/members.js"></script>
   </body>

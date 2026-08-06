@@ -11,7 +11,7 @@
  * 6. data-nav / data-section: skjules også når tilknyttet CMS-tekst er tom
  */
 window.CCFCContent = (function () {
-  const CACHE_KEY = "ccfc_site_content_v6";
+  const CACHE_KEY = "ccfc_site_content_v5";
   let content = null;
 
   /** Elements that should not leave empty visual shells when CMS text is blank. */
@@ -281,8 +281,6 @@ window.CCFCContent = (function () {
 
     root.querySelectorAll("[data-section]").forEach((el) => {
       const key = el.getAttribute("data-section");
-      // Admin footer link is gated by auth.js (admins only).
-      if (key === "footerAdmin") return;
       const visible = getByPath(content, `sections.${key}`);
       const linkedPath = SECTION_TEXT_PATHS[key];
       const linkedBlank = linkedPath ? isBlankText(getByPath(content, linkedPath)) : false;
@@ -333,7 +331,6 @@ window.CCFCContent = (function () {
     sessionStorage.removeItem("ccfc_site_content_v2");
     sessionStorage.removeItem("ccfc_site_content_v3");
     sessionStorage.removeItem("ccfc_site_content_v4");
-    sessionStorage.removeItem("ccfc_site_content_v5");
     content = null;
   }
 

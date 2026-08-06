@@ -555,29 +555,6 @@
           <div id="members-list" class="members-admin-list"></div>
 
           <div class="admin-card" style="margin-top: 1.5rem">
-            <h2>Opprett innloggingskonto</h2>
-            <p style="color: var(--muted); font-size: 0.9rem; margin-bottom: 0.75rem">
-              Sender invitasjon via Supabase Auth (brukeren setter passord selv).
-              Krever at edge function <code>invite-login-user</code> er deployet.
-              Alternativt: Dashboard → Authentication → Users → Add user / Invite.
-            </p>
-            <form id="invite-login-form" class="admin-form" style="max-width: 28rem">
-              <label>
-                E-post
-                <input type="email" name="email" required maxlength="200" autocomplete="off" />
-              </label>
-              <label>
-                Visningsnavn (valgfritt)
-                <input type="text" name="display_name" maxlength="80" />
-              </label>
-              <div class="row">
-                <button class="btn btn--sky" type="submit">Send invitasjon</button>
-              </div>
-              <p class="admin-msg" id="invite-login-msg" hidden></p>
-            </form>
-          </div>
-
-          <div class="admin-card" style="margin-top: 1.5rem">
             <h2>E-postmaler (HTML)</h2>
             <p style="color: var(--muted); font-size: 0.9rem; margin-bottom: 0.75rem">
               Bruk plassholdere: <code>{{full_name}}</code>, <code>{{email}}</code>,
@@ -691,7 +668,7 @@
 
     <script src="../assets/js/vendor/supabase.js?v=2.112.0"></script>
     <script src="../assets/js/supabase-config.js"></script>
-<script src="../assets/js/content.js?v=20260806-login"></script>
+<script src="../assets/js/content.js?v=20260806-nav-merge"></script>
     <script src="../assets/js/admin.js?v=20260806-nav-merge"></script>
   </body>
 </html>
