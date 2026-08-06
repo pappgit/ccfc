@@ -118,7 +118,7 @@ window.CCFCContent = (function () {
       const text = String(val);
       el.textContent = text;
       // Intentional empty CMS text should not leave blank block spacing
-      if (el.tagName === "P" || el.tagName === "DIV" || el.tagName === "SPAN") {
+      if (["P", "DIV", "SPAN", "STRONG"].includes(el.tagName)) {
         el.hidden = text.trim() === "";
       }
     });
@@ -129,7 +129,7 @@ window.CCFCContent = (function () {
       if (val == null) return;
       const html = String(val);
       el.innerHTML = html;
-      if (el.tagName === "P" || el.tagName === "DIV" || el.tagName === "SPAN") {
+      if (["P", "DIV", "SPAN", "STRONG"].includes(el.tagName)) {
         el.hidden = html.trim() === "";
       }
     });
