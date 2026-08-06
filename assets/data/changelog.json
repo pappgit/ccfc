@@ -2,6 +2,15 @@
   "entries": [
     {
       "date": "2026-08-06",
+      "title": "Søkeord for Ryktebørsen",
+      "items": [
+        "Admin kan legge inn søkeord som styrer hvilke rykter som hentes inn",
+        "Standardord: Coventry, Sky Blues, CCFC, CBS Arena — kan endres fritt",
+        "Ett søkeord per linje under Admin → Ryktebørsen"
+      ]
+    },
+    {
+      "date": "2026-08-06",
       "title": "Tomme tekstfelt blir værende tomme",
       "items": [
         "Når du sletter teksten i et innholdsfelt og lagrer, kommer ikke standardteksten tilbake",

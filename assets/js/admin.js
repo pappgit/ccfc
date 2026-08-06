@@ -48,6 +48,7 @@
   const apiMsg = $("#api-msg");
   const newsMsg = $("#news-msg");
   const rumorMsg = $("#rumor-msg");
+  const rumorKeywordsMsg = $("#rumor-keywords-msg");
 
   function showMsg(el, text, isError) {
     if (!el) return;
@@ -229,6 +230,7 @@
         loadApiSettings(),
         loadNews(),
         loadRumors(),
+        loadRumorKeywords(),
         loadChangelog(),
         loadFeedback(),
         loadMembers(),
@@ -1225,6 +1227,47 @@
     bekreftet: "Bekreftet",
     avvist: "Avvist",
   };
+
+  const DEFAULT_RUMOR_KEYWORDS = ["Coventry", "Sky Blues", "CCFC", "CBS Arena"];
+
+  function parseKeywordLines(text) {
+    return String(text || "")
+      .split(/[\n,]+/)
+      .map((k) => k.trim())
+      .filter(Boolean)
+      .filter((k, i, arr) => arr.findIndex((x) => x.toLowerCase() === k.toLowerCase()) === i);
+  }
+
+  async function loadRumorKeywords() {
+    const el = $("#rumor-keywords");
+    if (!el) return;
+    try {
+      const remote = await loadSetting("rumor_keywords");
+      const keywords = Array.isArray(remote?.keywords) && remote.keywords.length
+        ? remote.keywords.map((k) => String(k).trim()).filter(Boolean)
+        : DEFAULT_RUMOR_KEYWORDS;
+      el.value = keywords.join("\n");
+    } catch (err) {
+      el.value = DEFAULT_RUMOR_KEYWORDS.join("\n");
+      showMsg(rumorKeywordsMsg, err.message || "Kunne ikke hente søkeord.", true);
+    }
+  }
+
+  $("#rumor-keywords-form")?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const keywords = parseKeywordLines($("#rumor-keywords")?.value);
+    if (!keywords.length) {
+      showMsg(rumorKeywordsMsg, "Legg inn minst ett søkeord.", true);
+      return;
+    }
+    try {
+      await saveSetting("rumor_keywords", { keywords });
+      $("#rumor-keywords").value = keywords.join("\n");
+      showMsg(rumorKeywordsMsg, `Lagret ${keywords.length} søkeord.`);
+    } catch (err) {
+      showMsg(rumorKeywordsMsg, err.message || "Kunne ikke lagre søkeord.", true);
+    }
+  });
 
   async function deleteRumorById(id) {
     if (!id) return false;

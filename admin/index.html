@@ -365,9 +365,33 @@
         <section class="admin-panel" id="panel-rumors">
           <h1>Ryktebørsen</h1>
           <p class="lead">
-            Legg inn korte rykter med kilde og lenke til originalen. Ikke lim inn fullartikler —
-            kun egen korttekst og deep link. Merk som rykte, bekreftet eller avvist.
+            Styrt av søkeord: automatisk henting (kommer) filtrerer på ordene under.
+            Du kan også legge inn rykter manuelt med kilde og lenke — ikke lim inn fullartikler.
           </p>
+
+          <div class="admin-card">
+            <h2 style="margin: 0 0 0.5rem">Søkeord</h2>
+            <p style="color: var(--muted); margin-bottom: 0.85rem; font-size: 0.9rem">
+              Ett søkeord eller uttrykk per linje. Rykter må treffe minst ett av ordene
+              (i tittel eller tekst) for å vises. Eksempel: Coventry, Sky Blues, spillernavn.
+            </p>
+            <form id="rumor-keywords-form" class="admin-form">
+              <label>
+                Søkeord for Ryktebørsen
+                <textarea
+                  name="keywords"
+                  id="rumor-keywords"
+                  rows="6"
+                  placeholder="Coventry&#10;Sky Blues&#10;CCFC"
+                  spellcheck="false"
+                ></textarea>
+              </label>
+              <div class="row">
+                <button class="btn btn--sky" type="submit" id="rumor-keywords-save">Lagre søkeord</button>
+              </div>
+              <p class="admin-msg" id="rumor-keywords-msg" hidden></p>
+            </form>
+          </div>
 
           <div class="admin-card">
             <div class="row" style="justify-content: space-between; align-items: center; margin-bottom: 0.75rem">
@@ -609,6 +633,6 @@
     <script src="../assets/js/vendor/supabase.js?v=2.112.0"></script>
     <script src="../assets/js/supabase-config.js"></script>
     <script src="../assets/js/content.js?v=20260806-empty-cms"></script>
-    <script src="../assets/js/admin.js?v=20260806-empty-cms"></script>
+    <script src="../assets/js/admin.js?v=20260806-rumor-keywords"></script>
   </body>
 </html>
