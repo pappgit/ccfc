@@ -2,6 +2,15 @@
   "entries": [
     {
       "date": "2026-08-06",
+      "title": "Om oss kun på egen side",
+      "items": [
+        "Om-blokken er fjernet fra forsiden",
+        "Tekst om klubben redigeres under Admin → Innhold → Om oss",
+        "Menypunktet Om oss åpner den siden"
+      ]
+    },
+    {
+      "date": "2026-08-06",
       "title": "Tomme tekstfelt blir værende tomme",
       "items": [
         "Når du sletter teksten i et innholdsfelt og lagrer, kommer ikke standardteksten tilbake",

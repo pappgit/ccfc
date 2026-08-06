@@ -30,7 +30,6 @@
   "sections": {
     "homeMatches": true,
     "homeNews": true,
-    "homeAbout": true,
     "homeNote": true,
     "footerAdmin": true
   },
@@ -66,11 +65,6 @@
     "newsTag": "Fra klubben",
     "newsTitle": "Nyheter",
     "newsLead": "Oppdateringer for skandinaviske supportere.",
-    "aboutTag": "Sky Blues i nord",
-    "aboutTitle": "En klubb for Norden",
-    "aboutP1": "Coventry City Scandinavia samler fans i Norge, Sverige, Danmark og resten av regionen. Vi følger laget gjennom sesongen — hjemme, borte og i cup.",
-    "aboutP2": "Dette nettstedet er et pitch-utkast. Visuelt språk er inspirert av CCFC sky blue. Offisiell logo og merkevare avklarer vi med klubben.",
-    "aboutCta": "Om supporterklubben",
     "note": "Uoffisiell supporternettside · Farger inspirert av ccfc.co.uk · Merkevare avklares med klubben"
   },
   "fixtures": {

@@ -354,7 +354,6 @@
       fields: [
         { path: "sections.homeMatches", label: "Forside: vis kampprogram", type: "check" },
         { path: "sections.homeNews", label: "Forside: vis nyheter", type: "check" },
-        { path: "sections.homeAbout", label: "Forside: vis om-blokk", type: "check" },
         { path: "sections.homeNote", label: "Forside: vis infostripe", type: "check" },
         { path: "sections.footerAdmin", label: "Footer: vis admin-lenke", type: "check" },
       ],
@@ -375,11 +374,6 @@
         { path: "home.newsTag", label: "Nyheter · tag", type: "text" },
         { path: "home.newsTitle", label: "Nyheter · tittel", type: "text" },
         { path: "home.newsLead", label: "Nyheter · tekst", type: "textarea" },
-        { path: "home.aboutTag", label: "Om-blokk · tag", type: "text" },
-        { path: "home.aboutTitle", label: "Om-blokk · tittel", type: "text" },
-        { path: "home.aboutP1", label: "Om-blokk · avsnitt 1", type: "textarea" },
-        { path: "home.aboutP2", label: "Om-blokk · avsnitt 2", type: "textarea" },
-        { path: "home.aboutCta", label: "Om-blokk · knapp", type: "text" },
         { path: "home.note", label: "Infostripe under forsiden", type: "textarea" },
       ],
     },
@@ -739,9 +733,31 @@
             defaults?.sections || {
               homeMatches: true,
               homeNews: true,
-              homeAbout: true,
               homeNote: true,
               footerAdmin: true,
+            }
+          );
+        }
+        // Om-blokk er fjernet fra forsiden — skru av hvis gammel CMS fortsatt har den
+        if (window.CCFCContent.getByPath(contentState, "sections.homeAbout") != null) {
+          window.CCFCContent.setByPath(contentState, "sections.homeAbout", false);
+        }
+        if (!window.CCFCContent.getByPath(contentState, "about")) {
+          window.CCFCContent.setByPath(
+            contentState,
+            "about",
+            defaults?.about || {
+              title: "Om oss",
+              lead: "Supporterklubben for Coventry City-fans i Skandinavia.",
+              tag: "Hvem vi er",
+              heading: "Sky Blues i Norden",
+              p1: "",
+              p2: "",
+              p3: "",
+              p4: "",
+              contactLabel: "Kontakt oss",
+              contactEmail: "hello@example.com",
+              footerText: "Uoffisiell supporternettside · Pitch-utkast",
             }
           );
         }
