@@ -27,7 +27,7 @@ Scriptet bruker da **1–2 kall** (PL + FA Cup) — godt innenfor gratisplan.
 filtrerer på søkeord, og skriver `assets/data/rumors.json`.
 
 1. Sett søkeord og RSS-kilder i Admin (lagres i Supabase)
-2. Kjør Actions → **Update rumors** (eller vent på schedule)
+2. Kjør Actions → **Update rumors**, eller vent på schedule (hver time 08:00–16:00 UTC)
 3. Scriptet leser `rumor_keywords` + `rumor_sources` via anon-nøkkel (offentlig i repo / valgfrie secrets)
 
 Valgfrie secrets: `SUPABASE_URL`, `SUPABASE_ANON_KEY` (ellers leses `assets/js/supabase-config.js`).

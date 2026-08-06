@@ -3,8 +3,8 @@ name: Update rumors
 
 on:
   schedule:
-    # Fire ganger daglig i transfervindu-sesongen; manuell kjøring når som helst
-    - cron: "15 7,11,15,19 * * *"
+    # Hver time 08:00–16:00 UTC; manuell kjøring når som helst
+    - cron: "0 8-16 * * *"
   workflow_dispatch:
 
 permissions:

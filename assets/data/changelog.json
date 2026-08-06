@@ -2,6 +2,14 @@
   "entries": [
     {
       "date": "2026-08-06",
+      "title": "Ryktebørsen oppdateres oftere",
+      "items": [
+        "Automatisk henting av rykter kjører hver time fra kl. 08 til 16 (UTC)",
+        "Du kan fortsatt starte en oppdatering manuelt under GitHub Actions"
+      ]
+    },
+    {
+      "date": "2026-08-06",
       "title": "Egne knapper i toppmenyen",
       "items": [
         "Admin → Innhold → Meny: legg til egne menyvalg",
