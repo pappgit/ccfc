@@ -32,13 +32,39 @@
     });
   }
 
+  function setNavOpen(nav, toggle, open) {
+    nav.classList.toggle("is-open", open);
+    toggle.setAttribute("aria-expanded", String(open));
+    document.body.classList.toggle("is-nav-open", open);
+  }
+
   function initNav() {
     const toggle = $(".nav-toggle");
     const nav = $("#site-nav");
     if (!toggle || !nav) return;
+
     toggle.addEventListener("click", () => {
-      const open = nav.classList.toggle("is-open");
-      toggle.setAttribute("aria-expanded", String(open));
+      setNavOpen(nav, toggle, !nav.classList.contains("is-open"));
+    });
+
+    nav.addEventListener("click", (e) => {
+      const link = e.target.closest("a");
+      if (link && nav.classList.contains("is-open")) {
+        setNavOpen(nav, toggle, false);
+      }
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && nav.classList.contains("is-open")) {
+        setNavOpen(nav, toggle, false);
+        toggle.focus();
+      }
+    });
+
+    window.addEventListener("resize", () => {
+      if (window.matchMedia("(min-width: 901px)").matches && nav.classList.contains("is-open")) {
+        setNavOpen(nav, toggle, false);
+      }
     });
   }
 
@@ -170,21 +196,21 @@
     }));
   }
 
+  function escapeText(s) {
+    return String(s || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
   function newsImageHtml(url, className, alt) {
     const src = String(url || "").trim();
     if (!src) return "";
     const resolved = window.CCFCContent?.assetPath
       ? window.CCFCContent.assetPath(src)
       : src;
-    const safeSrc = String(resolved)
-      .replace(/&/g, "&amp;")
-      .replace(/"/g, "&quot;")
-      .replace(/</g, "&lt;");
-    const safeAlt = String(alt || "")
-      .replace(/&/g, "&amp;")
-      .replace(/"/g, "&quot;")
-      .replace(/</g, "&lt;");
-    return `<img class="${className}" src="${safeSrc}" alt="${safeAlt}" loading="lazy" decoding="async" />`;
+    return `<img class="${className}" src="${escapeText(resolved)}" alt="${escapeText(alt)}" loading="lazy" decoding="async" />`;
   }
 
   async function renderHomeNews() {
@@ -202,11 +228,11 @@
         .map((p) => {
           const d = formatDate(p.date || "2026-01-01");
           const img = newsImageHtml(p.image, "news-item__image", p.title || "");
-          return `<a class="news-item" href="nyheter.html#${p.id}">
+          return `<a class="news-item" href="nyheter.html#${escapeText(p.id)}">
             <div class="news-item__date">${d.day}. ${d.month} ${d.year}</div>
             <div>
-              <h3>${p.title}</h3>
-              <p>${p.excerpt}</p>
+              <h3>${escapeText(p.title)}</h3>
+              <p>${escapeText(p.excerpt)}</p>
               ${img}
             </div>
           </a>`;
@@ -229,12 +255,12 @@
           const d = formatDate(p.date || "2026-01-01");
           const paras = (p.body || "")
             .split(/\n\n+/)
-            .map((para) => `<p>${para.replace(/\n/g, "<br>")}</p>`)
+            .map((para) => `<p>${escapeText(para).replace(/\n/g, "<br>")}</p>`)
             .join("");
           const img = newsImageHtml(p.image, "article__image", p.title || "");
-          return `<article class="article" id="${p.id}" style="margin-bottom:3rem;padding-bottom:2rem;border-bottom:1px solid var(--line)">
+          return `<article class="article article--listed" id="${escapeText(p.id)}">
             <div class="article__meta">${d.day}. ${d.month} ${d.year}</div>
-            <h2 style="font-size:clamp(1.5rem,4vw,2.2rem);margin-bottom:1rem">${p.title}</h2>
+            <h2 class="article__title">${escapeText(p.title)}</h2>
             ${img}
             ${paras}
           </article>`;
@@ -255,14 +281,6 @@
     bekreftet: "Bekreftet",
     avvist: "Avvist",
   };
-
-  function escapeText(s) {
-    return String(s || "")
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;");
-  }
 
   function safeHttpUrl(url) {
     const raw = String(url || "").trim();
@@ -470,7 +488,7 @@
     const aw = season.away;
 
     const playerBlock = season.players
-      ? `<div class="section__head" style="margin-top:2rem"><p class="tag">Spillere</p><h2>Spillerstatistikk</h2></div>
+      ? `<div class="section__head section__head--spaced"><p class="tag">Spillere</p><h2>Spillerstatistikk</h2></div>
          <div class="stat-table-wrap"><table class="stat-table"><thead><tr>
            <th>Spiller</th><th>Pos</th><th>K</th><th>Min</th><th>Mål</th><th>Assist</th><th>Gult</th><th>Rødt</th>
          </tr></thead><tbody>
@@ -524,7 +542,7 @@
         </div>
       </div>
 
-      <div class="stat-grid" style="margin-bottom:2.5rem">
+      <div class="stat-grid">
         <div class="stat-cell">
           <div class="stat-cell__label">Hjemme</div>
           <div class="stat-cell__value">${h.w}–${h.d}–${h.l}</div>

@@ -2,6 +2,15 @@
   "entries": [
     {
       "date": "2026-08-06",
+      "title": "Ryddigere design og bedre mobil",
+      "items": [
+        "Samme layout og typografi på mobil og desktop — mindre rot, færre rammer",
+        "Menyen fungerer bedre på telefon (scroll-lås, større trykkflater)",
+        "Kamp-, nyhets- og rykterader tilpasses smale skjermer jevnere"
+      ]
+    },
+    {
+      "date": "2026-08-06",
       "title": "Nyheter først på forsiden",
       "items": [
         "Nyheter vises nå over kampprogrammet på forsiden",
