@@ -11,7 +11,7 @@
  * 6. data-nav / data-section: skjules også når tilknyttet CMS-tekst er tom
  */
 window.CCFCContent = (function () {
-  const CACHE_KEY = "ccfc_site_content_v6";
+  const CACHE_KEY = "ccfc_site_content_v7";
   let content = null;
 
   /** Elements that should not leave empty visual shells when CMS text is blank. */
@@ -250,11 +250,14 @@ window.CCFCContent = (function () {
       if (val === undefined) return;
       if (isBlankText(val)) {
         el.removeAttribute("href");
+        if (el.hasAttribute("data-social-youtube")) el.hidden = true;
         return;
       }
       let v = String(val).trim();
       if (el.hasAttribute("data-cms-mailto") && !v.startsWith("mailto:")) v = "mailto:" + v;
+      else if (el.hasAttribute("data-social-youtube")) v = normalizeNavHref(v);
       el.setAttribute("href", v);
+      if (el.hasAttribute("data-social-youtube")) el.hidden = false;
     });
 
     const brandName = getByPath(content, "brand.name") || "CCFC";

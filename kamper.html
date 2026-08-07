@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="assets/css/styles.css?v=20260806-nav" />
+    <link rel="stylesheet" href="assets/css/styles.css?v=20260807-yt" />
     <link rel="icon" href="assets/img/logo.jpg" type="image/jpeg" />
   </head>
   <body data-cms-title="fixtures.title">
@@ -22,9 +22,6 @@
             <span class="brand__sub" data-cms="brand.sub">Scandinavia</span>
           </span>
         </a>
-        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Meny">
-          <span></span><span></span><span></span>
-        </button>
         <nav class="nav" id="site-nav">
           <a href="index.html" data-nav="home" data-cms="nav.home">Hjem</a>
           <a href="kamper.html" data-nav="fixtures" data-cms="nav.fixtures">Kamper</a>
@@ -34,7 +31,34 @@
           <a href="medlem.html" data-nav="members" data-cms="nav.members">Medlem</a>
           <a href="om-oss.html" data-nav="about" data-cms="nav.about">Om oss</a>
         </nav>
-      </div>
+              <div class="header-end">
+          <a
+            class="header-social"
+            href="https://www.youtube.com/@coventrycityfc"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Coventry City på YouTube"
+            data-cms-href="social.youtube"
+            data-social-youtube
+          >
+            <svg class="header-social__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path
+                fill="currentColor"
+                d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.5 31.5 0 0 0 0 12a31.5 31.5 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.5 31.5 0 0 0 24 12a31.5 31.5 0 0 0-.5-5.8ZM9.75 15.5v-7l6.5 3.5-6.5 3.5Z"
+              />
+            </svg>
+          </a>
+          <button
+            class="nav-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="site-nav"
+            aria-label="Meny"
+          >
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+</div>
     </header>
 
     <main>
@@ -82,7 +106,7 @@
 
     <script src="assets/js/vendor/supabase.js"></script>
     <script src="assets/js/supabase-config.js"></script>
-<script src="assets/js/content.js?v=20260806-nav-merge"></script>
+<script src="assets/js/content.js?v=20260807-yt"></script>
     <script src="assets/js/main.js"></script>
   </body>
 </html>

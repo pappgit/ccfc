@@ -142,6 +142,9 @@
     "consentPrivacy": "Jeg godtar at klubben lagrer navn, e-post og mobil for medlemskapet.",
     "consentMarketing": "Jeg ønsker e-post om arrangementer (valgfritt)."
   },
+  "social": {
+    "youtube": "https://www.youtube.com/@coventrycityfc"
+  },
   "footer": {
     "title": "Coventry City Scandinavia",
     "text": "Sky Blues supporterklubb for Skandinavia. Forum og medlemsinnlogging kommer i en senere fase.",
