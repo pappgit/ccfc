@@ -2,6 +2,15 @@
   "entries": [
     {
       "date": "2026-08-07",
+      "title": "Sikkerhetsoppdatering",
+      "items": [
+        "E-postutsending krever nå admin-innlogging eller hemmelig nøkkel",
+        "Interne admin-ønsker og e-postmaler er ikke lenger offentlige",
+        "Nyheter, kamper og lenker er sikret mot skadelig innhold"
+      ]
+    },
+    {
+      "date": "2026-08-07",
       "title": "Riktig klubbnavn på forsiden",
       "items": [
         "Forsiden viser nå «Coventry City Scandinavian Supporters Club»"

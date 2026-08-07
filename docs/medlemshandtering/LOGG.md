@@ -15,17 +15,19 @@ Kronologisk logg for prosjektet medlemshåndtering.
 | 2026-08-04 | Bug funnet ved e2e-test: `gen_random_bytes` mangler i `search_path`. Fix-migrering `20260804160000_membership_pgcrypto_path.sql` — **må kjøres**. |
 | 2026-08-04 | Fix-migrering kjørt. E2e OK: innmelding → `pending_payment`, duplikat-e-post avvist, anon uten PII-lesing. |
 | 2026-08-04 | Forenklet flyt: `pending` (til godkjenning) → godkjenn/manuell inn (+ velkomstmail) / meld ut (+ avslutningsmail). HTML-maler i admin. |
+| 2026-08-07 | Sikkerhet: `20260807100000_security_hardening.sql` — revoke `_queue_templated_mail`, HTML-escape i maler, begrenset `site_settings`-lesing. Edge Function krever cron-secret eller admin-JWT. |
 
 ## Åpent
 
-- Kjøre `20260804170000_membership_simple_flow.sql` i Supabase
-- Sette `RESEND_API_KEY` (+ `MAIL_FROM`) når automatisk HTML-e-post ønskes
+- Kjøre `20260807100000_security_hardening.sql` i Supabase (hvis ikke kjørt via `db push`)
+- Sette `RESEND_API_KEY`, `MAIL_FROM`, `DISPATCH_CRON_SECRET` når automatisk HTML-e-post ønskes
 - Vipps bedrift / org.nr. / ePayment (senere)
 - Personvernerklæring på nettsiden før produksjonsbruk
 - Smoke-test: innmelding → godkjenn → mailto → meld ut
 
 ## Notater
 
-- Offentlig innmelding oppretter `pending_payment` til Vipps er klart; admin kan aktivere manuelt.
+- Offentlig innmelding oppretter `pending` til Vipps er klart; admin kan aktivere manuelt.
 - Utmelding skjer via engangs-token i e-postlenke (`utmelding.html?token=…`).
 - Anon-brukere har ikke direkte SELECT på medlems-PII.
+- Offentlige `site_settings`-nøkler: `site`, `rumor_keywords`, `rumor_sources`. Resten kun for admin.

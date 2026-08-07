@@ -48,6 +48,46 @@
     return res.json();
   }
 
+  function escapeText(s) {
+    return String(s || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function safeHttpUrl(url) {
+    const raw = String(url || "").trim();
+    if (!raw) return "";
+    try {
+      const u = new URL(raw, location.origin);
+      if (u.protocol === "http:" || u.protocol === "https:") return u.href;
+    } catch {
+      /* ignore */
+    }
+    return "";
+  }
+
+  /** Safe image/media URL: http(s), relative assets, or data:image. */
+  function safeMediaUrl(url) {
+    const raw = String(url || "").trim();
+    if (!raw) return "";
+    if (/^data:image\//i.test(raw)) return raw;
+    const http = safeHttpUrl(raw);
+    if (http) return http;
+    // Relative site assets only (no protocol-relative //evil)
+    if (raw.startsWith("//")) return "";
+    if (
+      raw.startsWith("assets/") ||
+      raw.startsWith("./assets/") ||
+      raw.startsWith("../assets/") ||
+      raw.startsWith("/")
+    ) {
+      return raw;
+    }
+    return "";
+  }
+
   function isUpcoming(m) {
     return m.status === "NS" || m.status === "TBD";
   }
@@ -69,7 +109,7 @@
     const lines = m.scorers
       .map((s) => {
         const side = s.team === "home" ? m.home : m.away;
-        return `${s.player} (${side}) ${s.minute}'`;
+        return `${escapeText(s.player)} (${escapeText(side)}) ${escapeText(s.minute)}'`;
       })
       .join(" · ");
     return `<p><strong>Mål:</strong> ${lines}</p>`;
@@ -78,27 +118,30 @@
   function renderStats(m) {
     if (!m.stats) return "";
     const s = m.stats;
-    return `<p><strong>Statistikk:</strong> Ballbesittelse ${s.possession.home}–${s.possession.away} · Skudd ${s.shots.home}–${s.shots.away} · På mål ${s.shotsOnTarget.home}–${s.shotsOnTarget.away} · Corners ${s.corners.home}–${s.corners.away}</p>`;
+    return `<p><strong>Statistikk:</strong> Ballbesittelse ${escapeText(s.possession.home)}–${escapeText(s.possession.away)} · Skudd ${escapeText(s.shots.home)}–${escapeText(s.shots.away)} · På mål ${escapeText(s.shotsOnTarget.home)}–${escapeText(s.shotsOnTarget.away)} · Corners ${escapeText(s.corners.home)}–${escapeText(s.corners.away)}</p>`;
   }
 
   function matchRow(m, { expandable = false } = {}) {
     const d = formatDate(m.date);
     const finished = isFinished(m);
-    const score = finished && m.score ? `${m.score.home}–${m.score.away}` : "–";
+    const score =
+      finished && m.score
+        ? `${escapeText(m.score.home)}–${escapeText(m.score.away)}`
+        : "–";
     const detail =
       expandable && finished
-        ? `<div class="match-detail">${renderScorers(m)}${renderStats(m)}<p>${m.venue || ""}</p></div>
+        ? `<div class="match-detail">${renderScorers(m)}${renderStats(m)}<p>${escapeText(m.venue || "")}</p></div>
            <button type="button" class="match__toggle" data-toggle>Vis detaljer</button>`
         : "";
 
-    return `<article class="match${finished ? " match--result" : ""}" data-comp="${m.competitionShort}">
+    return `<article class="match${finished ? " match--result" : ""}" data-comp="${escapeText(m.competitionShort)}">
       <div class="match__when">
         <strong>${d.day}. ${d.month}</strong>
-        ${d.weekday} · ${m.kickoff || "TBD"}
+        ${escapeText(d.weekday)} · ${escapeText(m.kickoff || "TBD")}
       </div>
       <div>
-        <div class="match__teams">${m.home} – ${m.away}</div>
-        <div class="match__comp">${m.competition}${m.venue ? " · " + m.venue : ""}</div>
+        <div class="match__teams">${escapeText(m.home)} – ${escapeText(m.away)}</div>
+        <div class="match__comp">${escapeText(m.competition)}${m.venue ? " · " + escapeText(m.venue) : ""}</div>
       </div>
       <div>
         <div class="match__score">${score}</div>
@@ -171,20 +214,15 @@
   }
 
   function newsImageHtml(url, className, alt) {
-    const src = String(url || "").trim();
+    const src = safeMediaUrl(url);
     if (!src) return "";
     const resolved = window.CCFCContent?.assetPath
       ? window.CCFCContent.assetPath(src)
       : src;
-    const safeSrc = String(resolved)
-      .replace(/&/g, "&amp;")
-      .replace(/"/g, "&quot;")
-      .replace(/</g, "&lt;");
-    const safeAlt = String(alt || "")
-      .replace(/&/g, "&amp;")
-      .replace(/"/g, "&quot;")
-      .replace(/</g, "&lt;");
-    return `<img class="${className}" src="${safeSrc}" alt="${safeAlt}" loading="lazy" decoding="async" />`;
+    // Re-check after assetPath (still only http(s)/assets/data:image)
+    const finalSrc = safeMediaUrl(resolved) || (resolved.startsWith("../assets/") ? resolved : "");
+    if (!finalSrc) return "";
+    return `<img class="${escapeText(className)}" src="${escapeText(finalSrc)}" alt="${escapeText(alt)}" loading="lazy" decoding="async" />`;
   }
 
   async function renderHomeNews() {
@@ -202,11 +240,11 @@
         .map((p) => {
           const d = formatDate(p.date || "2026-01-01");
           const img = newsImageHtml(p.image, "news-item__image", p.title || "");
-          return `<a class="news-item" href="nyheter.html#${p.id}">
+          return `<a class="news-item" href="nyheter.html#${escapeText(p.id)}">
             <div class="news-item__date">${d.day}. ${d.month} ${d.year}</div>
             <div>
-              <h3>${p.title}</h3>
-              <p>${p.excerpt}</p>
+              <h3>${escapeText(p.title)}</h3>
+              <p>${escapeText(p.excerpt)}</p>
               ${img}
             </div>
           </a>`;
@@ -229,12 +267,12 @@
           const d = formatDate(p.date || "2026-01-01");
           const paras = (p.body || "")
             .split(/\n\n+/)
-            .map((para) => `<p>${para.replace(/\n/g, "<br>")}</p>`)
+            .map((para) => `<p>${escapeText(para).replace(/\n/g, "<br>")}</p>`)
             .join("");
           const img = newsImageHtml(p.image, "article__image", p.title || "");
-          return `<article class="article" id="${p.id}" style="margin-bottom:3rem;padding-bottom:2rem;border-bottom:1px solid var(--line)">
+          return `<article class="article" id="${escapeText(p.id)}" style="margin-bottom:3rem;padding-bottom:2rem;border-bottom:1px solid var(--line)">
             <div class="article__meta">${d.day}. ${d.month} ${d.year}</div>
-            <h2 style="font-size:clamp(1.5rem,4vw,2.2rem);margin-bottom:1rem">${p.title}</h2>
+            <h2 style="font-size:clamp(1.5rem,4vw,2.2rem);margin-bottom:1rem">${escapeText(p.title)}</h2>
             ${img}
             ${paras}
           </article>`;
@@ -255,26 +293,6 @@
     bekreftet: "Bekreftet",
     avvist: "Avvist",
   };
-
-  function escapeText(s) {
-    return String(s || "")
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;");
-  }
-
-  function safeHttpUrl(url) {
-    const raw = String(url || "").trim();
-    if (!raw) return "";
-    try {
-      const u = new URL(raw, location.origin);
-      if (u.protocol === "http:" || u.protocol === "https:") return u.href;
-    } catch {
-      /* ignore */
-    }
-    return "";
-  }
 
   async function loadRumorPosts() {
     const byUrl = new Map();
@@ -477,14 +495,14 @@
          ${season.players
            .map(
              (p) => `<tr>
-               <td>${p.name}</td>
-               <td>${p.position || "–"}</td>
-               <td>${p.apps ?? "–"}</td>
-               <td>${p.minutes ?? "–"}</td>
-               <td>${p.goals ?? "–"}</td>
-               <td>${p.assists ?? "–"}</td>
-               <td>${p.yellow ?? "–"}</td>
-               <td>${p.red ?? "–"}</td>
+               <td>${escapeText(p.name)}</td>
+               <td>${escapeText(p.position || "–")}</td>
+               <td>${escapeText(p.apps ?? "–")}</td>
+               <td>${escapeText(p.minutes ?? "–")}</td>
+               <td>${escapeText(p.goals ?? "–")}</td>
+               <td>${escapeText(p.assists ?? "–")}</td>
+               <td>${escapeText(p.yellow ?? "–")}</td>
+               <td>${escapeText(p.red ?? "–")}</td>
              </tr>`
            )
            .join("")}
@@ -500,50 +518,50 @@
     );
 
     return `
-      <p class="tag">${season.competition} · ${season.label}</p>
+      <p class="tag">${escapeText(season.competition)} · ${escapeText(season.label)}</p>
       <div class="stat-grid">
         <div class="stat-cell">
           <div class="stat-cell__label">Poeng</div>
-          <div class="stat-cell__value stat-cell__value--sky">${r.pts}</div>
-          <div class="stat-cell__hint">${r.w}–${r.d}–${r.l} · ${season.played} kamper</div>
+          <div class="stat-cell__value stat-cell__value--sky">${escapeText(r.pts)}</div>
+          <div class="stat-cell__hint">${escapeText(r.w)}–${escapeText(r.d)}–${escapeText(r.l)} · ${escapeText(season.played)} kamper</div>
         </div>
         <div class="stat-cell">
           <div class="stat-cell__label">Mål</div>
-          <div class="stat-cell__value">${g.for}–${g.against}</div>
-          <div class="stat-cell__hint">Diff ${g.diff > 0 ? "+" : ""}${g.diff}</div>
+          <div class="stat-cell__value">${escapeText(g.for)}–${escapeText(g.against)}</div>
+          <div class="stat-cell__hint">Diff ${g.diff > 0 ? "+" : ""}${escapeText(g.diff)}</div>
         </div>
         <div class="stat-cell">
           <div class="stat-cell__label">Skudd / kamp</div>
-          <div class="stat-cell__value">${a.shots ?? "–"}</div>
-          <div class="stat-cell__hint">${a.shotsOnTarget ?? "–"} på mål</div>
+          <div class="stat-cell__value">${escapeText(a.shots ?? "–")}</div>
+          <div class="stat-cell__hint">${escapeText(a.shotsOnTarget ?? "–")} på mål</div>
         </div>
         <div class="stat-cell">
           <div class="stat-cell__label">Corners / kamp</div>
-          <div class="stat-cell__value">${a.corners ?? "–"}</div>
-          <div class="stat-cell__hint">${t.yellow ?? 0} gule · ${t.red ?? 0} røde</div>
+          <div class="stat-cell__value">${escapeText(a.corners ?? "–")}</div>
+          <div class="stat-cell__hint">${escapeText(t.yellow ?? 0)} gule · ${escapeText(t.red ?? 0)} røde</div>
         </div>
       </div>
 
       <div class="stat-grid" style="margin-bottom:2.5rem">
         <div class="stat-cell">
           <div class="stat-cell__label">Hjemme</div>
-          <div class="stat-cell__value">${h.w}–${h.d}–${h.l}</div>
-          <div class="stat-cell__hint">${h.played} kamper</div>
+          <div class="stat-cell__value">${escapeText(h.w)}–${escapeText(h.d)}–${escapeText(h.l)}</div>
+          <div class="stat-cell__hint">${escapeText(h.played)} kamper</div>
         </div>
         <div class="stat-cell">
           <div class="stat-cell__label">Borte</div>
-          <div class="stat-cell__value">${aw.w}–${aw.d}–${aw.l}</div>
-          <div class="stat-cell__hint">${aw.played} kamper</div>
+          <div class="stat-cell__value">${escapeText(aw.w)}–${escapeText(aw.d)}–${escapeText(aw.l)}</div>
+          <div class="stat-cell__hint">${escapeText(aw.played)} kamper</div>
         </div>
         <div class="stat-cell">
           <div class="stat-cell__label">Mål snitt</div>
-          <div class="stat-cell__value">${a.gf ?? "–"}</div>
-          <div class="stat-cell__hint">Sluppet inn ${a.ga ?? "–"}</div>
+          <div class="stat-cell__value">${escapeText(a.gf ?? "–")}</div>
+          <div class="stat-cell__hint">Sluppet inn ${escapeText(a.ga ?? "–")}</div>
         </div>
         <div class="stat-cell">
           <div class="stat-cell__label">Skudd totalt</div>
-          <div class="stat-cell__value">${t.shots ?? "–"}</div>
-          <div class="stat-cell__hint">${t.shotsOnTarget ?? "–"} på mål</div>
+          <div class="stat-cell__value">${escapeText(t.shots ?? "–")}</div>
+          <div class="stat-cell__hint">${escapeText(t.shotsOnTarget ?? "–")} på mål</div>
         </div>
       </div>
 
@@ -576,22 +594,22 @@
                 const opp = c.venue === "H" ? m.away : m.home;
                 const where = c.venue === "H" ? "H" : "B";
                 return `<tr>
-                  <td>${formatUkDate(m.date)}</td>
-                  <td>${where} · ${opp}</td>
-                  <td class="res-${c.result}">${c.result}</td>
-                  <td>${m.score.home}–${m.score.away}</td>
-                  <td>${c.shots ?? "–"}</td>
-                  <td>${c.shotsOnTarget ?? "–"}</td>
-                  <td>${c.corners ?? "–"}</td>
-                  <td>${c.fouls ?? "–"}</td>
-                  <td>${c.yellow ?? 0}/${c.red ?? 0}</td>
+                  <td>${escapeText(formatUkDate(m.date))}</td>
+                  <td>${where} · ${escapeText(opp)}</td>
+                  <td class="res-${escapeText(c.result)}">${escapeText(c.result)}</td>
+                  <td>${escapeText(m.score.home)}–${escapeText(m.score.away)}</td>
+                  <td>${escapeText(c.shots ?? "–")}</td>
+                  <td>${escapeText(c.shotsOnTarget ?? "–")}</td>
+                  <td>${escapeText(c.corners ?? "–")}</td>
+                  <td>${escapeText(c.fouls ?? "–")}</td>
+                  <td>${escapeText(c.yellow ?? 0)}/${escapeText(c.red ?? 0)}</td>
                 </tr>`;
               })
               .join("")}
           </tbody>
         </table>
       </div>
-      <p class="tag">Kilde: ${season.source} · Oppdatert i datafil</p>
+      <p class="tag">Kilde: ${escapeText(season.source)} · Oppdatert i datafil</p>
     `;
   }
 
@@ -608,7 +626,7 @@
         tabs.innerHTML = data.seasons
           .map(
             (s) =>
-              `<button type="button" class="filter-btn${s.id === active ? " is-active" : ""}" data-season="${s.id}">${s.label}</button>`
+              `<button type="button" class="filter-btn${s.id === active ? " is-active" : ""}" data-season="${escapeText(s.id)}">${escapeText(s.label)}</button>`
           )
           .join("");
 
@@ -648,22 +666,23 @@
         if (typeof s === "string") return { url: s, alt: "" };
         return { url: s?.url || "", alt: s?.alt || "" };
       })
-      .filter((s) => s.url);
+      .filter((s) => s.url)
+      .map((s) => {
+        const assetPath = window.CCFCContent?.assetPath
+          ? (u) => window.CCFCContent.assetPath(u)
+          : (u) => u;
+        const resolved = assetPath(s.url);
+        const safe = safeMediaUrl(resolved) ||
+          (String(resolved).startsWith("../assets/") ? resolved : "");
+        return safe ? { url: safe, alt: s.alt } : null;
+      })
+      .filter(Boolean);
 
     if (list.length) {
-      const assetPath = window.CCFCContent?.assetPath
-        ? (u) => window.CCFCContent.assetPath(u)
-        : (u) => u;
       host.innerHTML = list
         .map((s, i) => {
-          const src = assetPath(s.url)
-            .replace(/&/g, "&amp;")
-            .replace(/"/g, "&quot;")
-            .replace(/</g, "&lt;");
-          const alt = (s.alt || "Coventry City i aksjon")
-            .replace(/&/g, "&amp;")
-            .replace(/"/g, "&quot;")
-            .replace(/</g, "&lt;");
+          const src = escapeText(s.url);
+          const alt = escapeText(s.alt || "Coventry City i aksjon");
           const eager = i === 0
             ? 'fetchpriority="high"'
             : 'loading="lazy"';
