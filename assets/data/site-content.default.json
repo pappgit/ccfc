@@ -32,7 +32,8 @@
     "homeMatches": true,
     "homeNews": true,
     "homeNote": true,
-    "footerAdmin": true
+    "footerAdmin": true,
+    "comingSoon": true
   },
   "home": {
     "heroLine1": "Coventry City",

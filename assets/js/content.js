@@ -287,7 +287,39 @@ window.CCFCContent = (function () {
       el.hidden = visible === false || isCmsTextBlank(el) || linkedBlank;
     });
 
+    syncComingSoonMode();
     renderCustomNav(root);
+  }
+
+  function isComingSoonEnabled() {
+    if (!content) return true;
+    const val = getByPath(content, "sections.comingSoon");
+    return val !== false;
+  }
+
+  function syncComingSoonMode() {
+    const enabled = isComingSoonEnabled();
+    try {
+      sessionStorage.setItem("ccfc_coming_soon", enabled ? "1" : "0");
+    } catch {
+      /* ignore */
+    }
+    document.documentElement.classList.toggle("site-coming-soon", enabled);
+    document.documentElement.classList.toggle("site-open", !enabled);
+
+    let robots = document.querySelector('meta[name="robots"]');
+    if (enabled) {
+      if (!robots) {
+        robots = document.createElement("meta");
+        robots.setAttribute("name", "robots");
+        document.head.appendChild(robots);
+      }
+      robots.setAttribute("content", "noindex, nofollow");
+      const brandName = getByPath(content, "brand.name") || "Coventry City Scandinavia";
+      document.title = `${brandName} Supporters Club — Under utvikling`;
+    } else if (robots) {
+      robots.remove();
+    }
   }
 
   function renderCustomNav(root = document) {
@@ -327,6 +359,7 @@ window.CCFCContent = (function () {
 
   function clearCache() {
     sessionStorage.removeItem(CACHE_KEY);
+    sessionStorage.removeItem("ccfc_coming_soon");
     sessionStorage.removeItem("ccfc_site_content_v1");
     sessionStorage.removeItem("ccfc_site_content_v2");
     sessionStorage.removeItem("ccfc_site_content_v3");
@@ -348,6 +381,7 @@ window.CCFCContent = (function () {
     cloneJson,
     isExternalHref,
     normalizeNavHref,
+    isComingSoonEnabled,
     get: () => content,
   };
 })();
