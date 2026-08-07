@@ -2,6 +2,14 @@
   "entries": [
     {
       "date": "2026-08-07",
+      "title": "Admin-lenke på forsiden",
+      "items": [
+        "Diskret Admin-lenke nederst på «under utvikling»-forsiden",
+        "Logo på forsiden oppdateres når du laster opp ny logo i admin"
+      ]
+    },
+    {
+      "date": "2026-08-07",
       "title": "Oppdatert tekst på forsiden",
       "items": [
         "Forsiden viser nå «Coventry City Scandinavia Supporter Club»",

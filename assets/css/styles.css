@@ -1689,6 +1689,24 @@ p {
   animation: soon-rise 0.9s var(--ease) 0.65s forwards;
 }
 
+.coming-soon__admin {
+  position: absolute;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 2;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.35);
+  transition: color 0.25s var(--ease);
+}
+
+.coming-soon__admin:hover {
+  color: var(--sky-mist);
+}
+
 @keyframes soon-rise {
   from {
     opacity: 0;
