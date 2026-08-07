@@ -315,8 +315,15 @@ window.CCFCContent = (function () {
         document.head.appendChild(robots);
       }
       robots.setAttribute("content", "noindex, nofollow");
-      const brandName = getByPath(content, "brand.name") || "Coventry City Scandinavia";
+      const brandName =
+        getByPath(content, "brand.name") || "Coventry City Scandinavian";
       document.title = `${brandName} Supporters Club — Under utvikling`;
+      // Prefer full club name when brand.sub is the regional word
+      const sub = getByPath(content, "brand.sub");
+      if (sub && !isBlankText(sub)) {
+        document.title = `Coventry City ${String(sub).trim()} Supporters Club — Under utvikling`;
+      }
+      document.title = "Coventry City Scandinavian Supporters Club — Under utvikling";
     } else if (robots) {
       robots.remove();
     }
