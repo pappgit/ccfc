@@ -2,6 +2,14 @@
   "entries": [
     {
       "date": "2026-08-07",
+      "title": "Ny klubblogo på forsiden",
+      "items": [
+        "Forsiden bruker den nye logoen fra admin",
+        "Gammel logo-fil er byttet ut"
+      ]
+    },
+    {
+      "date": "2026-08-07",
       "title": "Admin-lenke på forsiden",
       "items": [
         "Diskret Admin-lenke nederst på «under utvikling»-forsiden",
