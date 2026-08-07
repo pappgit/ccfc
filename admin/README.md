@@ -33,6 +33,7 @@ Plan og logg: [`docs/medlemshandtering/`](../docs/medlemshandtering/).
 - `20260804160000_membership_pgcrypto_path.sql`
 - `20260804170000_membership_simple_flow.sql` ← enkel flyt + maler
 - `20260804180000_news_image.sql` ← valgfritt bilde på artikler
+- `20260807100000_security_hardening.sql` ← revoke mail-RPC, HTML-escape, begrenset site_settings-lesing
 
 ## Brukere
 

@@ -41,22 +41,76 @@ window.CCFCContent = (function () {
     return /^https?:\/\//i.test(href || "") || String(href || "").startsWith("//");
   }
 
+  /** Allow only safe URL schemes for CMS hrefs (blocks javascript:, data:, etc.). */
+  function safeCmsHref(raw, { mailto = false } = {}) {
+    let v = String(raw || "").trim();
+    if (!v) return "";
+
+    if (mailto || /^mailto:/i.test(v)) {
+      const addr = v.replace(/^mailto:/i, "").trim();
+      if (!addr || /[\s<>"]/.test(addr)) return "";
+      return "mailto:" + addr;
+    }
+
+    if (/^tel:/i.test(v)) {
+      const num = v.slice(4).trim();
+      if (!/^[+\d][\d\s().-]*$/.test(num)) return "";
+      return "tel:" + num.replace(/\s+/g, "");
+    }
+
+    // Relative / in-app paths
+    if (v.startsWith("#") || v.startsWith("/") || v.startsWith("./") || v.startsWith("../")) {
+      if (/[\s<>"]/.test(v) || v.toLowerCase().includes("javascript:")) return "";
+      return v;
+    }
+
+    // Local HTML pages without scheme
+    if (/^[a-z0-9][\w./-]*\.html?(?:[?#][\w./&=%+-]*)?$/i.test(v)) {
+      return v;
+    }
+
+    // Protocol-relative → https
+    if (v.startsWith("//")) v = "https:" + v;
+
+    // Bare domain → https
+    if (!/^[a-z][a-z0-9+.-]*:/i.test(v)) {
+      const host = v.split("/")[0].split("?")[0];
+      if (/^[a-z0-9.-]+\.[a-z]{2,}$/i.test(host)) {
+        v = "https://" + v;
+      } else {
+        return "";
+      }
+    }
+
+    try {
+      const u = new URL(v);
+      if (u.protocol === "http:" || u.protocol === "https:") return u.href;
+    } catch {
+      /* ignore */
+    }
+    return "";
+  }
+
   function normalizeNavHref(href) {
-    const raw = String(href || "").trim();
+    return safeCmsHref(href);
+  }
+
+  /** Safe src for images: http(s), relative assets, data:image. */
+  function safeCmsSrc(url) {
+    const raw = String(url || "").trim();
     if (!raw) return "";
-    if (/^(https?:|mailto:|tel:|\/\/)/i.test(raw) || raw.startsWith("/") || raw.startsWith("#")) {
-      return raw;
+    if (/^data:image\//i.test(raw)) return raw;
+    const resolved = assetPath(raw);
+    if (/^https?:\/\//i.test(resolved)) return resolved;
+    if (
+      resolved.startsWith("assets/") ||
+      resolved.startsWith("./assets/") ||
+      resolved.startsWith("../assets/") ||
+      (resolved.startsWith("/") && !resolved.startsWith("//"))
+    ) {
+      return resolved;
     }
-    // Local pages / paths without a domain
-    if (/\.(html?|php|aspx?)([?#]|$)/i.test(raw) || !raw.includes(".")) {
-      return raw;
-    }
-    // Bare domain (shop.ccfc.co.uk/…, www.example.com) → https
-    const host = raw.split("/")[0].split("?")[0];
-    if (/^[a-z0-9.-]+\.[a-z]{2,}$/i.test(host)) {
-      return "https://" + raw;
-    }
-    return raw;
+    return "";
   }
 
   function getByPath(obj, path) {
@@ -228,19 +282,25 @@ window.CCFCContent = (function () {
     });
 
     root.querySelectorAll("[data-cms-html]").forEach((el) => {
+      // Raw HTML from CMS is disabled (XSS). Render as plain text.
       const path = el.getAttribute("data-cms-html");
       const val = getByPath(content, path);
       if (val === undefined) return;
-      const html = val == null ? "" : String(val);
-      el.innerHTML = html;
-      applyCmsVisibility(el, isBlankText(html));
+      const text = val == null ? "" : String(val);
+      el.textContent = text;
+      applyCmsVisibility(el, isBlankText(text));
     });
 
     root.querySelectorAll("[data-cms-src]").forEach((el) => {
       const path = el.getAttribute("data-cms-src");
       const val = getByPath(content, path);
       if (val === undefined || isBlankText(val)) return;
-      el.setAttribute("src", assetPath(String(val)));
+      const safe = safeCmsSrc(String(val));
+      if (!safe) {
+        el.removeAttribute("src");
+        return;
+      }
+      el.setAttribute("src", safe);
     });
 
     root.querySelectorAll("[data-cms-href]").forEach((el) => {
@@ -251,9 +311,13 @@ window.CCFCContent = (function () {
         el.removeAttribute("href");
         return;
       }
-      let v = String(val).trim();
-      if (el.hasAttribute("data-cms-mailto") && !v.startsWith("mailto:")) v = "mailto:" + v;
-      el.setAttribute("href", v);
+      const mailto = el.hasAttribute("data-cms-mailto");
+      const safe = safeCmsHref(String(val).trim(), { mailto });
+      if (!safe) {
+        el.removeAttribute("href");
+        return;
+      }
+      el.setAttribute("href", safe);
     });
 
     const brandName = getByPath(content, "brand.name") || "CCFC";
@@ -271,7 +335,10 @@ window.CCFCContent = (function () {
 
     const fav = getByPath(content, "brand.faviconUrl");
     const icon = document.querySelector('link[rel="icon"]');
-    if (fav && !isBlankText(fav) && icon) icon.setAttribute("href", assetPath(fav));
+    if (fav && !isBlankText(fav) && icon) {
+      const safeFav = safeCmsSrc(String(fav));
+      if (safeFav) icon.setAttribute("href", safeFav);
+    }
 
     root.querySelectorAll("[data-nav]").forEach((el) => {
       const key = el.getAttribute("data-nav");
@@ -380,6 +447,8 @@ window.CCFCContent = (function () {
     cloneJson,
     isExternalHref,
     normalizeNavHref,
+    safeCmsHref,
+    safeCmsSrc,
     isComingSoonEnabled,
     get: () => content,
   };
