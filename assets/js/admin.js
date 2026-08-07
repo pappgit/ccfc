@@ -360,6 +360,11 @@
         { path: "sections.homeNews", label: "Forside: vis nyheter", type: "check" },
         { path: "sections.homeNote", label: "Forside: vis infostripe", type: "check" },
         { path: "sections.footerAdmin", label: "Footer: vis admin-lenke", type: "check" },
+        {
+          path: "sections.comingSoon",
+          label: "Vis «under utvikling»-forside (sperrer resten av nettstedet)",
+          type: "check",
+        },
       ],
     },
     {
@@ -862,8 +867,12 @@
               homeNews: true,
               homeNote: true,
               footerAdmin: true,
+              comingSoon: true,
             }
           );
+        }
+        if (window.CCFCContent.getByPath(contentState, "sections.comingSoon") == null) {
+          window.CCFCContent.setByPath(contentState, "sections.comingSoon", true);
         }
         // Om-blokk er fjernet fra forsiden — skru av hvis gammel CMS fortsatt har den
         if (window.CCFCContent.getByPath(contentState, "sections.homeAbout") != null) {

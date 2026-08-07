@@ -2,6 +2,14 @@
   "entries": [
     {
       "date": "2026-08-07",
+      "title": "Under utvikling kan slås av og på",
+      "items": [
+        "Forsiden viser «Coventry City Scandinavia Supporters Club»",
+        "I Admin → Innhold → Seksjoner kan du aktivere eller deaktivere «under utvikling»-forsiden"
+      ]
+    },
+    {
+      "date": "2026-08-07",
       "title": "Ny klubblogo på forsiden",
       "items": [
         "Forsiden bruker den nye logoen fra admin",
