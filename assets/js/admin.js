@@ -316,6 +316,11 @@
         { path: "brand.sub", label: "Undertittel", type: "text" },
         { path: "meta.siteTitle", label: "Sidetittel (browser)", type: "text" },
         { path: "meta.siteDescription", label: "Meta-beskrivelse", type: "textarea" },
+        {
+          path: "social.youtube",
+          label: "YouTube-lenke (ikon øverst på siden)",
+          type: "text",
+        },
       ],
     },
     {
@@ -1024,6 +1029,13 @@
         }
         if (window.CCFCContent.getByPath(contentState, "sections.comingSoon") == null) {
           window.CCFCContent.setByPath(contentState, "sections.comingSoon", true);
+        }
+        if (window.CCFCContent.getByPath(contentState, "social.youtube") == null) {
+          window.CCFCContent.setByPath(
+            contentState,
+            "social.youtube",
+            defaults?.social?.youtube || "https://www.youtube.com/@coventrycityfc"
+          );
         }
         // Om-blokk er fjernet fra forsiden — skru av hvis gammel CMS fortsatt har den
         if (window.CCFCContent.getByPath(contentState, "sections.homeAbout") != null) {

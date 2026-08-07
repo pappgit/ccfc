@@ -169,9 +169,41 @@ p {
 .site-header .wrap {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 1rem;
   width: min(100% - 1.5rem, var(--max));
+}
+
+.header-end {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-shrink: 0;
+}
+
+.header-social {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  transition: color 0.25s var(--ease), transform 0.25s var(--ease);
+}
+
+.header-social:hover {
+  color: #ff0033;
+  transform: translateY(-1px);
+}
+
+.header-social__icon {
+  width: 1.45rem;
+  height: 1.45rem;
+  display: block;
+}
+
+.header-social[hidden] {
+  display: none !important;
 }
 
 .brand {
@@ -223,6 +255,7 @@ p {
   display: flex;
   align-items: center;
   gap: 0.15rem;
+  margin-left: auto;
 }
 
 .nav a[hidden],
@@ -280,9 +313,14 @@ p {
     display: block;
   }
 
+  .header-end {
+    margin-left: auto;
+  }
+
   .nav {
     position: fixed;
     inset: var(--nav-h) 0 auto 0;
+    margin-left: 0;
     flex-direction: column;
     align-items: stretch;
     background: var(--ink);
@@ -1724,6 +1762,38 @@ html.site-coming-soon #coming-soon,
   animation: soon-rise 0.9s var(--ease) 0.65s forwards;
 }
 
+.coming-soon__youtube {
+  position: absolute;
+  top: 1.15rem;
+  right: 1.15rem;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  color: rgba(255, 255, 255, 0.88);
+  text-decoration: none;
+  transition: color 0.25s var(--ease), transform 0.25s var(--ease);
+  opacity: 0;
+  animation: soon-rise 0.9s var(--ease) 0.55s forwards;
+}
+
+.coming-soon__youtube:hover {
+  color: #ff0033;
+  transform: translateY(-2px);
+}
+
+.coming-soon__youtube-icon {
+  width: 1.7rem;
+  height: 1.7rem;
+  display: block;
+}
+
+.coming-soon__youtube[hidden] {
+  display: none !important;
+}
+
 .coming-soon__admin {
   position: absolute;
   right: 1.25rem;
@@ -1780,6 +1850,7 @@ html.site-coming-soon #coming-soon,
   .coming-soon__brand,
   .coming-soon__status,
   .coming-soon__lead,
+  .coming-soon__youtube,
   .coming-soon__glow {
     animation: none !important;
     opacity: 1 !important;
