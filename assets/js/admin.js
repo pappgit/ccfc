@@ -359,6 +359,7 @@
         { path: "sections.homeMatches", label: "Forside: vis kampprogram", type: "check" },
         { path: "sections.homeNews", label: "Forside: vis nyheter", type: "check" },
         { path: "sections.homeNote", label: "Forside: vis infostripe", type: "check" },
+        { path: "sections.aboutBoard", label: "Om oss: vis styret", type: "check" },
         { path: "sections.footerAdmin", label: "Footer: vis admin-lenke", type: "check" },
         {
           path: "sections.comingSoon",
@@ -437,6 +438,9 @@
         { path: "about.contactLabel", label: "Kontakt-knapp", type: "text" },
         { path: "about.contactEmail", label: "Kontakt-e-post", type: "text" },
         { path: "about.footerText", label: "Footer-tekst (om-siden)", type: "text" },
+        { path: "about.boardTag", label: "Styret · tag", type: "text" },
+        { path: "about.boardTitle", label: "Styret · tittel", type: "text" },
+        { path: "about.boardLead", label: "Styret · ingress", type: "textarea" },
       ],
     },
     {
@@ -501,6 +505,28 @@
       });
     window.CCFCContent.setByPath(contentState, "home.heroSlides", slides.filter((s) => s.url));
 
+    // Persist board member edits
+    const board = ensureBoardMembers();
+    $("#board-members-list")
+      ?.querySelectorAll("[data-board-index]")
+      .forEach((row) => {
+        const i = Number(row.getAttribute("data-board-index"));
+        if (!board[i]) return;
+        const nameInput = row.querySelector('[data-field="name"]');
+        const roleInput = row.querySelector('[data-field="role"]');
+        const bioInput = row.querySelector('[data-field="bio"]');
+        const imageInput = row.querySelector('[data-field="imageUrl"]');
+        if (nameInput) board[i].name = window.CCFCContent.normalizeCmsString(nameInput.value);
+        if (roleInput) board[i].role = window.CCFCContent.normalizeCmsString(roleInput.value);
+        if (bioInput) board[i].bio = window.CCFCContent.normalizeCmsString(bioInput.value);
+        if (imageInput) board[i].imageUrl = imageInput.value.trim();
+      });
+    window.CCFCContent.setByPath(
+      contentState,
+      "about.board",
+      board.filter((m) => m && (m.name || m.role || m.bio || m.imageUrl))
+    );
+
     // Persist custom nav link edits
     const customNav = ensureCustomNav();
     $("#nav-custom-list")
@@ -533,6 +559,15 @@
       window.CCFCContent.setByPath(contentState, "home.heroSlides", slides);
     }
     return slides;
+  }
+
+  function ensureBoardMembers() {
+    let members = window.CCFCContent.getByPath(contentState, "about.board");
+    if (!Array.isArray(members)) {
+      members = [];
+      window.CCFCContent.setByPath(contentState, "about.board", members);
+    }
+    return members;
   }
 
   function ensureCustomNav() {
@@ -694,6 +729,121 @@
     });
   }
 
+  function renderBoardMembersEditor() {
+    const card = $("#board-members-card");
+    const list = $("#board-members-list");
+    if (!card || !list || !contentState) return;
+
+    const show = activeContentSection === "about";
+    card.hidden = !show;
+    if (!show) return;
+
+    const members = ensureBoardMembers();
+    if (!members.length) {
+      list.innerHTML = `<p class="empty-state" style="margin:0.5rem 0">Ingen styremedlemmer ennå. Legg til personer under.</p>`;
+      return;
+    }
+
+    list.innerHTML = members
+      .map((m, i) => {
+        const src = window.CCFCContent.assetPath(m.imageUrl || "") || "";
+        const thumb = src
+          ? `<img class="board-admin-row__thumb" src="${escapeAttr(src)}" alt="" />`
+          : `<div class="board-admin-row__thumb board-admin-row__thumb--empty" aria-hidden="true"></div>`;
+        return `<div class="board-admin-row" data-board-index="${i}">
+          ${thumb}
+          <div class="board-admin-row__fields">
+            <label>Navn
+              <input type="text" data-field="name" value="${escapeAttr(m.name || "")}" placeholder="Fullt navn" autocomplete="off" />
+            </label>
+            <label>Rolle
+              <input type="text" data-field="role" value="${escapeAttr(m.role || "")}" placeholder="f.eks. Styreleder" autocomplete="off" />
+            </label>
+            <label>Kort tekst
+              <textarea data-field="bio" rows="2" placeholder="Kort presentasjon">${escapeHtml(m.bio || "")}</textarea>
+            </label>
+            <label>Bilde-URL
+              <input type="text" data-field="imageUrl" inputmode="url" autocomplete="off" value="${escapeAttr(m.imageUrl || "")}" placeholder="assets/img/… eller https://…" />
+            </label>
+            <div class="row board-admin-row__upload">
+              <label style="flex:1;min-width:10rem;margin:0">
+                Last opp bilde
+                <input type="file" data-board-file accept="image/png,image/jpeg,image/webp,image/gif" />
+              </label>
+              <button class="btn btn--solid" type="button" data-board-upload>Last opp</button>
+              <button class="btn btn--ghost" type="button" data-board-clear-image ${m.imageUrl ? "" : "hidden"}>Fjern bilde</button>
+            </div>
+          </div>
+          <div class="board-admin-row__actions">
+            <button type="button" class="btn btn--solid" data-board-move="-1" ${i === 0 ? "disabled" : ""} title="Flytt opp">↑</button>
+            <button type="button" class="btn btn--solid" data-board-move="1" ${i === members.length - 1 ? "disabled" : ""} title="Flytt ned">↓</button>
+            <button type="button" class="btn btn--danger" data-board-remove title="Fjern">Fjern</button>
+          </div>
+        </div>`;
+      })
+      .join("");
+
+    list.querySelectorAll("[data-board-move]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        flushContentFields();
+        const row = btn.closest("[data-board-index]");
+        const i = Number(row.getAttribute("data-board-index"));
+        const dir = Number(btn.getAttribute("data-board-move"));
+        const arr = ensureBoardMembers();
+        const j = i + dir;
+        if (j < 0 || j >= arr.length) return;
+        const tmp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = tmp;
+        renderBoardMembersEditor();
+      });
+    });
+
+    list.querySelectorAll("[data-board-remove]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        flushContentFields();
+        const row = btn.closest("[data-board-index]");
+        const i = Number(row.getAttribute("data-board-index"));
+        ensureBoardMembers().splice(i, 1);
+        renderBoardMembersEditor();
+      });
+    });
+
+    list.querySelectorAll("[data-board-clear-image]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        flushContentFields();
+        const row = btn.closest("[data-board-index]");
+        const i = Number(row.getAttribute("data-board-index"));
+        if (ensureBoardMembers()[i]) ensureBoardMembers()[i].imageUrl = "";
+        renderBoardMembersEditor();
+      });
+    });
+
+    list.querySelectorAll("[data-board-upload]").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const row = btn.closest("[data-board-index]");
+        const i = Number(row.getAttribute("data-board-index"));
+        const fileInput = row.querySelector("[data-board-file]");
+        const file = fileInput?.files?.[0];
+        if (!file) {
+          showMsg(contentMsg, "Velg et bilde først.", true);
+          return;
+        }
+        showMsg(contentMsg, "Laster opp styrebilde…");
+        try {
+          flushContentFields();
+          const url = await uploadBoardImage(file);
+          if (ensureBoardMembers()[i]) ensureBoardMembers()[i].imageUrl = url;
+          if (fileInput) fileInput.value = "";
+          renderBoardMembersEditor();
+          showMsg(contentMsg, "Bilde lastet opp — husk å trykke Lagre innhold.");
+        } catch (err) {
+          showMsg(contentMsg, err.message || "Opplasting feilet.", true);
+        }
+      });
+    });
+  }
+
   function renderContentTabs() {
     const tabs = $("#content-tabs");
     if (!tabs) return;
@@ -750,6 +900,7 @@
     if (logoCard) logoCard.hidden = activeContentSection !== "brand";
 
     renderHeroSlidesEditor();
+    renderBoardMembersEditor();
     renderNavCustomEditor();
   }
 
@@ -894,8 +1045,44 @@
               contactLabel: "Kontakt oss",
               contactEmail: "hello@example.com",
               footerText: "Uoffisiell supporternettside · Pitch-utkast",
+              boardTag: "Styret",
+              boardTitle: "Møt styret",
+              boardLead: "De som driver supporterklubben.",
+              board: [],
             }
           );
+        }
+        if (window.CCFCContent.getByPath(contentState, "about.boardTag") == null) {
+          window.CCFCContent.setByPath(
+            contentState,
+            "about.boardTag",
+            defaults?.about?.boardTag || "Styret"
+          );
+        }
+        if (window.CCFCContent.getByPath(contentState, "about.boardTitle") == null) {
+          window.CCFCContent.setByPath(
+            contentState,
+            "about.boardTitle",
+            defaults?.about?.boardTitle || "Møt styret"
+          );
+        }
+        if (window.CCFCContent.getByPath(contentState, "about.boardLead") == null) {
+          window.CCFCContent.setByPath(
+            contentState,
+            "about.boardLead",
+            defaults?.about?.boardLead ||
+              "De som driver supporterklubben — bytt navn, rolle, tekst og bilde i admin."
+          );
+        }
+        if (!Array.isArray(window.CCFCContent.getByPath(contentState, "about.board"))) {
+          window.CCFCContent.setByPath(
+            contentState,
+            "about.board",
+            Array.isArray(defaults?.about?.board) ? defaults.about.board : []
+          );
+        }
+        if (window.CCFCContent.getByPath(contentState, "sections.aboutBoard") == null) {
+          window.CCFCContent.setByPath(contentState, "sections.aboutBoard", true);
         }
       }
     } catch {
@@ -980,6 +1167,19 @@
     return pub.publicUrl;
   }
 
+  async function uploadBoardImage(file) {
+    const ext = file.name.split(".").pop() || "jpg";
+    const path = `board/member-${Date.now()}.${ext}`;
+    const { error: upErr } = await client.storage.from("media").upload(path, file, {
+      upsert: true,
+      contentType: file.type,
+    });
+    if (upErr) throw upErr;
+    const { data: pub } = client.storage.from("media").getPublicUrl(path);
+    if (!pub?.publicUrl) throw new Error("Fikk ikke public URL.");
+    return pub.publicUrl;
+  }
+
   $("#hero-slide-upload-btn")?.addEventListener("click", async () => {
     const fileInput = $("#hero-slide-file");
     const file = fileInput?.files?.[0];
@@ -1039,6 +1239,22 @@
     });
     renderNavCustomEditor();
     showMsg(contentMsg, "Nytt menyvalg lagt til — fyll inn tekst og lenke, deretter Lagre innhold.");
+  });
+
+  $("#board-member-add")?.addEventListener("click", () => {
+    if (!contentState) {
+      showMsg(contentMsg, "Innhold er ikke lastet ennå.", true);
+      return;
+    }
+    flushContentFields();
+    ensureBoardMembers().push({
+      name: "",
+      role: "",
+      bio: "",
+      imageUrl: "",
+    });
+    renderBoardMembersEditor();
+    showMsg(contentMsg, "Nytt styremedlem lagt til — fyll inn og trykk Lagre innhold.");
   });
 
   function escapeAttr(s) {

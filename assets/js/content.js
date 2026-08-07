@@ -11,7 +11,7 @@
  * 6. data-nav / data-section: skjules også når tilknyttet CMS-tekst er tom
  */
 window.CCFCContent = (function () {
-  const CACHE_KEY = "ccfc_site_content_v5";
+  const CACHE_KEY = "ccfc_site_content_v6";
   let content = null;
 
   /** Elements that should not leave empty visual shells when CMS text is blank. */
@@ -35,6 +35,7 @@ window.CCFCContent = (function () {
   /** Section keys that should hide when a related CMS text path is blank. */
   const SECTION_TEXT_PATHS = {
     homeNote: "home.note",
+    aboutBoard: "about.boardTitle",
   };
 
   function isExternalHref(href) {
@@ -363,6 +364,7 @@ window.CCFCContent = (function () {
     sessionStorage.removeItem("ccfc_site_content_v2");
     sessionStorage.removeItem("ccfc_site_content_v3");
     sessionStorage.removeItem("ccfc_site_content_v4");
+    sessionStorage.removeItem("ccfc_site_content_v5");
     content = null;
   }
 

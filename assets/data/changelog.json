@@ -2,6 +2,14 @@
   "entries": [
     {
       "date": "2026-08-07",
+      "title": "Styret på Om oss",
+      "items": [
+        "Ny styre-seksjon på Om oss med bilde, navn, rolle og kort tekst",
+        "Admin kan legge til, redigere, sortere og fjerne styremedlemmer under Innhold → Om oss"
+      ]
+    },
+    {
+      "date": "2026-08-07",
       "title": "Riktig klubbnavn på forsiden",
       "items": [
         "Forsiden viser nå «Coventry City Scandinavian Supporters Club»"

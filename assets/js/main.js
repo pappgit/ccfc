@@ -264,6 +264,56 @@
       .replace(/"/g, "&quot;");
   }
 
+  function boardInitials(name) {
+    const parts = String(name || "")
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean);
+    if (!parts.length) return "?";
+    if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  }
+
+  function renderBoard(content) {
+    const grid = document.querySelector("[data-board-grid]");
+    if (!grid) return;
+
+    const data = content || window.CCFCContent?.get?.();
+    const members = data?.about?.board;
+    const list = Array.isArray(members)
+      ? members.filter((m) => m && String(m.name || "").trim())
+      : [];
+
+    if (!list.length) {
+      grid.innerHTML =
+        '<p class="board-empty">Styret presenteres snart.</p>';
+      return;
+    }
+
+    const assetPath =
+      window.CCFCContent?.assetPath || ((u) => u);
+
+    grid.innerHTML = list
+      .map((m) => {
+        const name = String(m.name || "").trim();
+        const role = String(m.role || "").trim();
+        const bio = String(m.bio || "").trim();
+        const imageUrl = String(m.imageUrl || "").trim();
+        const src = imageUrl ? assetPath(imageUrl) : "";
+        const photo = src
+          ? `<img src="${escapeText(src)}" alt="${escapeText(name)}" loading="lazy" decoding="async" width="480" height="600" />`
+          : `<span class="board-person__initials" aria-hidden="true">${escapeText(boardInitials(name))}</span>`;
+
+        return `<article class="board-person">
+          <div class="board-person__photo">${photo}</div>
+          ${role ? `<p class="board-person__role">${escapeText(role)}</p>` : ""}
+          <h3 class="board-person__name">${escapeText(name)}</h3>
+          ${bio ? `<p class="board-person__bio">${escapeText(bio)}</p>` : ""}
+        </article>`;
+      })
+      .join("");
+  }
+
   function safeHttpUrl(url) {
     const raw = String(url || "").trim();
     if (!raw) return "";
@@ -750,12 +800,14 @@
   renderNewsPage();
   renderRumorsPage();
   renderStatsPage();
+  renderBoard();
 
   // Wire up markup slides immediately; CMS may replace them when ready
   initHeroSlideshow(null, 6500);
 
   document.addEventListener("ccfc:content-ready", (e) => {
     const content = e.detail;
+    renderBoard(content);
     if (!document.querySelector("[data-hero-slideshow]")) return;
     const slides = content?.home?.heroSlides;
     if (!Array.isArray(slides) || !slides.length) return;

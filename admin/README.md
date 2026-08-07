@@ -5,7 +5,7 @@ Admin-UI: https://pappgit.github.io/ccfc/admin/
 
 ## Menyer
 
-1. **Innhold** — tekster, meny (synlighet), seksjoner, logo/favicon, forside-slideshow
+1. **Innhold** — tekster, meny (synlighet), seksjoner, logo/favicon, forside-slideshow, styret (Om oss)
 2. **Nyheter** — legg til, rediger og slett artikler (valgfritt bilde per artikkel)
 3. **Medlemmer** — medlemsregister, manuell inn/utmelding, e-postkø med utmeldingslenke
 4. **Ønsker** — kommentarer/forslag; huk av når gjennomført

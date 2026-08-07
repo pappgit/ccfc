@@ -11,8 +11,8 @@
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="../assets/css/styles.css?v=20260806-nav" />
-    <link rel="stylesheet" href="../assets/css/admin.css?v=20260806-nav" />
+    <link rel="stylesheet" href="../assets/css/styles.css?v=20260807-board" />
+    <link rel="stylesheet" href="../assets/css/admin.css?v=20260807-board" />
     <link rel="icon" href="../assets/img/logo.jpg" type="image/jpeg" />
   </head>
   <body>
@@ -133,6 +133,18 @@
               <div id="nav-custom-list" class="nav-custom-admin"></div>
               <div class="row" style="margin-top: 1rem">
                 <button class="btn btn--solid" type="button" id="nav-custom-add">Legg til menyvalg</button>
+              </div>
+            </div>
+
+            <div class="admin-card" id="board-members-card" hidden>
+              <h2>Styret</h2>
+              <p style="color: var(--muted); margin-bottom: 0.75rem; font-size: 0.9rem">
+                Personer som vises under «Styret» på Om oss. Last opp bilde, rediger navn, rolle og tekst,
+                endre rekkefølge eller fjern. Titteltekst for seksjonen redigeres i feltene over.
+              </p>
+              <div id="board-members-list" class="board-members-admin"></div>
+              <div class="row" style="margin-top: 1rem">
+                <button class="btn btn--solid" type="button" id="board-member-add">Legg til styremedlem</button>
               </div>
             </div>
 
@@ -668,7 +680,7 @@
 
     <script src="../assets/js/vendor/supabase.js?v=2.112.0"></script>
     <script src="../assets/js/supabase-config.js"></script>
-<script src="../assets/js/content.js?v=20260806-nav-merge"></script>
-    <script src="../assets/js/admin.js?v=20260807-toggle"></script>
+<script src="../assets/js/content.js?v=20260807-board"></script>
+    <script src="../assets/js/admin.js?v=20260807-board"></script>
   </body>
 </html>

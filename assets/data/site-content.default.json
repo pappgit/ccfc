@@ -33,7 +33,8 @@
     "homeNews": true,
     "homeNote": true,
     "footerAdmin": true,
-    "comingSoon": true
+    "comingSoon": true,
+    "aboutBoard": true
   },
   "home": {
     "heroLine1": "Coventry City",
@@ -100,7 +101,36 @@
     "p4": "Senere: Forum bak innlogging kommer når klubben har sagt ja til retningen — det krever tjenester utenfor GitHub Pages.",
     "contactLabel": "Kontakt oss",
     "contactEmail": "hello@example.com",
-    "footerText": "Uoffisiell supporternettside · Pitch-utkast"
+    "footerText": "Uoffisiell supporternettside · Pitch-utkast",
+    "boardTag": "Styret",
+    "boardTitle": "Møt styret",
+    "boardLead": "De som driver supporterklubben — bytt navn, rolle, tekst og bilde i admin.",
+    "board": [
+      {
+        "name": "Styreleder",
+        "role": "Styreleder",
+        "bio": "Rediger navn, bilde og kort presentasjon i Admin → Innhold → Om oss.",
+        "imageUrl": ""
+      },
+      {
+        "name": "Nestleder",
+        "role": "Nestleder",
+        "bio": "Rediger navn, bilde og kort presentasjon i Admin → Innhold → Om oss.",
+        "imageUrl": ""
+      },
+      {
+        "name": "Kasserer",
+        "role": "Kasserer",
+        "bio": "Rediger navn, bilde og kort presentasjon i Admin → Innhold → Om oss.",
+        "imageUrl": ""
+      },
+      {
+        "name": "Styremedlem",
+        "role": "Styremedlem",
+        "bio": "Rediger navn, bilde og kort presentasjon i Admin → Innhold → Om oss.",
+        "imageUrl": ""
+      }
+    ]
   },
   "members": {
     "title": "Bli medlem",
