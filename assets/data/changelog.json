@@ -2,9 +2,16 @@
   "entries": [
     {
       "date": "2026-08-07",
+      "title": "Riktig klubbnavn på forsiden",
+      "items": [
+        "Forsiden viser nå «Coventry City Scandinavian Supporters Club»"
+      ]
+    },
+    {
+      "date": "2026-08-07",
       "title": "Under utvikling kan slås av og på",
       "items": [
-        "Forsiden viser «Coventry City Scandinavia Supporters Club»",
+        "Forsiden viser «Coventry City Scandinavian Supporters Club»",
         "I Admin → Innhold → Seksjoner kan du aktivere eller deaktivere «under utvikling»-forsiden"
       ]
     },

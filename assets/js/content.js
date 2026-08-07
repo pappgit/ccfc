@@ -315,8 +315,7 @@ window.CCFCContent = (function () {
         document.head.appendChild(robots);
       }
       robots.setAttribute("content", "noindex, nofollow");
-      const brandName = getByPath(content, "brand.name") || "Coventry City Scandinavia";
-      document.title = `${brandName} Supporters Club — Under utvikling`;
+      document.title = "Coventry City Scandinavian Supporters Club — Under utvikling";
     } else if (robots) {
       robots.remove();
     }
