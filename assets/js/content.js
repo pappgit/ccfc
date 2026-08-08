@@ -241,7 +241,16 @@ window.CCFCContent = (function () {
       const path = el.getAttribute("data-cms-src");
       const val = getByPath(content, path);
       if (val === undefined || isBlankText(val)) return;
-      el.setAttribute("src", assetPath(String(val)));
+      const next = assetPath(String(val));
+      if (path === "brand.logoUrl") {
+        const show = () => el.classList.add("is-cms-ready");
+        el.addEventListener("load", show, { once: true });
+        el.addEventListener("error", show, { once: true });
+        if (el.getAttribute("src") !== next) el.setAttribute("src", next);
+        else if (el.complete) show();
+        return;
+      }
+      el.setAttribute("src", next);
     });
 
     root.querySelectorAll("[data-cms-href]").forEach((el) => {
@@ -351,6 +360,22 @@ window.CCFCContent = (function () {
   }
 
   async function init() {
+    // Paint cached logo immediately — do not wait for network defaults/remote
+    if (!content && window.__CCFC_BOOT_CONTENT__) {
+      content = window.__CCFC_BOOT_CONTENT__;
+      apply();
+    } else if (!content) {
+      try {
+        const cached = sessionStorage.getItem(CACHE_KEY);
+        if (cached) {
+          content = JSON.parse(cached);
+          apply();
+        }
+      } catch {
+        /* ignore */
+      }
+    }
+
     await load();
     apply();
     document.dispatchEvent(new CustomEvent("ccfc:content-ready", { detail: content }));
@@ -365,6 +390,7 @@ window.CCFCContent = (function () {
     sessionStorage.removeItem("ccfc_site_content_v3");
     sessionStorage.removeItem("ccfc_site_content_v4");
     sessionStorage.removeItem("ccfc_site_content_v5");
+    sessionStorage.removeItem("ccfc_site_content_v6");
     content = null;
   }
 

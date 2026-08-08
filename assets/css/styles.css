@@ -195,6 +195,12 @@ p {
   background: #fff;
 }
 
+/* Avoid flashing the repo fallback logo before CMS/admin URL is applied */
+img[data-cms-src="brand.logoUrl"]:not(.is-cms-ready) {
+  opacity: 0 !important;
+  animation: none !important;
+}
+
 .brand__text {
   display: flex;
   flex-direction: column;
@@ -1680,6 +1686,9 @@ html.site-coming-soon #coming-soon,
     0 0 0 3px rgba(255, 255, 255, 0.12),
     0 24px 60px -20px rgba(0, 0, 0, 0.55);
   opacity: 0;
+}
+
+.coming-soon__logo.is-cms-ready {
   animation: soon-rise 1s var(--ease) 0.1s forwards;
 }
 
@@ -1776,7 +1785,7 @@ html.site-coming-soon #coming-soon,
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .coming-soon__logo,
+  .coming-soon__logo.is-cms-ready,
   .coming-soon__brand,
   .coming-soon__status,
   .coming-soon__lead,
