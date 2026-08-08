@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="nb">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Stigespill-designer</title>
+    <meta
+      name="description"
+      content="Lag ditt eget stigespill i A4/A3-størrelse, med stiger og slanger via dra-og-slipp. Klar for trykkfil senere."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Outfit:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./css/app.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="panel">
+        <header class="brand">
+          <p class="brand__eyebrow">Brett · Trykk</p>
+          <h1 class="brand__title">Stigespill-designer</h1>
+          <p class="brand__lead">
+            Velg papirstørrelse, sett rutenett, og dra mellom ruter for å lage stiger (opp) eller
+            slanger (ned).
+          </p>
+        </header>
+
+        <section class="controls" aria-label="Brettinnstillinger">
+          <div class="field">
+            <label for="format">Papirformat</label>
+            <select id="format"></select>
+          </div>
+
+          <div class="field">
+            <label for="orientation">Retning</label>
+            <select id="orientation">
+              <option value="portrait">Stående</option>
+              <option value="landscape">Liggende</option>
+            </select>
+          </div>
+
+          <div class="field__row">
+            <div class="field">
+              <label for="cols">Kolonner</label>
+              <input id="cols" type="number" min="2" max="20" value="10" />
+            </div>
+            <div class="field">
+              <label for="rows">Rader</label>
+              <input id="rows" type="number" min="2" max="20" value="10" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="margin">Marg (mm)</label>
+            <input id="margin" type="number" min="0" max="40" value="12" />
+          </div>
+
+          <p class="hint">
+            Brettet har <strong id="cell-count">100</strong> ruter. Nummerering følger klassisk
+            stigespill (sikksakk fra nederst til venstre).
+          </p>
+        </section>
+
+        <div class="actions">
+          <button type="button" class="btn-primary" id="print">Skriv ut / PDF</button>
+          <button type="button" class="btn-secondary" id="export-json">Eksporter JSON</button>
+          <button type="button" class="btn-secondary" id="clear-connections">Tøm stiger/slanger</button>
+          <button type="button" class="btn-danger" id="delete-connection" disabled>
+            Slett valgt
+          </button>
+        </div>
+
+        <section class="conn-block" aria-label="Forbindelser">
+          <h2>Stiger &amp; slanger</h2>
+          <ul class="conn-list" id="connection-list"></ul>
+        </section>
+
+        <p class="status" id="status" role="status"></p>
+      </aside>
+
+      <main class="workspace" data-workspace>
+        <div class="workspace__bar">
+          <h2>Forhåndsvisning</h2>
+          <p class="paper-meta" data-paper-meta></p>
+        </div>
+
+        <div class="paper-stage">
+          <div class="paper" data-paper>
+            <div class="board" data-board>
+              <div class="board__surface">
+                <svg class="paths" data-paths aria-hidden="true"></svg>
+                <div class="grid" data-grid></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p class="legend">
+          <span><i class="swatch swatch--ladder" aria-hidden="true"></i> Stige (opp)</span>
+          <span><i class="swatch swatch--snake" aria-hidden="true"></i> Slange (ned)</span>
+          <span>Dra rute → rute · klikk linje for å velge · Delete for å slette</span>
+        </p>
+      </main>
+    </div>
+
+    <script type="module" src="./js/app.js"></script>
+  </body>
+</html>

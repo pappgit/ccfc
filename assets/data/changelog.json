@@ -2,6 +2,15 @@
   "entries": [
     {
       "date": "2026-08-08",
+      "title": "Stigespill-designer (utkast)",
+      "items": [
+        "Ny side under /stigespill/ der du kan lage eget stigespill",
+        "Velg papirstørrelse (A5–A2), rutenett og dra stiger/slanger mellom ruter",
+        "Forhåndsvisning følger papirets mål — utgangspunkt for senere trykkfil"
+      ]
+    },
+    {
+      "date": "2026-08-08",
       "title": "Riktig logo med en gang",
       "items": [
         "Forsiden viser ikke lenger den gamle logoen et øyeblikk før den nye fra admin"
