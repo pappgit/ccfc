@@ -1,5 +1,5 @@
 {
-  "updated": "2026-08-07",
+  "updated": "2026-08-08",
   "keywords": [
     "Coventry",
     "Sky Blues",
@@ -54,12 +54,42 @@
   ],
   "posts": [
     {
-      "id": "coventry-city-transfer-news-live-gustavo-hamer-latest-8-5m-d",
+      "id": "coventry-latest-ghana-midfielder-yirenkyi-joins-in-26m-deal",
+      "date": "2026-08-08",
+      "title": "Coventry latest: Ghana midfielder Yirenkyi joins in £26m deal",
+      "summary": "",
+      "source_name": "skysports.com",
+      "source_url": "https://www.skysports.com/football/live-blog/11095/13541482/coventry-transfers-latest-news-rumours-and-gossip-live-updates-goals-and-highlights",
+      "tag": "rykte",
+      "auto": true
+    },
+    {
+      "id": "efl-latest-wilder-confirms-coventry-bid-for-hamer-being-cons",
+      "date": "2026-08-08",
+      "title": "EFL latest: Wilder confirms Coventry bid for Hamer being considered by owners",
+      "summary": "",
+      "source_name": "skysports.com",
+      "source_url": "https://www.skysports.com/football/live-blog/11095/13163353/championship-news-transfer-latest-and-gossip-plus-efl-updates-from-league-one-and-league-two",
+      "tag": "rykte",
+      "auto": true
+    },
+    {
+      "id": "coventry-city-transfer-news-gustavo-hamer-latest-8-5m-deal-o",
       "date": "2026-08-07",
-      "title": "Coventry City transfer news LIVE: Gustavo Hamer latest, £8.5m deal off, Francisco Moura twist",
+      "title": "Coventry City transfer news: Gustavo Hamer latest, £8.5m deal off, Yirenkyi announced",
       "summary": "All the latest Coventry City transfer news and rumours with updates on Mykhailo Mudryk, Caleb Yirenkyim, Liam Delap, Gustavo Hamer, Tim Iroegbunam and much more",
       "source_name": "Coventry Telegraph",
       "source_url": "https://www.coventrytelegraph.net/sport/football/transfer-news/coventry-city-transfer-news-live-34412528",
+      "tag": "rykte",
+      "auto": true
+    },
+    {
+      "id": "coventry-city-confirm-caleb-yirenkyi-club-record-transfer-as",
+      "date": "2026-08-07",
+      "title": "Coventry City confirm Caleb Yirenkyi club-record transfer as new signing speaks out",
+      "summary": "Coventry City have completed the transfer of Caleb Yirenkyi after agreeing a club-record deal with Nordsjaelland for the midfielder's signature",
+      "source_name": "Coventry Telegraph",
+      "source_url": "https://www.coventrytelegraph.net/sport/football/transfer-news/coventry-city-transfer-news-yirenkyi-34424536",
       "tag": "rykte",
       "auto": true
     },
@@ -80,6 +110,16 @@
       "summary": "Tyler Walker has set his sights on Europe with a new club",
       "source_name": "Coventry Telegraph",
       "source_url": "https://www.coventrytelegraph.net/sport/football/football-news/former-coventry-city-striker-targets-34419578",
+      "tag": "rykte",
+      "auto": true
+    },
+    {
+      "id": "coventry-sign-ghana-s-yirenkyi-for-record-fee",
+      "date": "2026-08-07",
+      "title": "Coventry sign Ghana's Yirenkyi for record fee",
+      "summary": "Premier League newcomers Coventry City have completed the club-record signing of Ghana midfielder Caleb Yirenkyi.",
+      "source_name": "BBC Football",
+      "source_url": "https://www.bbc.co.uk/sport/football/articles/cy4kgprjzx2o?at_medium=RSS&at_campaign=rss",
       "tag": "rykte",
       "auto": true
     },
@@ -120,16 +160,6 @@
       "summary": "BBC CWR's Will Oelrich looks into the career of the possible Coventry City signing.",
       "source_name": "BBC Coventry",
       "source_url": "https://www.bbc.co.uk/sounds/play/p0p311kh?at_medium=RSS&at_campaign=rss",
-      "tag": "rykte",
-      "auto": true
-    },
-    {
-      "id": "coventry-city-28",
-      "date": "2026-08-06",
-      "title": "Coventry City",
-      "summary": "Sky Blues fan Richard Chamberlain reacts to the news about the possible signing.",
-      "source_name": "BBC Coventry",
-      "source_url": "https://www.bbc.co.uk/sounds/play/p0p2yxpt?at_medium=RSS&at_campaign=rss",
       "tag": "rykte",
       "auto": true
     },
@@ -318,7 +348,7 @@
       "date": "2026-08-01",
       "title": "Gus Hamer ‘open’ to Coventry City return as favourite faces Sheffield United fans",
       "summary": "Coventry City transfer news from CoventryLive as Hamer addresses Sheffield United fans in Germany",
-      "source_name": "Coventry Telegraph",
+      "source_name": "CoventryLive News",
       "source_url": "https://www.coventrytelegraph.net/sport/football/transfer-news/coventry-city-gustavo-hamer-sheffield-34388239",
       "tag": "rykte",
       "auto": true
@@ -328,7 +358,7 @@
       "date": "2026-08-01",
       "title": "Frank Lampard's dream next Coventry City transfer after £22.5m deal as England star joins",
       "summary": "Sky Blues boss Frank Lampard could be reunited with a player he gave his big break to",
-      "source_name": "Coventry Telegraph",
+      "source_name": "CoventryLive News",
       "source_url": "https://www.coventrytelegraph.net/sport/football/transfer-news/coventry-city-transfer-news-tomori-34378163",
       "tag": "rykte",
       "auto": true
