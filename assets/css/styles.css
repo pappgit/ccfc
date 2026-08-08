@@ -262,6 +262,27 @@ img[data-cms-src="brand.logoUrl"]:not(.is-cms-ready) {
   line-height: 0;
 }
 
+.nav a.nav__fpl {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.45rem;
+  line-height: 0;
+}
+
+.nav a.nav__fpl img {
+  display: block;
+  width: 4.5rem;
+  height: auto;
+  border-radius: 0.35rem;
+  transition: transform 0.25s var(--ease), opacity 0.25s var(--ease);
+  opacity: 0.92;
+}
+
+.nav a.nav__fpl:hover img {
+  transform: translateY(-1px);
+  opacity: 1;
+}
+
 .nav-toggle {
   display: none;
   background: none;
@@ -308,6 +329,14 @@ img[data-cms-src="brand.logoUrl"]:not(.is-cms-ready) {
 
   .nav a {
     padding: 0.9rem 1rem;
+  }
+
+  .nav a.nav__fpl {
+    padding: 0.65rem 1rem;
+  }
+
+  .nav a.nav__fpl img {
+    width: 5rem;
   }
 }
 
@@ -1074,6 +1103,28 @@ img[data-cms-src="brand.logoUrl"]:not(.is-cms-ready) {
   align-items: center;
   gap: 0.35rem 1.15rem;
   min-width: 0;
+}
+
+.footer-fpl {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  line-height: 0;
+  text-decoration: none;
+  opacity: 0.9;
+  transition: opacity 0.25s var(--ease), transform 0.25s var(--ease);
+}
+
+.footer-fpl img {
+  display: block;
+  width: 4.25rem;
+  height: auto;
+  border-radius: 0.3rem;
+}
+
+.footer-fpl:hover {
+  opacity: 1;
+  transform: translateY(-1px);
 }
 
 .footer-login {

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 36" role="img" aria-label="Fantasy Premier League">
+  <rect width="96" height="36" rx="7" fill="#37003C"/>
+  <rect x="0" y="7" width="3.5" height="22" rx="1" fill="#00FF87"/>
+  <text
+    x="52"
+    y="24"
+    text-anchor="middle"
+    font-family="Montserrat, Arial Black, Arial, Helvetica, sans-serif"
+    font-size="18"
+    font-weight="800"
+    letter-spacing="2"
+    fill="#FFFFFF"
+  >FPL</text>
+</svg>

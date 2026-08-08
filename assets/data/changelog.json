@@ -2,6 +2,14 @@
   "entries": [
     {
       "date": "2026-08-08",
+      "title": "Fantasy Premier League-liga",
+      "items": [
+        "FPL-logo i menyen og footeren lenker til klubbens egen Fantasy-liga",
+        "Klikk for å bli med via auto-join"
+      ]
+    },
+    {
+      "date": "2026-08-08",
       "title": "Riktig logo med en gang",
       "items": [
         "Forsiden viser ikke lenger den gamle logoen et øyeblikk før den nye fra admin"
